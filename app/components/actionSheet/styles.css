@@ -1,0 +1,51 @@
+.f-actionSheet-hidden .f-mask {
+  background: rgba(0, 0, 0, 0);
+  transition: background .3s;
+  -webkit-transition: background .3s;
+}
+.f-actionSheet-hidden .f-actionSheet-list {
+  transform: translatey(100%);
+  -webkit-transform: translatey(100%);
+}
+.f-actionSheet-show .f-mask {
+  background: rgba(0, 0, 0, 0.6);
+  -webkit-transition: background .3s;
+  transition: background .3s;
+}
+.f-actionSheet-show .f-actionSheet-list {
+  -webkit-transform: translatey(0);
+  transform: translatey(0);
+}
+.f-actionSheet-list {
+  z-index: 2000;
+  width: 100%;
+  position: fixed;
+  left: 0;
+  bottom: 0;
+  -webkit-transition: -webkit-transform 0.3s;
+  transition: -webkit-transform 0.3s;
+  transition: transform .3s;
+  transition: transform 0.3s, -webkit-transform 0.3s;
+}
+.f-actionSheet-list > ul {
+  background: #ffffff;
+}
+.f-actionSheet-list > ul > li {
+  width: 100%;
+  height: 44px;
+  padding: 8px 10px;
+  text-align: center;
+  color: #666666;
+  border-top: 1px solid #efefef;
+}
+.f-actionSheet-list > ul > li a {
+  width: 100%;
+  height: 100%;
+  color: #666666;
+}
+.f-actionSheet-list > ul > li:last-child {
+  border-top: 5px solid #efefef;
+}
+.f-actionSheet-list > ul > li:active {
+  background-color: #ECECEC;
+}
