@@ -2,7 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import ListView from 'rmc-list-view';
 
-var REQUEST_URL = 'https://raw.githubusercontent.com/facebook/react-native/master/docs/MoviesExample.json';
+var REQUEST_URL = './app/data/movie.json';
 class App extends React.Component {
   constructor(props) {
   super(props);
@@ -17,7 +17,7 @@ class App extends React.Component {
       .then((response) => response.json())
       .then((responseData) => {
         this.setState({
-          dataSource: this.state.dataSource.cloneWithRows(responseData.movies),
+          dataSource: this.state.dataSource.cloneWithRows(responseData.subjects),
           loaded: true,
         });
       })
@@ -50,9 +50,15 @@ class App extends React.Component {
         dataSource={this.state.dataSource}
         renderRow={(rowData) => (
           <div style={rowStyle}>
-            <img src={rowData.posters.thumbnail} style={imgStyle}/>
-            <a style={{flex: 1,marginTop:15,marginLeft:10,fontSize:18,height:36,position:'absolute'}}>
-              {rowData.title}
+            <img src={rowData.images.medium} style={imgStyle}/>
+            <a style={{flex: 1,marginTop:15,marginLeft:20,fontSize:20,height:36,position:'absolute',color:'#4A4C4B'}}>
+              {rowData.original_title}
+            </a>
+            {/* <a style={{flex: 1,marginTop:50,marginLeft:20,fontSize:18,height:36,position:'absolute'}}>
+              {rowData.casts[0].name}
+            </a> */}
+            <a style={{flex: 1,marginTop:70,marginLeft:20,fontSize:18,height:36,position:'absolute',color:'orange'}}>
+              {rowData.rating.average}
             </a>
           </div>
         )}

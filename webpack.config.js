@@ -34,7 +34,7 @@ module.exports = {
               }
           }, {
               test: /\.css$/,
-              loaders: ['style', 'css', 'sass'], //.scss 文件使用 style-loader、css-loader 和 sass-loader 来编译处理
+              loaders: ['style', 'css'], //.scss 文件使用 style-loader、css-loader 和 sass-loader 来编译处理
               include: APP_PATH
           }, {
               test: /\.(png|jpg)$/,
@@ -47,7 +47,7 @@ module.exports = {
   },
   devServer: {
       hot: true,  //热加载模式
-      inline: true //inline模式(将webpack-dev-sever的客户端入口添加到包(bundle)中)
+      inline: true //inline模式(将webpack-dev-sever的客户端入口添加到包(bundle)中,实时刷新)
   },
   plugins: [
     new webpack.NoErrorsPlugin(),//用来跳过编译时出错的代码并记录，使编译后运行时的包不会发生错误

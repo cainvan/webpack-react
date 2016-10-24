@@ -3,10 +3,18 @@ import Carousel from '../components/carousel/Carousel';
 import '../css/carousel.css'
 
 export default class myCarousel extends React.Component {
-  constructor(props) {
-    super(props);
+  constructor(props, context) {
+    super(props, context);
   }
-
+  componentDidMount() {
+    this.context.router.setRouteLeaveHook(
+      this.props.route,
+      this.routerWillLeave
+    )
+  }
+  routerWillLeave() {
+    console.log("离开轮播");
+  }
   render() {
     return (
       <Carousel className="slider" autoplay>
@@ -16,4 +24,8 @@ export default class myCarousel extends React.Component {
       </Carousel>
     );
   }
+};
+
+myCarousel.contextTypes = {
+    router: Object
 };
