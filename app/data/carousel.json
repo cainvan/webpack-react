@@ -1,0 +1,25 @@
+{
+  "busiCode": null,
+  "opId": null,
+  "phone": null,
+  "returnCode": "0",
+  "returnMessage": null,
+  "bean": {
+    "total": 4
+  },
+  "beans": [
+    {
+      "src":"http://dcloud.io/hellomui/images/muwu.jpg",
+      "herf":"http://www.10085.cn/web85/commodity-details/commodity-details.html?productId=20160322110553835360"
+    },
+    {
+      "src":"http://dcloud.io/hellomui/images/shuijiao.jpg",
+      "herf":"http://www.10085.cn/web85/commodity-details/commodity-details.html?productId=20160322110553835360"
+    },
+    {
+      "src":"http://dcloud.io/hellomui/images/cbd.jpg",
+      "herf":"http://www.10085.cn/web85/commodity-details/commodity-details.html?productId=20160322110553835360"
+    }
+  ],
+  "object": null
+}

@@ -1,0 +1,129 @@
+body {
+  -webkit-overflow-scrolling: touch;
+}
+ul, li {
+  list-style: none;
+}
+
+@indexedList: rmc-indexed-list;
+.@{indexedList} {
+  // position: relative;
+
+  &-quick-search-bar {
+    position: fixed;
+    top: 0;
+    right: 0;
+    z-index: 1999;
+    text-align: center;
+    font-size: 12px;
+    li {
+      padding: 5px 10px;
+    }
+    &-over {
+      background-color: rgba(128, 128, 128, 0.2);
+    }
+  }
+  // quickSearchBar is moving, maybe need disable body(or parent scroll element)'s overflow
+  &-qsb-moving {
+    overflow: hidden;
+  }
+}
+.zscroller {
+  &-scrollbar-y {
+    position: absolute;
+    z-index: 9999;
+    width: 7px;
+    bottom: 2px;
+    top: 2px;
+    right: 1px;
+    overflow: hidden;
+    transform: translateZ(0px);
+    transition-property: opacity;
+    transition-duration: 250ms;
+    opacity: 0;
+  }
+
+  &-indicator-y {
+    box-sizing: border-box;
+    position: absolute;
+    border: 1px solid rgba(255, 255, 255, 0.901961);
+    border-radius: 3px;
+    width: 100%;
+    display: block;
+    background: rgba(0, 0, 0, 0.498039);
+  }
+
+  &-scrollbar-x {
+    position: absolute;
+    z-index: 9999;
+    height: 7px;
+    left: 2px;
+    right: 2px;
+    bottom: 1px;
+    overflow: hidden;
+    transform: translateZ(0px);
+    transition-property: opacity;
+    transition-duration: 250ms;
+    opacity: 0;
+  }
+
+  &-indicator-x {
+    box-sizing: border-box;
+    position: absolute;
+    border: 1px solid rgba(255, 255, 255, 0.901961);
+    border-radius: 3px;
+    height: 100%;
+    display: block;
+    background: rgba(0, 0, 0, 0.498039);
+  }
+}
+
+@pull-to-refresh: list-view-refresh-control;
+.@{pull-to-refresh} {
+  position: relative;
+  overflow: hidden;
+  user-select: none;
+
+  &-content {
+    transform-origin: left top;
+    transform: translateZ(0);
+  }
+
+  &-ptr {
+    color: grey;
+    text-align: center;
+    height: 50px;
+    margin-top: -50px;
+    overflow: hidden;
+    &-icon {
+      display: block;
+    }
+    &-loading {
+      display: none;
+    }
+  }
+  &-loading {
+    .@{pull-to-refresh}-ptr {
+      &-icon {
+        display: none;
+      }
+      &-loading {
+        display: block;
+      }
+    }
+  }
+  
+  // custom
+  &-pull {
+    display: block;
+  }
+  &-release {
+    display: none;
+  }
+  &-active &-pull {
+    display: none;
+  }
+  &-active &-release {
+    display: block;
+  }
+}

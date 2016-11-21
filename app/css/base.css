@@ -47,6 +47,7 @@ body {
   -webkit-user-select: none;
   -webkit-text-size-adjust: 100%;
   -webkit-tap-highlight-color: transparent;
+  -webkit-overflow-scrolling : touch;
   outline: 0;
 }
 h1,
@@ -284,3 +285,9 @@ src: url('data:application/octet-stream;base64,AAEAAAAPAIAAAwBwR1NVQiCMJXkAAAD8A
 }
 
 }
+.widget-list.overflow {
+    position: relative;
+    /*height: 500px;*/
+    overflow-y: scroll;
+    -webkit-overflow-scrolling: touch;
+  }

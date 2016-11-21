@@ -17,6 +17,9 @@ export default class Button extends React.Component {
         <a href="#actionSheet" style={{marginLeft:20}}>
           actionSheet
         </a>
+        <a href="#myList" style={{marginLeft:20}}>
+          List
+        </a>
       </div>
     );
   }
