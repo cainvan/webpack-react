@@ -34,7 +34,6 @@ class App extends React.Component {
   loadData() {
     $.ajax({
         url: REQUEST_URL,
-        data: {page: page},
         type: 'GET',
         dataType: 'json',
         success: (response) => {
@@ -82,7 +81,7 @@ class App extends React.Component {
     items = [];
     this.loadData();
   }
-  
+
   render() {
     if (!this.state.loaded) {
       return this.renderLoadingView();
