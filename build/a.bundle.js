@@ -65,7 +65,7 @@
 /******/ 	}
 /******/ 	
 /******/ 	var hotApplyOnUpdate = true;
-/******/ 	var hotCurrentHash = "6eb1d3f825ef6e52790e"; // eslint-disable-line no-unused-vars
+/******/ 	var hotCurrentHash = "c6c125f73614fae2c320"; // eslint-disable-line no-unused-vars
 /******/ 	var hotCurrentModuleData = {};
 /******/ 	var hotCurrentParents = []; // eslint-disable-line no-unused-vars
 /******/ 	
@@ -780,7 +780,6 @@
 
 	      _jquery2.default.ajax({
 	        url: REQUEST_URL,
-	        data: { page: page },
 	        type: 'GET',
 	        dataType: 'json',
 	        success: function success(response) {
