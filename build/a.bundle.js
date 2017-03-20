@@ -65,7 +65,7 @@
 /******/ 	}
 /******/ 	
 /******/ 	var hotApplyOnUpdate = true;
-/******/ 	var hotCurrentHash = "6eb1d3f825ef6e52790e"; // eslint-disable-line no-unused-vars
+/******/ 	var hotCurrentHash = "f8f4498d527d1ee1e649"; // eslint-disable-line no-unused-vars
 /******/ 	var hotCurrentModuleData = {};
 /******/ 	var hotCurrentParents = []; // eslint-disable-line no-unused-vars
 /******/ 	
@@ -717,15 +717,9 @@
 
 	var _reactDom2 = _interopRequireDefault(_reactDom);
 
-	var _index = __webpack_require__(162);
+	var _rmcListView = __webpack_require__(162);
 
-	var _index2 = _interopRequireDefault(_index);
-
-	var _jquery = __webpack_require__(186);
-
-	var _jquery2 = _interopRequireDefault(_jquery);
-
-	__webpack_require__(187);
+	var _rmcListView2 = _interopRequireDefault(_rmcListView);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -735,168 +729,77 @@
 
 	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
-	var REQUEST_URL = '/app/data/movie.json';
-	var items = [];
-	var page = 1;
-
 	var App = function (_React$Component) {
 	  _inherits(App, _React$Component);
 
-	  function App(props, context) {
+	  function App(props) {
 	    _classCallCheck(this, App);
 
-	    var _this = _possibleConstructorReturn(this, (App.__proto__ || Object.getPrototypeOf(App)).call(this, props, context));
+	    var _this = _possibleConstructorReturn(this, (App.__proto__ || Object.getPrototypeOf(App)).call(this, props));
 
-	    var ds = new _index2.default.DataSource({ rowHasChanged: function rowHasChanged(r1, r2) {
+	    var ds = new _rmcListView2.default.DataSource({ rowHasChanged: function rowHasChanged(r1, r2) {
 	        return r1 !== r2;
 	      } });
 	    _this.state = {
 	      dataSource: ds,
-	      loaded: false,
-	      isLoading: false,
-	      refreshing: false,
-	      manual: false
+	      loaded: false
 	    };
-
-	    _this.onEndReached = _this.onEndReached.bind(_this);
-	    _this.loadData = _this.loadData.bind(_this);
 	    return _this;
 	  }
 
 	  _createClass(App, [{
 	    key: 'componentDidMount',
 	    value: function componentDidMount() {
-	      this.loadData();
-	      // this.setState({
-	      //   dataSource: this.state.dataSource.cloneWithRows(items),
-	      //   loaded: true,
-	      //   isLoading: false,
-	      // });
-	    }
-	  }, {
-	    key: 'loadData',
-	    value: function loadData() {
-	      var _this2 = this;
-
-	      _jquery2.default.ajax({
-	        url: REQUEST_URL,
-	        data: { page: page },
-	        type: 'GET',
-	        dataType: 'json',
-	        success: function success(response) {
-	          items = items.concat(response.subjects);
-	          console.log("长度是：" + items.length);
-	          _this2.setState({
-	            dataSource: _this2.state.dataSource.cloneWithRows(items),
-	            loaded: true,
-	            isLoading: false,
-	            refreshing: false
-	          });
-	          ++page;
-	        }
+	      this.setState({
+	        dataSource: this.state.dataSource.cloneWithRows(["a", "b", "ccc"]),
+	        loaded: true
 	      });
-	    }
-	  }, {
-	    key: 'onEndReached',
-	    value: function onEndReached(event) {
-	      var _this3 = this;
-
-	      console.log(this.state.isLoading);
-	      if (this.state.isLoading == false) {
-	        this.setState({ isLoading: true });
-	        setTimeout(function () {
-	          _this3.loadData();
-	        }, 1000);
-	      }
 	    }
 	  }, {
 	    key: 'renderLoadingView',
 	    value: function renderLoadingView() {
-
 	      return _react2.default.createElement(
 	        'div',
-	        { style: {
-	            color: 'grey',
-	            padding: 10, textAlign: 'center'
-	          } },
+	        null,
 	        'Loading ...'
 	      );
 	    }
 	  }, {
-	    key: 'onRefresh',
-	    value: function onRefresh() {
-	      console.log('onRefresh');
-	      this.setState({ refreshing: true });
-	      this.refreshing();
-	    }
-	  }, {
-	    key: 'refreshing',
-	    value: function refreshing() {
-	      console.log("22222");
-	      items = [];
-	      this.loadData();
-	    }
-	  }, {
 	    key: 'render',
 	    value: function render() {
-	      var _this4 = this;
-
 	      if (!this.state.loaded) {
 	        return this.renderLoadingView();
 	      }
-	      var rowStyle = {
-	        flex: 1,
-	        flexDirection: 'row',
-	        justifyContent: 'center',
-	        alignItems: 'center',
-	        height: 140,
-	        backgroundColor: '#F5FCFF'
-	      };
-	      var imgStyle = {
-	        height: 120,
-	        width: 80
-	      };
-	      return _react2.default.createElement(_index2.default, {
-	        style: { height: window.innerHeight, backgroundColor: '#FAFAFA' },
+	      return _react2.default.createElement(_rmcListView2.default, {
+	        style: { height: 400 },
 	        dataSource: this.state.dataSource,
-	        renderFooter: function renderFooter() {
+	        onEndReached: function onEndReached(e) {
+	          return console.log(e.toString());
+	        },
+	        onEndReachedThreshold: 10,
+	        scrollEventThrottle: 20,
+	        scrollRenderAheadDistance: 100,
+	        initialListSize: 5,
+	        pageSize: 5
+	        // renderRow={(rowData, sectionID, rowID, highlightRow) => (
+	        //   <Text>{{rowData}}</Text>>
+	        // )}
+	        , renderRow: function renderRow(rowData) {
 	          return _react2.default.createElement(
 	            'div',
-	            { style: {
-	                color: 'grey',
-	                padding: 10, textAlign: 'center'
-	              } },
-	            _this4.state.isLoading ? 'loading...' : 'loaded'
+	            null,
+	            rowData
 	          );
-	        },
-	        onEndReached: this.onEndReached,
-	        pageSize: 14
-	        // onEndReachedThreshold={20}
-	        , removeClippedSubviews: true,
-	        renderRow: function renderRow(rowData) {
-	          return _react2.default.createElement(
-	            'div',
-	            { style: rowStyle },
-	            _react2.default.createElement('img', { src: rowData.images.medium, style: imgStyle }),
-	            _react2.default.createElement(
-	              'a',
-	              { style: { flex: 1, marginTop: 15, marginLeft: 20, fontSize: 20, height: 36, position: 'absolute', color: '#4A4C4B' } },
-	              rowData.original_title
-	            ),
-	            _react2.default.createElement(
-	              'a',
-	              { style: { flex: 1, marginTop: 70, marginLeft: 20, fontSize: 18, height: 36, position: 'absolute', color: 'orange' } },
-	              rowData.rating.average
-	            )
-	          );
-	        },
-	        useZscroller: true,
-	        scrollerOptions: { scrollbars: true },
-	        refreshControl: _react2.default.createElement(_index2.default.RefreshControl, {
-	          refreshing: this.state.refreshing,
-	          onRefresh: this.state.manual ? this.refreshing.bind(this) : this.onRefresh.bind(this),
-	          resistance: 1
-	        })
+	        }
+	        // renderSeparator={(sectionID, rowID, adjacentRowHighlighted) => (
+	        //   <View key={`${sectionID}-${rowID}`}
+	        //     style={{
+	        //       height: adjacentRowHighlighted ? 4 : 1,
+	        //       backgroundColor: adjacentRowHighlighted ? '#3B5998' : '#CCCCCC',
+	        //     }}
+	        //   />
+	        // )}
+	        // renderBodyComponent={() => <div className="for-body-demo" />}
 	      });
 	    }
 	  }]);
@@ -20616,20 +20519,16 @@
 
 	var _ListView2 = _interopRequireDefault(_ListView);
 
-	var _Indexed = __webpack_require__(184);
+	var _Indexed = __webpack_require__(273);
 
 	var _Indexed2 = _interopRequireDefault(_Indexed);
 
-	var _RefreshControl = __webpack_require__(185);
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
 
-	var _RefreshControl2 = _interopRequireDefault(_RefreshControl);
-
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-	_ListView2.default.IndexedList = _Indexed2.default; // export this package's api
-
-	_ListView2.default.RefreshControl = _RefreshControl2.default;
-	exports.default = _ListView2.default;
+	// export this package's api
+	_ListView2["default"].IndexedList = _Indexed2["default"];
+	exports["default"] = _ListView2["default"];
+	module.exports = exports['default'];
 
 /***/ },
 /* 163 */
@@ -20641,9 +20540,25 @@
 	  value: true
 	});
 
-	var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+	var _extends2 = __webpack_require__(164);
 
-	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+	var _extends3 = _interopRequireDefault(_extends2);
+
+	var _objectWithoutProperties2 = __webpack_require__(202);
+
+	var _objectWithoutProperties3 = _interopRequireDefault(_objectWithoutProperties2);
+
+	var _classCallCheck2 = __webpack_require__(203);
+
+	var _classCallCheck3 = _interopRequireDefault(_classCallCheck2);
+
+	var _possibleConstructorReturn2 = __webpack_require__(204);
+
+	var _possibleConstructorReturn3 = _interopRequireDefault(_possibleConstructorReturn2);
+
+	var _inherits2 = __webpack_require__(240);
+
+	var _inherits3 = _interopRequireDefault(_inherits2);
 
 	var _react = __webpack_require__(4);
 
@@ -20653,55 +20568,44 @@
 
 	var _reactDom2 = _interopRequireDefault(_reactDom);
 
-	var _ListViewDataSource = __webpack_require__(164);
+	var _ListViewDataSource = __webpack_require__(248);
 
 	var _ListViewDataSource2 = _interopRequireDefault(_ListViewDataSource);
 
-	var _ScrollView = __webpack_require__(166);
+	var _ScrollView = __webpack_require__(253);
 
 	var _ScrollView2 = _interopRequireDefault(_ScrollView);
 
-	var _ScrollResponder = __webpack_require__(173);
+	var _ScrollResponder = __webpack_require__(254);
 
 	var _ScrollResponder2 = _interopRequireDefault(_ScrollResponder);
 
-	var _StaticRenderer = __webpack_require__(174);
+	var _StaticRenderer = __webpack_require__(267);
 
 	var _StaticRenderer2 = _interopRequireDefault(_StaticRenderer);
 
-	var _reactTimerMixin = __webpack_require__(175);
+	var _reactTimerMixin = __webpack_require__(268);
 
 	var _reactTimerMixin2 = _interopRequireDefault(_reactTimerMixin);
 
-	var _objectAssign = __webpack_require__(170);
+	var _objectAssign = __webpack_require__(264);
 
 	var _objectAssign2 = _interopRequireDefault(_objectAssign);
 
-	var _reactMixin = __webpack_require__(176);
+	var _reactMixin = __webpack_require__(262);
 
 	var _reactMixin2 = _interopRequireDefault(_reactMixin);
 
-	var _autobindDecorator = __webpack_require__(178);
+	var _autobindDecorator = __webpack_require__(265);
 
 	var _autobindDecorator2 = _interopRequireDefault(_autobindDecorator);
 
-	var _reactSticky = __webpack_require__(179);
+	var _reactSticky = __webpack_require__(269);
 
-	var _util = __webpack_require__(172);
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
 
-	var _PullUpLoadMoreMixin = __webpack_require__(183);
+	var throttle = __webpack_require__(266);
 
-	var _PullUpLoadMoreMixin2 = _interopRequireDefault(_PullUpLoadMoreMixin);
-
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-	function _objectWithoutProperties(obj, keys) { var target = {}; for (var i in obj) { if (keys.indexOf(i) >= 0) continue; if (!Object.prototype.hasOwnProperty.call(obj, i)) continue; target[i] = obj[i]; } return target; }
-
-	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
-
-	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; } // https://github.com/facebook/react-native/blob/master/Libraries/CustomComponents/ListView/ListView.js
 
 	var DEFAULT_PAGE_SIZE = 1;
 	var DEFAULT_INITIAL_ROWS = 10;
@@ -20710,488 +20614,633 @@
 	var DEFAULT_SCROLL_CALLBACK_THROTTLE = 50;
 	var SCROLLVIEW_REF = 'listviewscroll';
 
+	/**
+	 * ListView - A core component designed for efficient display of vertically
+	 * scrolling lists of changing data.  The minimal API is to create a
+	 * `ListView.DataSource`, populate it with a simple array of data blobs, and
+	 * instantiate a `ListView` component with that data source and a `renderRow`
+	 * callback which takes a blob from the data array and returns a renderable
+	 * component.
+	 *
+	 * Minimal example:
+	 *
+	 * ```
+	 * getInitialState: function() {
+	 *   let ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
+	 *   return {
+	 *     dataSource: ds.cloneWithRows(['row 1', 'row 2']),
+	 *   };
+	 * },
+	 *
+	 * render: function() {
+	 *   return (
+	 *     <ListView
+	 *       dataSource={this.state.dataSource}
+	 *       renderRow={(rowData) => <Text>{rowData}</Text>}
+	 *     />
+	 *   );
+	 * },
+	 * ```
+	 *
+	 * ListView also supports more advanced features, including sections with sticky
+	 * section headers, header and footer support, callbacks on reaching the end of
+	 * the available data (`onEndReached`) and on the set of rows that are visible
+	 * in the device viewport change (`onChangeVisibleRows`), and several
+	 * performance optimizations.
+	 *
+	 * There are a few performance operations designed to make ListView scroll
+	 * smoothly while dynamically loading potentially very large (or conceptually
+	 * infinite) data sets:
+	 *
+	 *  * Only re-render changed rows - the rowHasChanged function provided to the
+	 *    data source tells the ListView if it needs to re-render a row because the
+	 *    source data has changed - see ListViewDataSource for more details.
+	 *
+	 *  * Rate-limited row rendering - By default, only one row is rendered per
+	 *    event-loop (customizable with the `pageSize` prop).  This breaks up the
+	 *    work into smaller chunks to reduce the chance of dropping frames while
+	 *    rendering rows.
+	 */
+
 	var ListView = function (_React$Component) {
-	  _inherits(ListView, _React$Component);
+	  (0, _inherits3["default"])(ListView, _React$Component);
 
 	  function ListView() {
-	    var _ref;
-
 	    var _temp, _this, _ret;
 
-	    _classCallCheck(this, ListView);
+	    (0, _classCallCheck3["default"])(this, ListView);
 
 	    for (var _len = arguments.length, args = Array(_len), _key = 0; _key < _len; _key++) {
 	      args[_key] = arguments[_key];
 	    }
 
-	    return _ret = (_temp = (_this = _possibleConstructorReturn(this, (_ref = ListView.__proto__ || Object.getPrototypeOf(ListView)).call.apply(_ref, [this].concat(args))), _this), _this.state = {
+	    return _ret = (_temp = (_this = (0, _possibleConstructorReturn3["default"])(this, _React$Component.call.apply(_React$Component, [this].concat(args))), _this), _this.state = {
 	      curRenderedRowsCount: _this.props.initialListSize,
 	      highlightedRow: {}
-	    }, _this.stickyRefs = {}, _temp), _possibleConstructorReturn(_this, _ret);
+	    }, _this.stickyRefs = {}, _temp), (0, _possibleConstructorReturn3["default"])(_this, _ret);
 	  }
+
+	  /**
+	   * You must provide a renderRow function. If you omit any of the other render
+	   * functions, ListView will simply skip rendering them.
+	   *
+	   * - renderRow(rowData, sectionID, rowID, highlightRow);
+	   * - renderSectionHeader(sectionData, sectionID);
+	   */
+
 
 	  /**
 	   * React life cycle hooks.
 	   */
 
-	  _createClass(ListView, [{
-	    key: 'getMetrics',
+	  /**
+	   * Exports some data, e.g. for perf investigations or analytics.
+	   */
+	  ListView.prototype.getMetrics = function getMetrics() {
+	    return {
+	      contentLength: this.scrollProperties.contentLength,
+	      totalRows: this.props.dataSource.getRowCount(),
+	      renderedRows: this.state.curRenderedRowsCount,
+	      visibleRows: Object.keys(this._visibleRows).length
+	    };
+	  };
+
+	  /**
+	   * Provides a handle to the underlying scroll responder.
+	   * Note that the view in `SCROLLVIEW_REF` may not be a `ScrollView`, so we
+	   * need to check that it responds to `getScrollResponder` before calling it.
+	   */
 
 
-	    /**
-	     * Exports some data, e.g. for perf investigations or analytics.
-	     */
-	    value: function getMetrics() {
-	      return {
-	        contentLength: this.scrollProperties.contentLength,
-	        totalRows: this.props.dataSource.getRowCount(),
-	        renderedRows: this.state.curRenderedRowsCount,
-	        visibleRows: Object.keys(this._visibleRows).length
-	      };
+	  ListView.prototype.getScrollResponder = function getScrollResponder() {
+	    return this.refs[SCROLLVIEW_REF] && this.refs[SCROLLVIEW_REF].getScrollResponder && this.refs[SCROLLVIEW_REF].getScrollResponder();
+	  };
+
+	  ListView.prototype.scrollTo = function scrollTo() {
+	    var _refs$SCROLLVIEW_REF;
+
+	    this.refs[SCROLLVIEW_REF] && this.refs[SCROLLVIEW_REF].scrollTo && (_refs$SCROLLVIEW_REF = this.refs[SCROLLVIEW_REF]).scrollTo.apply(_refs$SCROLLVIEW_REF, arguments);
+	  };
+
+	  ListView.prototype.setNativeProps = function setNativeProps(props) {
+	    this.refs[SCROLLVIEW_REF] && this.refs[SCROLLVIEW_REF].setNativeProps(props);
+	  };
+
+	  ListView.prototype.getInnerViewNode = function getInnerViewNode() {
+	    return this.refs[SCROLLVIEW_REF].getInnerViewNode();
+	  };
+
+	  ListView.prototype.componentWillMount = function componentWillMount() {
+	    // this data should never trigger a render pass, so don't put in state
+	    this.scrollProperties = {
+	      visibleLength: null,
+	      contentLength: null,
+	      offset: 0
+	    };
+	    this._childFrames = [];
+	    this._visibleRows = {};
+	    this._prevRenderedRowsCount = 0;
+	    this._sentEndForContentLength = null;
+	  };
+
+	  ListView.prototype.componentDidMount = function componentDidMount() {
+	    // do this in animation frame until componentDidMount actually runs after
+	    // the component is laid out
+	    // this.requestAnimationFrame(() => {
+	    //   this._measureAndUpdateScrollProps();
+	    // });
+	    if (this.props.stickyHeader || this.props.useBodyScroll) {
+	      // this.container = document.createElement('div');
+	      // window.document.body.insertBefore(this.container, window.document.body.firstChild || null);
+	      this.__onScroll = throttle(this._onScroll, this.props.scrollEventThrottle);
+	      window.addEventListener('scroll', this.__onScroll);
 	    }
+	    this.componentDidUpdate();
+	  };
 
-	    /**
-	     * Provides a handle to the underlying scroll responder.
-	     * Note that the view in `SCROLLVIEW_REF` may not be a `ScrollView`, so we
-	     * need to check that it responds to `getScrollResponder` before calling it.
-	     */
+	  ListView.prototype.componentWillReceiveProps = function componentWillReceiveProps(nextProps) {
+	    var _this2 = this;
 
-	  }, {
-	    key: 'getScrollResponder',
-	    value: function getScrollResponder() {
-	      return this.refs[SCROLLVIEW_REF] && this.refs[SCROLLVIEW_REF].getScrollResponder && this.refs[SCROLLVIEW_REF].getScrollResponder();
-	    }
-	  }, {
-	    key: 'scrollTo',
-	    value: function scrollTo() {
-	      var _refs$SCROLLVIEW_REF;
-
-	      this.refs[SCROLLVIEW_REF] && this.refs[SCROLLVIEW_REF].scrollTo && (_refs$SCROLLVIEW_REF = this.refs[SCROLLVIEW_REF]).scrollTo.apply(_refs$SCROLLVIEW_REF, arguments);
-	    }
-	  }, {
-	    key: 'setNativeProps',
-	    value: function setNativeProps(props) {
-	      this.refs[SCROLLVIEW_REF] && this.refs[SCROLLVIEW_REF].setNativeProps(props);
-	    }
-	  }, {
-	    key: 'getInnerViewNode',
-	    value: function getInnerViewNode() {
-	      return this.refs[SCROLLVIEW_REF].getInnerViewNode();
-	    }
-	  }, {
-	    key: 'componentWillMount',
-	    value: function componentWillMount() {
-	      // this data should never trigger a render pass, so don't put in state
-	      this.scrollProperties = {
-	        visibleLength: null,
-	        contentLength: null,
-	        offset: 0
-	      };
-	      this._childFrames = [];
-	      this._visibleRows = {};
-	      this._prevRenderedRowsCount = 0;
-	      this._sentEndForContentLength = null;
-	    }
-	  }, {
-	    key: 'componentDidMount',
-	    value: function componentDidMount() {
-	      // do this in animation frame until componentDidMount actually runs after
-	      // the component is laid out
-	      // this.requestAnimationFrame(() => {
-	      //   this._measureAndUpdateScrollProps();
-	      // });
-	      if (this.props.stickyHeader || this.props.useBodyScroll) {
-	        this.__onScroll = (0, _util.throttle)(this._onScroll, this.props.scrollEventThrottle);
-	        window.addEventListener('scroll', this.__onScroll);
-	      }
-	    }
-	  }, {
-	    key: 'componentWillReceiveProps',
-	    value: function componentWillReceiveProps(nextProps) {
-	      var _this2 = this;
-
-	      if (this.props.dataSource !== nextProps.dataSource || this.props.initialListSize !== nextProps.initialListSize) {
-	        this.setState(function (state, props) {
-	          _this2._prevRenderedRowsCount = 0;
-	          return {
-	            curRenderedRowsCount: Math.min(Math.max(state.curRenderedRowsCount, props.initialListSize), props.dataSource.getRowCount())
-	          };
-	        }, function () {
-	          return _this2._renderMoreRowsIfNeeded();
-	        });
-	      }
-	    }
-	  }, {
-	    key: 'componentWillUnmount',
-	    value: function componentWillUnmount() {
-	      if (this.props.stickyHeader || this.props.useBodyScroll) {
-	        window.removeEventListener('scroll', this.__onScroll);
-	      }
-	    }
-	  }, {
-	    key: 'onRowHighlighted',
-	    value: function onRowHighlighted(sectionID, rowID) {
-	      this.setState({ highlightedRow: { sectionID: sectionID, rowID: rowID } });
-	    }
-	  }, {
-	    key: 'render',
-	    value: function render() {
-	      var _this3 = this;
-
-	      var bodyComponents = [];
-
-	      var dataSource = this.props.dataSource;
-	      var allRowIDs = dataSource.rowIdentities;
-	      var rowCount = 0;
-	      var sectionHeaderIndices = [];
-
-	      var header = this.props.renderHeader && this.props.renderHeader();
-	      var footer = this.props.renderFooter && this.props.renderFooter();
-	      var totalIndex = header ? 1 : 0;
-
-	      var _loop = function _loop(sectionIdx) {
-	        var sectionID = dataSource.sectionIdentities[sectionIdx];
-	        var rowIDs = allRowIDs[sectionIdx];
-	        if (rowIDs.length === 0) {
-	          return 'continue';
-	        }
-
-	        if (_this3.props.renderSectionHeader) {
-	          var shouldUpdateHeader = rowCount >= _this3._prevRenderedRowsCount && dataSource.sectionHeaderShouldUpdate(sectionIdx);
-
-	          var renderSectionHeader = _react2.default.createElement(_StaticRenderer2.default, {
-	            key: 's_' + sectionID,
-	            shouldUpdate: !!shouldUpdateHeader,
-	            render: _this3.props.renderSectionHeader.bind(null, dataSource.getSectionHeaderData(sectionIdx), sectionID)
-	          });
-	          if (_this3.props.stickyHeader) {
-	            renderSectionHeader = _react2.default.createElement(
-	              _reactSticky.Sticky,
-	              _extends({}, _this3.props.stickyProps, { key: 's_' + sectionID,
-	                ref: function ref(c) {
-	                  _this3.stickyRefs[sectionID] = c;
-	                }
-	              }),
-	              renderSectionHeader
-	            );
-	          }
-	          bodyComponents.push(renderSectionHeader);
-	          sectionHeaderIndices.push(totalIndex++);
-	        }
-
-	        var sectionBody = [];
-	        for (var rowIdx = 0; rowIdx < rowIDs.length; rowIdx++) {
-	          var rowID = rowIDs[rowIdx];
-	          var comboID = sectionID + '_' + rowID;
-	          var shouldUpdateRow = rowCount >= _this3._prevRenderedRowsCount && dataSource.rowShouldUpdate(sectionIdx, rowIdx);
-	          var row = _react2.default.createElement(_StaticRenderer2.default, {
-	            key: 'r_' + comboID,
-	            shouldUpdate: !!shouldUpdateRow,
-	            render: _this3.props.renderRow.bind(null, dataSource.getRowData(sectionIdx, rowIdx), sectionID, rowID, _this3.onRowHighlighted)
-	          });
-	          // bodyComponents.push(row);
-	          sectionBody.push(row);
-	          totalIndex++;
-
-	          if (_this3.props.renderSeparator && (rowIdx !== rowIDs.length - 1 || sectionIdx === allRowIDs.length - 1)) {
-	            var adjacentRowHighlighted = _this3.state.highlightedRow.sectionID === sectionID && (_this3.state.highlightedRow.rowID === rowID || _this3.state.highlightedRow.rowID === rowIDs[rowIdx + 1]);
-	            var separator = _this3.props.renderSeparator(sectionID, rowID, adjacentRowHighlighted);
-	            if (separator) {
-	              // bodyComponents.push(separator);
-	              sectionBody.push(separator);
-	              totalIndex++;
-	            }
-	          }
-	          if (++rowCount === _this3.state.curRenderedRowsCount) {
-	            break;
-	          }
-	        }
-	        bodyComponents.push(_react2.default.cloneElement(_this3.props.renderSectionBodyWrapper(sectionID), {
-	          className: _this3.props.sectionBodyClassName
-	        }, sectionBody));
-	        if (rowCount >= _this3.state.curRenderedRowsCount) {
-	          return 'break';
-	        }
-	      };
-
-	      _loop2: for (var sectionIdx = 0; sectionIdx < allRowIDs.length; sectionIdx++) {
-	        var _ret2 = _loop(sectionIdx);
-
-	        switch (_ret2) {
-	          case 'continue':
-	            continue;
-
-	          case 'break':
-	            break _loop2;}
-	      }
-
-	      var _props = this.props;
-	      var renderScrollComponent = _props.renderScrollComponent;
-
-	      var props = _objectWithoutProperties(_props, ['renderScrollComponent']);
-
-	      bodyComponents = _react2.default.cloneElement(props.renderBodyComponent(), {}, bodyComponents);
-	      if (props.stickyHeader) {
-	        bodyComponents = _react2.default.createElement(
-	          _reactSticky.StickyContainer,
-	          props.stickyContainerProps,
-	          bodyComponents
-	        );
-	      }
-
-	      (0, _objectAssign2.default)(props, {
-	        onScroll: this._onScroll
-	      });
-
-	      if (props.stickyHeader || props.useBodyScroll) {
-	        delete props.onScroll;
-	      }
-	      this._sc = _react2.default.cloneElement(renderScrollComponent(props), {
-	        ref: SCROLLVIEW_REF,
-	        onContentSizeChange: this._onContentSizeChange,
-	        onLayout: props.stickyHeader || props.useBodyScroll ? function (event) {
-	          _this3.props.onLayout && _this3.props.onLayout(event);
-	        } : this._onLayout
-	      }, header, bodyComponents, footer, props.children);
-	      return this._sc;
-	    }
-
-	    /**
-	     * Private methods
-	     */
-
-	  }, {
-	    key: '_measureAndUpdateScrollProps',
-	    value: function _measureAndUpdateScrollProps() {
-	      var scrollComponent = this.getScrollResponder();
-	      if (!scrollComponent || !scrollComponent.getInnerViewNode) {
-	        return;
-	      }
-
-	      // RCTScrollViewManager.calculateChildFrames is not available on
-	      // every platform
-	      // RCTScrollViewManager && RCTScrollViewManager.calculateChildFrames &&
-	      //   RCTScrollViewManager.calculateChildFrames(
-	      //     React.findNodeHandle(scrollComponent),
-	      //     this._updateVisibleRows,
-	      //   );
-	    }
-	  }, {
-	    key: '_onContentSizeChange',
-	    value: function _onContentSizeChange(width, height) {
-	      var contentLength = !this.props.horizontal ? height : width;
-	      if (contentLength !== this.scrollProperties.contentLength) {
-	        this.scrollProperties.contentLength = contentLength;
-	        this._updateVisibleRows();
-	        this._renderMoreRowsIfNeeded();
-	      }
-	      this.props.onContentSizeChange && this.props.onContentSizeChange(width, height);
-	    }
-	  }, {
-	    key: '_onLayout',
-	    value: function _onLayout(event) {
-	      var _event$nativeEvent$la = event.nativeEvent.layout;
-	      var width = _event$nativeEvent$la.width;
-	      var height = _event$nativeEvent$la.height;
-
-	      var visibleLength = !this.props.horizontal ? height : width;
-	      if (visibleLength !== this.scrollProperties.visibleLength) {
-	        this.scrollProperties.visibleLength = visibleLength;
-	        this._updateVisibleRows();
-	        this._renderMoreRowsIfNeeded();
-	      }
-	      this.props.onLayout && this.props.onLayout(event);
-	    }
-	  }, {
-	    key: '_maybeCallOnEndReached',
-	    value: function _maybeCallOnEndReached(event) {
-	      // console.log(this.scrollProperties, this._getDistanceFromEnd(this.scrollProperties));
-	      if (this.props.onEndReached &&
-	      // this.scrollProperties.contentLength !== this._sentEndForContentLength &&
-	      this._getDistanceFromEnd(this.scrollProperties) < this.props.onEndReachedThreshold && this.state.curRenderedRowsCount === this.props.dataSource.getRowCount()) {
-	        this._sentEndForContentLength = this.scrollProperties.contentLength;
-	        this.props.onEndReached(event);
-	        return true;
-	      }
-	      return false;
-	    }
-	  }, {
-	    key: '_renderMoreRowsIfNeeded',
-	    value: function _renderMoreRowsIfNeeded() {
-	      if (this.scrollProperties.contentLength === null || this.scrollProperties.visibleLength === null || this.state.curRenderedRowsCount === this.props.dataSource.getRowCount()) {
-	        this._maybeCallOnEndReached();
-	        return;
-	      }
-
-	      var distanceFromEnd = this._getDistanceFromEnd(this.scrollProperties);
-	      // console.log(distanceFromEnd, this.props.scrollRenderAheadDistance);
-	      if (distanceFromEnd < this.props.scrollRenderAheadDistance) {
-	        this._pageInNewRows();
-	      }
-	    }
-	  }, {
-	    key: '_pageInNewRows',
-	    value: function _pageInNewRows() {
-	      var _this4 = this;
-
+	    if (this.props.dataSource !== nextProps.dataSource || this.props.initialListSize !== nextProps.initialListSize) {
 	      this.setState(function (state, props) {
-	        var rowsToRender = Math.min(state.curRenderedRowsCount + props.pageSize, props.dataSource.getRowCount());
-	        _this4._prevRenderedRowsCount = state.curRenderedRowsCount;
+	        _this2._prevRenderedRowsCount = 0;
 	        return {
-	          curRenderedRowsCount: rowsToRender
+	          curRenderedRowsCount: Math.min(Math.max(state.curRenderedRowsCount, props.initialListSize), props.dataSource.getRowCount())
 	        };
 	      }, function () {
-	        _this4._measureAndUpdateScrollProps();
-	        _this4._prevRenderedRowsCount = _this4.state.curRenderedRowsCount;
+	        return _this2._renderMoreRowsIfNeeded();
 	      });
 	    }
-	  }, {
-	    key: '_getDistanceFromEnd',
-	    value: function _getDistanceFromEnd(scrollProperties) {
-	      return scrollProperties.contentLength - scrollProperties.visibleLength - scrollProperties.offset;
+	  };
+
+	  ListView.prototype.componentDidUpdate = function componentDidUpdate() {
+	    var _this3 = this;
+
+	    this.requestAnimationFrame(function () {
+	      _this3._measureAndUpdateScrollProps();
+	    });
+	    // if (this.props.stickyHeader) {
+	    //   ReactDOM.unstable_renderSubtreeIntoContainer(this, this._sc, this.container);
+	    // }
+	  };
+
+	  ListView.prototype.componentWillUnmount = function componentWillUnmount() {
+	    if (this.props.stickyHeader || this.props.useBodyScroll) {
+	      // if (this.container) {
+	      //   ReactDOM.unmountComponentAtNode(this.container);
+	      //   window.document.body.removeChild(this.container);
+	      // }
+	      window.removeEventListener('scroll', this.__onScroll);
 	    }
-	  }, {
-	    key: '_updateVisibleRows',
-	    value: function _updateVisibleRows(updatedFrames) {
-	      // if (!this.props.onChangeVisibleRows) {
-	      //   return; // No need to compute visible rows if there is no callback
-	      // }
-	      // if (updatedFrames) {
-	      //   updatedFrames.forEach((newFrame) => {
-	      //     this._childFrames[newFrame.index] = merge(newFrame);
-	      //   });
-	      // }
-	      // let isVertical = !this.props.horizontal;
-	      // let dataSource = this.props.dataSource;
-	      // let visibleMin = this.scrollProperties.offset;
-	      // let visibleMax = visibleMin + this.scrollProperties.visibleLength;
-	      // let allRowIDs = dataSource.rowIdentities;
-	      //
-	      // let header = this.props.renderHeader && this.props.renderHeader();
-	      // let totalIndex = header ? 1 : 0;
-	      // let visibilityChanged = false;
-	      // let changedRows = {};
-	      // for (let sectionIdx = 0; sectionIdx < allRowIDs.length; sectionIdx++) {
-	      //   let rowIDs = allRowIDs[sectionIdx];
-	      //   if (rowIDs.length === 0) {
-	      //     continue;
-	      //   }
-	      //   let sectionID = dataSource.sectionIdentities[sectionIdx];
-	      //   if (this.props.renderSectionHeader) {
-	      //     totalIndex++;
-	      //   }
-	      //   let visibleSection = this._visibleRows[sectionID];
-	      //   if (!visibleSection) {
-	      //     visibleSection = {};
-	      //   }
-	      //   for (let rowIdx = 0; rowIdx < rowIDs.length; rowIdx++) {
-	      //     let rowID = rowIDs[rowIdx];
-	      //     let frame = this._childFrames[totalIndex];
-	      //     totalIndex++;
-	      //     if (!frame) {
-	      //       break;
-	      //     }
-	      //     let rowVisible = visibleSection[rowID];
-	      //     let min = isVertical ? frame.y : frame.x;
-	      //     let max = min + (isVertical ? frame.height : frame.width);
-	      //     if (min > visibleMax || max < visibleMin) {
-	      //       if (rowVisible) {
-	      //         visibilityChanged = true;
-	      //         delete visibleSection[rowID];
-	      //         if (!changedRows[sectionID]) {
-	      //           changedRows[sectionID] = {};
-	      //         }
-	      //         changedRows[sectionID][rowID] = false;
-	      //       }
-	      //     } else if (!rowVisible) {
-	      //       visibilityChanged = true;
-	      //       visibleSection[rowID] = true;
-	      //       if (!changedRows[sectionID]) {
-	      //         changedRows[sectionID] = {};
-	      //       }
-	      //       changedRows[sectionID][rowID] = true;
-	      //     }
-	      //   }
-	      //   if (!isEmpty(visibleSection)) {
-	      //     this._visibleRows[sectionID] = visibleSection;
-	      //   } else if (this._visibleRows[sectionID]) {
-	      //     delete this._visibleRows[sectionID];
-	      //   }
-	      // }
-	      // visibilityChanged && this.props.onChangeVisibleRows(this._visibleRows, changedRows);
-	    }
-	  }, {
-	    key: '_onScroll',
-	    value: function _onScroll(e) {
-	      var isVertical = !this.props.horizontal;
-	      // this.scrollProperties.visibleLength = e.nativeEvent.layoutMeasurement[
-	      //   isVertical ? 'height' : 'width'
-	      // ];
-	      // this.scrollProperties.contentLength = e.nativeEvent.contentSize[
-	      //   isVertical ? 'height' : 'width'
-	      // ];
-	      // this.scrollProperties.offset = e.nativeEvent.contentOffset[
-	      //   isVertical ? 'y' : 'x'
-	      // ];
-	      var ev = e;
-	      var target = _reactDom2.default.findDOMNode(this.refs[SCROLLVIEW_REF]);
-	      if (this.props.stickyHeader || this.props.useBodyScroll) {
-	        this.scrollProperties.visibleLength = window[isVertical ? 'innerHeight' : 'innerWidth'];
-	        this.scrollProperties.contentLength = target[isVertical ? 'scrollHeight' : 'scrollWidth'];
-	        this.scrollProperties.offset = window.document.body[isVertical ? 'scrollTop' : 'scrollLeft'];
-	      } else if (this.props.useZscroller) {
-	        var domScroller = this.refs[SCROLLVIEW_REF].domScroller;
-	        ev = domScroller;
-	        this.scrollProperties.visibleLength = domScroller.container[isVertical ? 'clientHeight' : 'clientWidth'];
-	        this.scrollProperties.contentLength = domScroller.content[isVertical ? 'offsetHeight' : 'offsetWidth'];
-	        this.scrollProperties.offset = domScroller.scroller.getValues()[isVertical ? 'top' : 'left'];
-	        // console.log(this.scrollProperties, domScroller.scroller.getScrollMax())
-	      } else {
-	        this.scrollProperties.visibleLength = target[isVertical ? 'offsetHeight' : 'offsetWidth'];
-	        this.scrollProperties.contentLength = target[isVertical ? 'scrollHeight' : 'scrollWidth'];
-	        this.scrollProperties.offset = target[isVertical ? 'scrollTop' : 'scrollLeft'];
+	  };
+
+	  ListView.prototype.onRowHighlighted = function onRowHighlighted(sectionID, rowID) {
+	    this.setState({ highlightedRow: { sectionID: sectionID, rowID: rowID } });
+	  };
+
+	  ListView.prototype.render = function render() {
+	    var _this4 = this;
+
+	    var bodyComponents = [];
+
+	    var dataSource = this.props.dataSource;
+	    var allRowIDs = dataSource.rowIdentities;
+	    var rowCount = 0;
+	    var sectionHeaderIndices = [];
+
+	    var header = this.props.renderHeader && this.props.renderHeader();
+	    var footer = this.props.renderFooter && this.props.renderFooter();
+	    var totalIndex = header ? 1 : 0;
+
+	    var _loop = function _loop(sectionIdx) {
+	      var sectionID = dataSource.sectionIdentities[sectionIdx];
+	      var rowIDs = allRowIDs[sectionIdx];
+	      if (rowIDs.length === 0) {
+	        return 'continue';
 	      }
 
-	      // this._updateVisibleRows(e.nativeEvent.updatedChildFrames);
-	      if (!this._maybeCallOnEndReached(ev)) {
-	        this._renderMoreRowsIfNeeded();
+	      if (_this4.props.renderSectionHeader) {
+	        var shouldUpdateHeader = rowCount >= _this4._prevRenderedRowsCount && dataSource.sectionHeaderShouldUpdate(sectionIdx);
+
+	        var renderSectionHeader = _react2["default"].createElement(_StaticRenderer2["default"], {
+	          key: 's_' + sectionID,
+	          shouldUpdate: !!shouldUpdateHeader,
+	          render: _this4.props.renderSectionHeader.bind(null, dataSource.getSectionHeaderData(sectionIdx), sectionID)
+	        });
+	        if (_this4.props.stickyHeader) {
+	          renderSectionHeader = _react2["default"].createElement(
+	            _reactSticky.Sticky,
+	            (0, _extends3["default"])({}, _this4.props.stickyProps, { key: 's_' + sectionID,
+	              ref: function ref(c) {
+	                _this4.stickyRefs[sectionID] = c;
+	              }
+	            }),
+	            renderSectionHeader
+	          );
+	        }
+	        bodyComponents.push(renderSectionHeader);
+	        sectionHeaderIndices.push(totalIndex++);
 	      }
 
-	      if (this.props.onEndReached && this._getDistanceFromEnd(this.scrollProperties) > this.props.onEndReachedThreshold) {
-	        // Scrolled out of the end zone, so it should be able to trigger again.
-	        this._sentEndForContentLength = null;
-	      }
+	      var sectionBody = [];
+	      for (var rowIdx = 0; rowIdx < rowIDs.length; rowIdx++) {
+	        var rowID = rowIDs[rowIdx];
+	        var comboID = sectionID + '_' + rowID;
+	        var shouldUpdateRow = rowCount >= _this4._prevRenderedRowsCount && dataSource.rowShouldUpdate(sectionIdx, rowIdx);
+	        var row = _react2["default"].createElement(_StaticRenderer2["default"], {
+	          key: 'r_' + comboID,
+	          shouldUpdate: !!shouldUpdateRow,
+	          render: _this4.props.renderRow.bind(null, dataSource.getRowData(sectionIdx, rowIdx), sectionID, rowID, _this4.onRowHighlighted)
+	        });
+	        // bodyComponents.push(row);
+	        sectionBody.push(row);
+	        totalIndex++;
 
-	      this.props.onScroll && this.props.onScroll(ev);
+	        if (_this4.props.renderSeparator && (rowIdx !== rowIDs.length - 1 || sectionIdx === allRowIDs.length - 1)) {
+	          var adjacentRowHighlighted = _this4.state.highlightedRow.sectionID === sectionID && (_this4.state.highlightedRow.rowID === rowID || _this4.state.highlightedRow.rowID === rowIDs[rowIdx + 1]);
+	          var separator = _this4.props.renderSeparator(sectionID, rowID, adjacentRowHighlighted);
+	          if (separator) {
+	            // bodyComponents.push(separator);
+	            sectionBody.push(separator);
+	            totalIndex++;
+	          }
+	        }
+	        if (++rowCount === _this4.state.curRenderedRowsCount) {
+	          break;
+	        }
+	      }
+	      bodyComponents.push(_react2["default"].cloneElement(_this4.props.renderSectionBodyWrapper(sectionID), {}, sectionBody));
+	      if (rowCount >= _this4.state.curRenderedRowsCount) {
+	        return 'break';
+	      }
+	    };
+
+	    _loop2: for (var sectionIdx = 0; sectionIdx < allRowIDs.length; sectionIdx++) {
+	      var _ret2 = _loop(sectionIdx);
+
+	      switch (_ret2) {
+	        case 'continue':
+	          continue;
+
+	        case 'break':
+	          break _loop2;}
 	    }
-	  }]);
+
+	    var _props = this.props;
+	    var renderScrollComponent = _props.renderScrollComponent;
+	    var props = (0, _objectWithoutProperties3["default"])(_props, ['renderScrollComponent']);
+
+
+	    bodyComponents = _react2["default"].cloneElement(props.renderBodyComponent(), {}, bodyComponents);
+	    if (props.stickyHeader) {
+	      bodyComponents = _react2["default"].createElement(
+	        _reactSticky.StickyContainer,
+	        props.stickyContainerProps,
+	        bodyComponents
+	      );
+	    }
+
+	    // if (!props.scrollEventThrottle) {
+	    //   props.scrollEventThrottle = DEFAULT_SCROLL_CALLBACK_THROTTLE;
+	    // }
+	    if (props.removeClippedSubviews === undefined) {
+	      props.removeClippedSubviews = true;
+	    }
+	    (0, _objectAssign2["default"])(props, {
+	      onScroll: this._onScroll,
+	      stickyHeaderIndices: this.props.stickyHeaderIndices.concat(sectionHeaderIndices),
+
+	      // Do not pass these events downstream to ScrollView since they will be
+	      // registered in ListView's own ScrollResponder.Mixin
+	      onKeyboardWillShow: undefined,
+	      onKeyboardWillHide: undefined,
+	      onKeyboardDidShow: undefined,
+	      onKeyboardDidHide: undefined
+	    });
+
+	    // TODO(ide): Use function refs so we can compose with the scroll
+	    // component's original ref instead of clobbering it
+	    if (props.stickyHeader || props.useBodyScroll) {
+	      delete props.onScroll;
+	    }
+	    this._sc = _react2["default"].cloneElement(renderScrollComponent(props), {
+	      ref: SCROLLVIEW_REF,
+	      onContentSizeChange: this._onContentSizeChange,
+	      onLayout: props.stickyHeader || props.useBodyScroll ? function (event) {
+	        _this4.props.onLayout && _this4.props.onLayout(event);
+	      } : this._onLayout
+	    }, header, bodyComponents, footer, props.children);
+	    // if (props.stickyHeader) {
+	    //   return null;
+	    // }
+	    return this._sc;
+	  };
+
+	  /**
+	   * Private methods
+	   */
+
+	  ListView.prototype._measureAndUpdateScrollProps = function _measureAndUpdateScrollProps() {
+	    var scrollComponent = this.getScrollResponder();
+	    if (!scrollComponent || !scrollComponent.getInnerViewNode) {
+	      return;
+	    }
+
+	    // RCTScrollViewManager.calculateChildFrames is not available on
+	    // every platform
+	    // RCTScrollViewManager && RCTScrollViewManager.calculateChildFrames &&
+	    //   RCTScrollViewManager.calculateChildFrames(
+	    //     React.findNodeHandle(scrollComponent),
+	    //     this._updateVisibleRows,
+	    //   );
+	  };
+
+	  ListView.prototype._onContentSizeChange = function _onContentSizeChange(width, height) {
+	    var contentLength = !this.props.horizontal ? height : width;
+	    if (contentLength !== this.scrollProperties.contentLength) {
+	      this.scrollProperties.contentLength = contentLength;
+	      this._updateVisibleRows();
+	      this._renderMoreRowsIfNeeded();
+	    }
+	    this.props.onContentSizeChange && this.props.onContentSizeChange(width, height);
+	  };
+
+	  ListView.prototype._onLayout = function _onLayout(event) {
+	    var _event$nativeEvent$la = event.nativeEvent.layout;
+	    var width = _event$nativeEvent$la.width;
+	    var height = _event$nativeEvent$la.height;
+
+	    var visibleLength = !this.props.horizontal ? height : width;
+	    if (visibleLength !== this.scrollProperties.visibleLength) {
+	      this.scrollProperties.visibleLength = visibleLength;
+	      this._updateVisibleRows();
+	      this._renderMoreRowsIfNeeded();
+	    }
+	    this.props.onLayout && this.props.onLayout(event);
+	  };
+
+	  ListView.prototype._maybeCallOnEndReached = function _maybeCallOnEndReached(event) {
+	    // console.log(this.scrollProperties, this._getDistanceFromEnd(this.scrollProperties));
+	    if (this.props.onEndReached &&
+	    // this.scrollProperties.contentLength !== this._sentEndForContentLength &&
+	    this._getDistanceFromEnd(this.scrollProperties) < this.props.onEndReachedThreshold && this.state.curRenderedRowsCount === this.props.dataSource.getRowCount()) {
+	      this._sentEndForContentLength = this.scrollProperties.contentLength;
+	      this.props.onEndReached(event);
+	      return true;
+	    }
+	    return false;
+	  };
+
+	  ListView.prototype._renderMoreRowsIfNeeded = function _renderMoreRowsIfNeeded() {
+	    if (this.scrollProperties.contentLength === null || this.scrollProperties.visibleLength === null || this.state.curRenderedRowsCount === this.props.dataSource.getRowCount()) {
+	      this._maybeCallOnEndReached();
+	      return;
+	    }
+
+	    var distanceFromEnd = this._getDistanceFromEnd(this.scrollProperties);
+	    // console.log(distanceFromEnd, this.props.scrollRenderAheadDistance);
+	    if (distanceFromEnd < this.props.scrollRenderAheadDistance) {
+	      this._pageInNewRows();
+	    }
+	  };
+
+	  ListView.prototype._pageInNewRows = function _pageInNewRows() {
+	    var _this5 = this;
+
+	    this.setState(function (state, props) {
+	      var rowsToRender = Math.min(state.curRenderedRowsCount + props.pageSize, props.dataSource.getRowCount());
+	      _this5._prevRenderedRowsCount = state.curRenderedRowsCount;
+	      return {
+	        curRenderedRowsCount: rowsToRender
+	      };
+	    }, function () {
+	      _this5._measureAndUpdateScrollProps();
+	      _this5._prevRenderedRowsCount = _this5.state.curRenderedRowsCount;
+	    });
+	  };
+
+	  ListView.prototype._getDistanceFromEnd = function _getDistanceFromEnd(scrollProperties) {
+	    return scrollProperties.contentLength - scrollProperties.visibleLength - scrollProperties.offset;
+	  };
+
+	  ListView.prototype._updateVisibleRows = function _updateVisibleRows(updatedFrames) {
+	    // if (!this.props.onChangeVisibleRows) {
+	    //   return; // No need to compute visible rows if there is no callback
+	    // }
+	    // if (updatedFrames) {
+	    //   updatedFrames.forEach((newFrame) => {
+	    //     this._childFrames[newFrame.index] = merge(newFrame);
+	    //   });
+	    // }
+	    // let isVertical = !this.props.horizontal;
+	    // let dataSource = this.props.dataSource;
+	    // let visibleMin = this.scrollProperties.offset;
+	    // let visibleMax = visibleMin + this.scrollProperties.visibleLength;
+	    // let allRowIDs = dataSource.rowIdentities;
+	    //
+	    // let header = this.props.renderHeader && this.props.renderHeader();
+	    // let totalIndex = header ? 1 : 0;
+	    // let visibilityChanged = false;
+	    // let changedRows = {};
+	    // for (let sectionIdx = 0; sectionIdx < allRowIDs.length; sectionIdx++) {
+	    //   let rowIDs = allRowIDs[sectionIdx];
+	    //   if (rowIDs.length === 0) {
+	    //     continue;
+	    //   }
+	    //   let sectionID = dataSource.sectionIdentities[sectionIdx];
+	    //   if (this.props.renderSectionHeader) {
+	    //     totalIndex++;
+	    //   }
+	    //   let visibleSection = this._visibleRows[sectionID];
+	    //   if (!visibleSection) {
+	    //     visibleSection = {};
+	    //   }
+	    //   for (let rowIdx = 0; rowIdx < rowIDs.length; rowIdx++) {
+	    //     let rowID = rowIDs[rowIdx];
+	    //     let frame = this._childFrames[totalIndex];
+	    //     totalIndex++;
+	    //     if (!frame) {
+	    //       break;
+	    //     }
+	    //     let rowVisible = visibleSection[rowID];
+	    //     let min = isVertical ? frame.y : frame.x;
+	    //     let max = min + (isVertical ? frame.height : frame.width);
+	    //     if (min > visibleMax || max < visibleMin) {
+	    //       if (rowVisible) {
+	    //         visibilityChanged = true;
+	    //         delete visibleSection[rowID];
+	    //         if (!changedRows[sectionID]) {
+	    //           changedRows[sectionID] = {};
+	    //         }
+	    //         changedRows[sectionID][rowID] = false;
+	    //       }
+	    //     } else if (!rowVisible) {
+	    //       visibilityChanged = true;
+	    //       visibleSection[rowID] = true;
+	    //       if (!changedRows[sectionID]) {
+	    //         changedRows[sectionID] = {};
+	    //       }
+	    //       changedRows[sectionID][rowID] = true;
+	    //     }
+	    //   }
+	    //   if (!isEmpty(visibleSection)) {
+	    //     this._visibleRows[sectionID] = visibleSection;
+	    //   } else if (this._visibleRows[sectionID]) {
+	    //     delete this._visibleRows[sectionID];
+	    //   }
+	    // }
+	    // visibilityChanged && this.props.onChangeVisibleRows(this._visibleRows, changedRows);
+	  };
+
+	  ListView.prototype._onScroll = function _onScroll(e) {
+	    var isVertical = !this.props.horizontal;
+	    // this.scrollProperties.visibleLength = e.nativeEvent.layoutMeasurement[
+	    //   isVertical ? 'height' : 'width'
+	    // ];
+	    // this.scrollProperties.contentLength = e.nativeEvent.contentSize[
+	    //   isVertical ? 'height' : 'width'
+	    // ];
+	    // this.scrollProperties.offset = e.nativeEvent.contentOffset[
+	    //   isVertical ? 'y' : 'x'
+	    // ];
+
+	    var target = _reactDom2["default"].findDOMNode(this.refs[SCROLLVIEW_REF]);
+	    if (this.props.stickyHeader || this.props.useBodyScroll) {
+	      this.scrollProperties.visibleLength = window[isVertical ? 'innerHeight' : 'innerWidth'];
+	      this.scrollProperties.contentLength = target[isVertical ? 'scrollHeight' : 'scrollWidth'];
+	      this.scrollProperties.offset = window.document.body[isVertical ? 'scrollTop' : 'scrollLeft'];
+	    } else {
+	      this.scrollProperties.visibleLength = target[isVertical ? 'offsetHeight' : 'offsetWidth'];
+	      this.scrollProperties.contentLength = target[isVertical ? 'scrollHeight' : 'scrollWidth'];
+	      this.scrollProperties.offset = target[isVertical ? 'scrollTop' : 'scrollLeft'];
+	    }
+
+	    // this._updateVisibleRows(e.nativeEvent.updatedChildFrames);
+	    if (!this._maybeCallOnEndReached(e)) {
+	      // console.log('enter')
+	      this._renderMoreRowsIfNeeded();
+	    }
+
+	    if (this.props.onEndReached && this._getDistanceFromEnd(this.scrollProperties) > this.props.onEndReachedThreshold) {
+	      // Scrolled out of the end zone, so it should be able to trigger again.
+	      this._sentEndForContentLength = null;
+	    }
+
+	    this.props.onScroll && this.props.onScroll(e);
+	  };
 
 	  return ListView;
-	}(_react2.default.Component);
+	}(_react2["default"].Component);
 
-	ListView.DataSource = _ListViewDataSource2.default;
-	ListView.propTypes = _extends({}, _ScrollView2.default.propTypes, {
-	  dataSource: _react.PropTypes.instanceOf(_ListViewDataSource2.default).isRequired,
+	ListView.DataSource = _ListViewDataSource2["default"];
+	ListView.propTypes = (0, _extends3["default"])({}, _ScrollView2["default"].propTypes, {
+
+	  dataSource: _react.PropTypes.instanceOf(_ListViewDataSource2["default"]).isRequired,
+	  /**
+	   * (sectionID, rowID, adjacentRowHighlighted) => renderable
+	   *
+	   * If provided, a renderable component to be rendered as the separator
+	   * below each row but not the last row if there is a section header below.
+	   * Take a sectionID and rowID of the row above and whether its adjacent row
+	   * is highlighted.
+	   */
 	  renderSeparator: _react.PropTypes.func,
+	  /**
+	   * (rowData, sectionID, rowID, highlightRow) => renderable
+	   *
+	   * Takes a data entry from the data source and its ids and should return
+	   * a renderable component to be rendered as the row.  By default the data
+	   * is exactly what was put into the data source, but it's also possible to
+	   * provide custom extractors. ListView can be notified when a row is
+	   * being highlighted by calling highlightRow function. The separators above and
+	   * below will be hidden when a row is highlighted. The highlighted state of
+	   * a row can be reset by calling highlightRow(null).
+	   */
 	  renderRow: _react.PropTypes.func.isRequired,
+	  /**
+	   * How many rows to render on initial component mount.  Use this to make
+	   * it so that the first screen worth of data appears at one time instead of
+	   * over the course of multiple frames.
+	   */
 	  initialListSize: _react.PropTypes.number,
+	  /**
+	   * Called when all rows have been rendered and the list has been scrolled
+	   * to within onEndReachedThreshold of the bottom.  The native scroll
+	   * event is provided.
+	   */
 	  onEndReached: _react.PropTypes.func,
+	  /**
+	   * Threshold in pixels (virtual, not physical) for calling onEndReached.
+	   */
 	  onEndReachedThreshold: _react.PropTypes.number,
+	  /**
+	   * Number of rows to render per event loop. Note: if your 'rows' are actually
+	   * cells, i.e. they don't span the full width of your view (as in the
+	   * ListViewGridLayoutExample), you should set the pageSize to be a multiple
+	   * of the number of cells per row, otherwise you're likely to see gaps at
+	   * the edge of the ListView as new pages are loaded.
+	   */
 	  pageSize: _react.PropTypes.number,
+	  /**
+	   * () => renderable
+	   *
+	   * The header and footer are always rendered (if these props are provided)
+	   * on every render pass.  If they are expensive to re-render, wrap them
+	   * in StaticContainer or other mechanism as appropriate.  Footer is always
+	   * at the bottom of the list, and header at the top, on every render pass.
+	   */
 	  renderFooter: _react.PropTypes.func,
 	  renderHeader: _react.PropTypes.func,
+	  renderBodyComponent: _react.PropTypes.func, // add
+	  /**
+	   * (sectionData, sectionID) => renderable
+	   *
+	   * If provided, a sticky header is rendered for this section.  The sticky
+	   * behavior means that it will scroll with the content at the top of the
+	   * section until it reaches the top of the screen, at which point it will
+	   * stick to the top until it is pushed off the screen by the next section
+	   * header.
+	   */
 	  renderSectionHeader: _react.PropTypes.func,
-	  renderScrollComponent: _react2.default.PropTypes.func.isRequired,
-	  scrollRenderAheadDistance: _react2.default.PropTypes.number,
-	  onChangeVisibleRows: _react2.default.PropTypes.func,
-	  scrollEventThrottle: _react2.default.PropTypes.number,
-	  // removeClippedSubviews: React.PropTypes.bool,
-	  // stickyHeaderIndices: PropTypes.arrayOf(PropTypes.number),
-	  // another added
-	  renderBodyComponent: _react.PropTypes.func,
 	  renderSectionBodyWrapper: _react.PropTypes.func,
-	  sectionBodyClassName: _react.PropTypes.string,
-	  useZscroller: _react.PropTypes.bool, // for web
+	  /**
+	   * (props) => renderable
+	   *
+	   * A function that returns the scrollable component in which the list rows
+	   * are rendered. Defaults to returning a ScrollView with the given props.
+	   */
+	  renderScrollComponent: _react2["default"].PropTypes.func.isRequired,
+	  /**
+	   * How early to start rendering rows before they come on screen, in
+	   * pixels.
+	   */
+	  scrollRenderAheadDistance: _react2["default"].PropTypes.number,
+	  scrollEventThrottle: _react2["default"].PropTypes.number,
+	  /**
+	   * (visibleRows, changedRows) => void
+	   *
+	   * Called when the set of visible rows changes.  `visibleRows` maps
+	   * { sectionID: { rowID: true }} for all the visible rows, and
+	   * `changedRows` maps { sectionID: { rowID: true | false }} for the rows
+	   * that have changed their visibility, with true indicating visible, and
+	   * false indicating the view has moved out of view.
+	   */
+	  onChangeVisibleRows: _react2["default"].PropTypes.func,
+	  /**
+	   * A performance optimization for improving scroll perf of
+	   * large lists, used in conjunction with overflow: 'hidden' on the row
+	   * containers.  This is enabled by default.
+	   */
+	  removeClippedSubviews: _react2["default"].PropTypes.bool,
+	  /**
+	   * An array of child indices determining which children get docked to the
+	   * top of the screen when scrolling. For example, passing
+	   * `stickyHeaderIndices={[0]}` will cause the first child to be fixed to the
+	   * top of the scroll view. This property is not supported in conjunction
+	   * with `horizontal={true}`.
+	   * @platform ios
+	   */
+	  stickyHeaderIndices: _react.PropTypes.arrayOf(_react.PropTypes.number),
 	  useBodyScroll: _react.PropTypes.bool, // for web
 	  stickyHeader: _react.PropTypes.bool, // for web
 	  stickyProps: _react.PropTypes.object, // https://github.com/captivationsoftware/react-sticky/blob/master/README.md#sticky--props
@@ -21201,56 +21250,1595 @@
 	  initialListSize: DEFAULT_INITIAL_ROWS,
 	  pageSize: DEFAULT_PAGE_SIZE,
 	  renderScrollComponent: function renderScrollComponent(props) {
-	    return _react2.default.createElement(_ScrollView2.default, props);
+	    return _react2["default"].createElement(_ScrollView2["default"], props);
 	  },
 	  renderBodyComponent: function renderBodyComponent() {
-	    return _react2.default.createElement('div', null);
+	    return _react2["default"].createElement('div', null);
 	  },
 	  renderSectionBodyWrapper: function renderSectionBodyWrapper(sectionID) {
-	    return _react2.default.createElement('div', { key: sectionID });
+	    return _react2["default"].createElement('div', { key: sectionID, className: 'list-view-section-body' });
 	  },
-	  sectionBodyClassName: 'list-view-section-body',
 	  scrollRenderAheadDistance: DEFAULT_SCROLL_RENDER_AHEAD,
 	  onEndReachedThreshold: DEFAULT_END_REACHED_THRESHOLD,
 	  scrollEventThrottle: DEFAULT_SCROLL_CALLBACK_THROTTLE,
-	  // stickyHeaderIndices: [],
+	  stickyHeaderIndices: [],
 	  stickyProps: {},
 	  stickyContainerProps: {}
 	};
 
 
-	(0, _reactMixin2.default)(ListView.prototype, _ScrollResponder2.default.Mixin);
-	(0, _reactMixin2.default)(ListView.prototype, _reactTimerMixin2.default);
-	(0, _reactMixin2.default)(ListView.prototype, _PullUpLoadMoreMixin2.default);
-	(0, _autobindDecorator2.default)(ListView);
+	(0, _reactMixin2["default"])(ListView.prototype, _ScrollResponder2["default"].Mixin);
+	(0, _reactMixin2["default"])(ListView.prototype, _reactTimerMixin2["default"]);
+	(0, _autobindDecorator2["default"])(ListView);
 
 	ListView.isReactNativeComponent = true;
 
-	exports.default = ListView;
+	exports["default"] = ListView;
+	module.exports = exports['default'];
 
 /***/ },
 /* 164 */
 /***/ function(module, exports, __webpack_require__) {
 
-	'use strict';
+	"use strict";
 
-	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+	exports.__esModule = true;
 
-	var _invariant = __webpack_require__(16);
+	var _assign = __webpack_require__(165);
 
-	var _invariant2 = _interopRequireDefault(_invariant);
-
-	var _isEmpty = __webpack_require__(165);
-
-	var _isEmpty2 = _interopRequireDefault(_isEmpty);
-
-	var _warning = __webpack_require__(28);
-
-	var _warning2 = _interopRequireDefault(_warning);
+	var _assign2 = _interopRequireDefault(_assign);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+	exports.default = _assign2.default || function (target) {
+	  for (var i = 1; i < arguments.length; i++) {
+	    var source = arguments[i];
+
+	    for (var key in source) {
+	      if (Object.prototype.hasOwnProperty.call(source, key)) {
+	        target[key] = source[key];
+	      }
+	    }
+	  }
+
+	  return target;
+	};
+
+/***/ },
+/* 165 */
+/***/ function(module, exports, __webpack_require__) {
+
+	module.exports = { "default": __webpack_require__(166), __esModule: true };
+
+/***/ },
+/* 166 */
+/***/ function(module, exports, __webpack_require__) {
+
+	__webpack_require__(167);
+	module.exports = __webpack_require__(170).Object.assign;
+
+/***/ },
+/* 167 */
+/***/ function(module, exports, __webpack_require__) {
+
+	// 19.1.3.1 Object.assign(target, source)
+	var $export = __webpack_require__(168);
+
+	$export($export.S + $export.F, 'Object', {assign: __webpack_require__(183)});
+
+/***/ },
+/* 168 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var global    = __webpack_require__(169)
+	  , core      = __webpack_require__(170)
+	  , ctx       = __webpack_require__(171)
+	  , hide      = __webpack_require__(173)
+	  , PROTOTYPE = 'prototype';
+
+	var $export = function(type, name, source){
+	  var IS_FORCED = type & $export.F
+	    , IS_GLOBAL = type & $export.G
+	    , IS_STATIC = type & $export.S
+	    , IS_PROTO  = type & $export.P
+	    , IS_BIND   = type & $export.B
+	    , IS_WRAP   = type & $export.W
+	    , exports   = IS_GLOBAL ? core : core[name] || (core[name] = {})
+	    , expProto  = exports[PROTOTYPE]
+	    , target    = IS_GLOBAL ? global : IS_STATIC ? global[name] : (global[name] || {})[PROTOTYPE]
+	    , key, own, out;
+	  if(IS_GLOBAL)source = name;
+	  for(key in source){
+	    // contains in native
+	    own = !IS_FORCED && target && target[key] !== undefined;
+	    if(own && key in exports)continue;
+	    // export native or passed
+	    out = own ? target[key] : source[key];
+	    // prevent global pollution for namespaces
+	    exports[key] = IS_GLOBAL && typeof target[key] != 'function' ? source[key]
+	    // bind timers to global for call from export context
+	    : IS_BIND && own ? ctx(out, global)
+	    // wrap global constructors for prevent change them in library
+	    : IS_WRAP && target[key] == out ? (function(C){
+	      var F = function(a, b, c){
+	        if(this instanceof C){
+	          switch(arguments.length){
+	            case 0: return new C;
+	            case 1: return new C(a);
+	            case 2: return new C(a, b);
+	          } return new C(a, b, c);
+	        } return C.apply(this, arguments);
+	      };
+	      F[PROTOTYPE] = C[PROTOTYPE];
+	      return F;
+	    // make static versions for prototype methods
+	    })(out) : IS_PROTO && typeof out == 'function' ? ctx(Function.call, out) : out;
+	    // export proto methods to core.%CONSTRUCTOR%.methods.%NAME%
+	    if(IS_PROTO){
+	      (exports.virtual || (exports.virtual = {}))[key] = out;
+	      // export proto methods to core.%CONSTRUCTOR%.prototype.%NAME%
+	      if(type & $export.R && expProto && !expProto[key])hide(expProto, key, out);
+	    }
+	  }
+	};
+	// type bitmap
+	$export.F = 1;   // forced
+	$export.G = 2;   // global
+	$export.S = 4;   // static
+	$export.P = 8;   // proto
+	$export.B = 16;  // bind
+	$export.W = 32;  // wrap
+	$export.U = 64;  // safe
+	$export.R = 128; // real proto method for `library` 
+	module.exports = $export;
+
+/***/ },
+/* 169 */
+/***/ function(module, exports) {
+
+	// https://github.com/zloirock/core-js/issues/86#issuecomment-115759028
+	var global = module.exports = typeof window != 'undefined' && window.Math == Math
+	  ? window : typeof self != 'undefined' && self.Math == Math ? self : Function('return this')();
+	if(typeof __g == 'number')__g = global; // eslint-disable-line no-undef
+
+/***/ },
+/* 170 */
+/***/ function(module, exports) {
+
+	var core = module.exports = {version: '2.4.0'};
+	if(typeof __e == 'number')__e = core; // eslint-disable-line no-undef
+
+/***/ },
+/* 171 */
+/***/ function(module, exports, __webpack_require__) {
+
+	// optional / simple context binding
+	var aFunction = __webpack_require__(172);
+	module.exports = function(fn, that, length){
+	  aFunction(fn);
+	  if(that === undefined)return fn;
+	  switch(length){
+	    case 1: return function(a){
+	      return fn.call(that, a);
+	    };
+	    case 2: return function(a, b){
+	      return fn.call(that, a, b);
+	    };
+	    case 3: return function(a, b, c){
+	      return fn.call(that, a, b, c);
+	    };
+	  }
+	  return function(/* ...args */){
+	    return fn.apply(that, arguments);
+	  };
+	};
+
+/***/ },
+/* 172 */
+/***/ function(module, exports) {
+
+	module.exports = function(it){
+	  if(typeof it != 'function')throw TypeError(it + ' is not a function!');
+	  return it;
+	};
+
+/***/ },
+/* 173 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var dP         = __webpack_require__(174)
+	  , createDesc = __webpack_require__(182);
+	module.exports = __webpack_require__(178) ? function(object, key, value){
+	  return dP.f(object, key, createDesc(1, value));
+	} : function(object, key, value){
+	  object[key] = value;
+	  return object;
+	};
+
+/***/ },
+/* 174 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var anObject       = __webpack_require__(175)
+	  , IE8_DOM_DEFINE = __webpack_require__(177)
+	  , toPrimitive    = __webpack_require__(181)
+	  , dP             = Object.defineProperty;
+
+	exports.f = __webpack_require__(178) ? Object.defineProperty : function defineProperty(O, P, Attributes){
+	  anObject(O);
+	  P = toPrimitive(P, true);
+	  anObject(Attributes);
+	  if(IE8_DOM_DEFINE)try {
+	    return dP(O, P, Attributes);
+	  } catch(e){ /* empty */ }
+	  if('get' in Attributes || 'set' in Attributes)throw TypeError('Accessors not supported!');
+	  if('value' in Attributes)O[P] = Attributes.value;
+	  return O;
+	};
+
+/***/ },
+/* 175 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var isObject = __webpack_require__(176);
+	module.exports = function(it){
+	  if(!isObject(it))throw TypeError(it + ' is not an object!');
+	  return it;
+	};
+
+/***/ },
+/* 176 */
+/***/ function(module, exports) {
+
+	module.exports = function(it){
+	  return typeof it === 'object' ? it !== null : typeof it === 'function';
+	};
+
+/***/ },
+/* 177 */
+/***/ function(module, exports, __webpack_require__) {
+
+	module.exports = !__webpack_require__(178) && !__webpack_require__(179)(function(){
+	  return Object.defineProperty(__webpack_require__(180)('div'), 'a', {get: function(){ return 7; }}).a != 7;
+	});
+
+/***/ },
+/* 178 */
+/***/ function(module, exports, __webpack_require__) {
+
+	// Thank's IE8 for his funny defineProperty
+	module.exports = !__webpack_require__(179)(function(){
+	  return Object.defineProperty({}, 'a', {get: function(){ return 7; }}).a != 7;
+	});
+
+/***/ },
+/* 179 */
+/***/ function(module, exports) {
+
+	module.exports = function(exec){
+	  try {
+	    return !!exec();
+	  } catch(e){
+	    return true;
+	  }
+	};
+
+/***/ },
+/* 180 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var isObject = __webpack_require__(176)
+	  , document = __webpack_require__(169).document
+	  // in old IE typeof document.createElement is 'object'
+	  , is = isObject(document) && isObject(document.createElement);
+	module.exports = function(it){
+	  return is ? document.createElement(it) : {};
+	};
+
+/***/ },
+/* 181 */
+/***/ function(module, exports, __webpack_require__) {
+
+	// 7.1.1 ToPrimitive(input [, PreferredType])
+	var isObject = __webpack_require__(176);
+	// instead of the ES6 spec version, we didn't implement @@toPrimitive case
+	// and the second argument - flag - preferred type is a string
+	module.exports = function(it, S){
+	  if(!isObject(it))return it;
+	  var fn, val;
+	  if(S && typeof (fn = it.toString) == 'function' && !isObject(val = fn.call(it)))return val;
+	  if(typeof (fn = it.valueOf) == 'function' && !isObject(val = fn.call(it)))return val;
+	  if(!S && typeof (fn = it.toString) == 'function' && !isObject(val = fn.call(it)))return val;
+	  throw TypeError("Can't convert object to primitive value");
+	};
+
+/***/ },
+/* 182 */
+/***/ function(module, exports) {
+
+	module.exports = function(bitmap, value){
+	  return {
+	    enumerable  : !(bitmap & 1),
+	    configurable: !(bitmap & 2),
+	    writable    : !(bitmap & 4),
+	    value       : value
+	  };
+	};
+
+/***/ },
+/* 183 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	// 19.1.2.1 Object.assign(target, source, ...)
+	var getKeys  = __webpack_require__(184)
+	  , gOPS     = __webpack_require__(199)
+	  , pIE      = __webpack_require__(200)
+	  , toObject = __webpack_require__(201)
+	  , IObject  = __webpack_require__(188)
+	  , $assign  = Object.assign;
+
+	// should work with symbols and should have deterministic property order (V8 bug)
+	module.exports = !$assign || __webpack_require__(179)(function(){
+	  var A = {}
+	    , B = {}
+	    , S = Symbol()
+	    , K = 'abcdefghijklmnopqrst';
+	  A[S] = 7;
+	  K.split('').forEach(function(k){ B[k] = k; });
+	  return $assign({}, A)[S] != 7 || Object.keys($assign({}, B)).join('') != K;
+	}) ? function assign(target, source){ // eslint-disable-line no-unused-vars
+	  var T     = toObject(target)
+	    , aLen  = arguments.length
+	    , index = 1
+	    , getSymbols = gOPS.f
+	    , isEnum     = pIE.f;
+	  while(aLen > index){
+	    var S      = IObject(arguments[index++])
+	      , keys   = getSymbols ? getKeys(S).concat(getSymbols(S)) : getKeys(S)
+	      , length = keys.length
+	      , j      = 0
+	      , key;
+	    while(length > j)if(isEnum.call(S, key = keys[j++]))T[key] = S[key];
+	  } return T;
+	} : $assign;
+
+/***/ },
+/* 184 */
+/***/ function(module, exports, __webpack_require__) {
+
+	// 19.1.2.14 / 15.2.3.14 Object.keys(O)
+	var $keys       = __webpack_require__(185)
+	  , enumBugKeys = __webpack_require__(198);
+
+	module.exports = Object.keys || function keys(O){
+	  return $keys(O, enumBugKeys);
+	};
+
+/***/ },
+/* 185 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var has          = __webpack_require__(186)
+	  , toIObject    = __webpack_require__(187)
+	  , arrayIndexOf = __webpack_require__(191)(false)
+	  , IE_PROTO     = __webpack_require__(195)('IE_PROTO');
+
+	module.exports = function(object, names){
+	  var O      = toIObject(object)
+	    , i      = 0
+	    , result = []
+	    , key;
+	  for(key in O)if(key != IE_PROTO)has(O, key) && result.push(key);
+	  // Don't enum bug & hidden keys
+	  while(names.length > i)if(has(O, key = names[i++])){
+	    ~arrayIndexOf(result, key) || result.push(key);
+	  }
+	  return result;
+	};
+
+/***/ },
+/* 186 */
+/***/ function(module, exports) {
+
+	var hasOwnProperty = {}.hasOwnProperty;
+	module.exports = function(it, key){
+	  return hasOwnProperty.call(it, key);
+	};
+
+/***/ },
+/* 187 */
+/***/ function(module, exports, __webpack_require__) {
+
+	// to indexed object, toObject with fallback for non-array-like ES3 strings
+	var IObject = __webpack_require__(188)
+	  , defined = __webpack_require__(190);
+	module.exports = function(it){
+	  return IObject(defined(it));
+	};
+
+/***/ },
+/* 188 */
+/***/ function(module, exports, __webpack_require__) {
+
+	// fallback for non-array-like ES3 and non-enumerable old V8 strings
+	var cof = __webpack_require__(189);
+	module.exports = Object('z').propertyIsEnumerable(0) ? Object : function(it){
+	  return cof(it) == 'String' ? it.split('') : Object(it);
+	};
+
+/***/ },
+/* 189 */
+/***/ function(module, exports) {
+
+	var toString = {}.toString;
+
+	module.exports = function(it){
+	  return toString.call(it).slice(8, -1);
+	};
+
+/***/ },
+/* 190 */
+/***/ function(module, exports) {
+
+	// 7.2.1 RequireObjectCoercible(argument)
+	module.exports = function(it){
+	  if(it == undefined)throw TypeError("Can't call method on  " + it);
+	  return it;
+	};
+
+/***/ },
+/* 191 */
+/***/ function(module, exports, __webpack_require__) {
+
+	// false -> Array#indexOf
+	// true  -> Array#includes
+	var toIObject = __webpack_require__(187)
+	  , toLength  = __webpack_require__(192)
+	  , toIndex   = __webpack_require__(194);
+	module.exports = function(IS_INCLUDES){
+	  return function($this, el, fromIndex){
+	    var O      = toIObject($this)
+	      , length = toLength(O.length)
+	      , index  = toIndex(fromIndex, length)
+	      , value;
+	    // Array#includes uses SameValueZero equality algorithm
+	    if(IS_INCLUDES && el != el)while(length > index){
+	      value = O[index++];
+	      if(value != value)return true;
+	    // Array#toIndex ignores holes, Array#includes - not
+	    } else for(;length > index; index++)if(IS_INCLUDES || index in O){
+	      if(O[index] === el)return IS_INCLUDES || index || 0;
+	    } return !IS_INCLUDES && -1;
+	  };
+	};
+
+/***/ },
+/* 192 */
+/***/ function(module, exports, __webpack_require__) {
+
+	// 7.1.15 ToLength
+	var toInteger = __webpack_require__(193)
+	  , min       = Math.min;
+	module.exports = function(it){
+	  return it > 0 ? min(toInteger(it), 0x1fffffffffffff) : 0; // pow(2, 53) - 1 == 9007199254740991
+	};
+
+/***/ },
+/* 193 */
+/***/ function(module, exports) {
+
+	// 7.1.4 ToInteger
+	var ceil  = Math.ceil
+	  , floor = Math.floor;
+	module.exports = function(it){
+	  return isNaN(it = +it) ? 0 : (it > 0 ? floor : ceil)(it);
+	};
+
+/***/ },
+/* 194 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var toInteger = __webpack_require__(193)
+	  , max       = Math.max
+	  , min       = Math.min;
+	module.exports = function(index, length){
+	  index = toInteger(index);
+	  return index < 0 ? max(index + length, 0) : min(index, length);
+	};
+
+/***/ },
+/* 195 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var shared = __webpack_require__(196)('keys')
+	  , uid    = __webpack_require__(197);
+	module.exports = function(key){
+	  return shared[key] || (shared[key] = uid(key));
+	};
+
+/***/ },
+/* 196 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var global = __webpack_require__(169)
+	  , SHARED = '__core-js_shared__'
+	  , store  = global[SHARED] || (global[SHARED] = {});
+	module.exports = function(key){
+	  return store[key] || (store[key] = {});
+	};
+
+/***/ },
+/* 197 */
+/***/ function(module, exports) {
+
+	var id = 0
+	  , px = Math.random();
+	module.exports = function(key){
+	  return 'Symbol('.concat(key === undefined ? '' : key, ')_', (++id + px).toString(36));
+	};
+
+/***/ },
+/* 198 */
+/***/ function(module, exports) {
+
+	// IE 8- don't enum bug keys
+	module.exports = (
+	  'constructor,hasOwnProperty,isPrototypeOf,propertyIsEnumerable,toLocaleString,toString,valueOf'
+	).split(',');
+
+/***/ },
+/* 199 */
+/***/ function(module, exports) {
+
+	exports.f = Object.getOwnPropertySymbols;
+
+/***/ },
+/* 200 */
+/***/ function(module, exports) {
+
+	exports.f = {}.propertyIsEnumerable;
+
+/***/ },
+/* 201 */
+/***/ function(module, exports, __webpack_require__) {
+
+	// 7.1.13 ToObject(argument)
+	var defined = __webpack_require__(190);
+	module.exports = function(it){
+	  return Object(defined(it));
+	};
+
+/***/ },
+/* 202 */
+/***/ function(module, exports) {
+
+	"use strict";
+
+	exports.__esModule = true;
+
+	exports.default = function (obj, keys) {
+	  var target = {};
+
+	  for (var i in obj) {
+	    if (keys.indexOf(i) >= 0) continue;
+	    if (!Object.prototype.hasOwnProperty.call(obj, i)) continue;
+	    target[i] = obj[i];
+	  }
+
+	  return target;
+	};
+
+/***/ },
+/* 203 */
+/***/ function(module, exports) {
+
+	"use strict";
+
+	exports.__esModule = true;
+
+	exports.default = function (instance, Constructor) {
+	  if (!(instance instanceof Constructor)) {
+	    throw new TypeError("Cannot call a class as a function");
+	  }
+	};
+
+/***/ },
+/* 204 */
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+
+	exports.__esModule = true;
+
+	var _typeof2 = __webpack_require__(205);
+
+	var _typeof3 = _interopRequireDefault(_typeof2);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	exports.default = function (self, call) {
+	  if (!self) {
+	    throw new ReferenceError("this hasn't been initialised - super() hasn't been called");
+	  }
+
+	  return call && ((typeof call === "undefined" ? "undefined" : (0, _typeof3.default)(call)) === "object" || typeof call === "function") ? call : self;
+	};
+
+/***/ },
+/* 205 */
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+
+	exports.__esModule = true;
+
+	var _iterator = __webpack_require__(206);
+
+	var _iterator2 = _interopRequireDefault(_iterator);
+
+	var _symbol = __webpack_require__(226);
+
+	var _symbol2 = _interopRequireDefault(_symbol);
+
+	var _typeof = typeof _symbol2.default === "function" && typeof _iterator2.default === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof _symbol2.default === "function" && obj.constructor === _symbol2.default ? "symbol" : typeof obj; };
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	exports.default = typeof _symbol2.default === "function" && _typeof(_iterator2.default) === "symbol" ? function (obj) {
+	  return typeof obj === "undefined" ? "undefined" : _typeof(obj);
+	} : function (obj) {
+	  return obj && typeof _symbol2.default === "function" && obj.constructor === _symbol2.default ? "symbol" : typeof obj === "undefined" ? "undefined" : _typeof(obj);
+	};
+
+/***/ },
+/* 206 */
+/***/ function(module, exports, __webpack_require__) {
+
+	module.exports = { "default": __webpack_require__(207), __esModule: true };
+
+/***/ },
+/* 207 */
+/***/ function(module, exports, __webpack_require__) {
+
+	__webpack_require__(208);
+	__webpack_require__(221);
+	module.exports = __webpack_require__(225).f('iterator');
+
+/***/ },
+/* 208 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	var $at  = __webpack_require__(209)(true);
+
+	// 21.1.3.27 String.prototype[@@iterator]()
+	__webpack_require__(210)(String, 'String', function(iterated){
+	  this._t = String(iterated); // target
+	  this._i = 0;                // next index
+	// 21.1.5.2.1 %StringIteratorPrototype%.next()
+	}, function(){
+	  var O     = this._t
+	    , index = this._i
+	    , point;
+	  if(index >= O.length)return {value: undefined, done: true};
+	  point = $at(O, index);
+	  this._i += point.length;
+	  return {value: point, done: false};
+	});
+
+/***/ },
+/* 209 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var toInteger = __webpack_require__(193)
+	  , defined   = __webpack_require__(190);
+	// true  -> String#at
+	// false -> String#codePointAt
+	module.exports = function(TO_STRING){
+	  return function(that, pos){
+	    var s = String(defined(that))
+	      , i = toInteger(pos)
+	      , l = s.length
+	      , a, b;
+	    if(i < 0 || i >= l)return TO_STRING ? '' : undefined;
+	    a = s.charCodeAt(i);
+	    return a < 0xd800 || a > 0xdbff || i + 1 === l || (b = s.charCodeAt(i + 1)) < 0xdc00 || b > 0xdfff
+	      ? TO_STRING ? s.charAt(i) : a
+	      : TO_STRING ? s.slice(i, i + 2) : (a - 0xd800 << 10) + (b - 0xdc00) + 0x10000;
+	  };
+	};
+
+/***/ },
+/* 210 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	var LIBRARY        = __webpack_require__(211)
+	  , $export        = __webpack_require__(168)
+	  , redefine       = __webpack_require__(212)
+	  , hide           = __webpack_require__(173)
+	  , has            = __webpack_require__(186)
+	  , Iterators      = __webpack_require__(213)
+	  , $iterCreate    = __webpack_require__(214)
+	  , setToStringTag = __webpack_require__(218)
+	  , getPrototypeOf = __webpack_require__(220)
+	  , ITERATOR       = __webpack_require__(219)('iterator')
+	  , BUGGY          = !([].keys && 'next' in [].keys()) // Safari has buggy iterators w/o `next`
+	  , FF_ITERATOR    = '@@iterator'
+	  , KEYS           = 'keys'
+	  , VALUES         = 'values';
+
+	var returnThis = function(){ return this; };
+
+	module.exports = function(Base, NAME, Constructor, next, DEFAULT, IS_SET, FORCED){
+	  $iterCreate(Constructor, NAME, next);
+	  var getMethod = function(kind){
+	    if(!BUGGY && kind in proto)return proto[kind];
+	    switch(kind){
+	      case KEYS: return function keys(){ return new Constructor(this, kind); };
+	      case VALUES: return function values(){ return new Constructor(this, kind); };
+	    } return function entries(){ return new Constructor(this, kind); };
+	  };
+	  var TAG        = NAME + ' Iterator'
+	    , DEF_VALUES = DEFAULT == VALUES
+	    , VALUES_BUG = false
+	    , proto      = Base.prototype
+	    , $native    = proto[ITERATOR] || proto[FF_ITERATOR] || DEFAULT && proto[DEFAULT]
+	    , $default   = $native || getMethod(DEFAULT)
+	    , $entries   = DEFAULT ? !DEF_VALUES ? $default : getMethod('entries') : undefined
+	    , $anyNative = NAME == 'Array' ? proto.entries || $native : $native
+	    , methods, key, IteratorPrototype;
+	  // Fix native
+	  if($anyNative){
+	    IteratorPrototype = getPrototypeOf($anyNative.call(new Base));
+	    if(IteratorPrototype !== Object.prototype){
+	      // Set @@toStringTag to native iterators
+	      setToStringTag(IteratorPrototype, TAG, true);
+	      // fix for some old engines
+	      if(!LIBRARY && !has(IteratorPrototype, ITERATOR))hide(IteratorPrototype, ITERATOR, returnThis);
+	    }
+	  }
+	  // fix Array#{values, @@iterator}.name in V8 / FF
+	  if(DEF_VALUES && $native && $native.name !== VALUES){
+	    VALUES_BUG = true;
+	    $default = function values(){ return $native.call(this); };
+	  }
+	  // Define iterator
+	  if((!LIBRARY || FORCED) && (BUGGY || VALUES_BUG || !proto[ITERATOR])){
+	    hide(proto, ITERATOR, $default);
+	  }
+	  // Plug for library
+	  Iterators[NAME] = $default;
+	  Iterators[TAG]  = returnThis;
+	  if(DEFAULT){
+	    methods = {
+	      values:  DEF_VALUES ? $default : getMethod(VALUES),
+	      keys:    IS_SET     ? $default : getMethod(KEYS),
+	      entries: $entries
+	    };
+	    if(FORCED)for(key in methods){
+	      if(!(key in proto))redefine(proto, key, methods[key]);
+	    } else $export($export.P + $export.F * (BUGGY || VALUES_BUG), NAME, methods);
+	  }
+	  return methods;
+	};
+
+/***/ },
+/* 211 */
+/***/ function(module, exports) {
+
+	module.exports = true;
+
+/***/ },
+/* 212 */
+/***/ function(module, exports, __webpack_require__) {
+
+	module.exports = __webpack_require__(173);
+
+/***/ },
+/* 213 */
+/***/ function(module, exports) {
+
+	module.exports = {};
+
+/***/ },
+/* 214 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	var create         = __webpack_require__(215)
+	  , descriptor     = __webpack_require__(182)
+	  , setToStringTag = __webpack_require__(218)
+	  , IteratorPrototype = {};
+
+	// 25.1.2.1.1 %IteratorPrototype%[@@iterator]()
+	__webpack_require__(173)(IteratorPrototype, __webpack_require__(219)('iterator'), function(){ return this; });
+
+	module.exports = function(Constructor, NAME, next){
+	  Constructor.prototype = create(IteratorPrototype, {next: descriptor(1, next)});
+	  setToStringTag(Constructor, NAME + ' Iterator');
+	};
+
+/***/ },
+/* 215 */
+/***/ function(module, exports, __webpack_require__) {
+
+	// 19.1.2.2 / 15.2.3.5 Object.create(O [, Properties])
+	var anObject    = __webpack_require__(175)
+	  , dPs         = __webpack_require__(216)
+	  , enumBugKeys = __webpack_require__(198)
+	  , IE_PROTO    = __webpack_require__(195)('IE_PROTO')
+	  , Empty       = function(){ /* empty */ }
+	  , PROTOTYPE   = 'prototype';
+
+	// Create object with fake `null` prototype: use iframe Object with cleared prototype
+	var createDict = function(){
+	  // Thrash, waste and sodomy: IE GC bug
+	  var iframe = __webpack_require__(180)('iframe')
+	    , i      = enumBugKeys.length
+	    , lt     = '<'
+	    , gt     = '>'
+	    , iframeDocument;
+	  iframe.style.display = 'none';
+	  __webpack_require__(217).appendChild(iframe);
+	  iframe.src = 'javascript:'; // eslint-disable-line no-script-url
+	  // createDict = iframe.contentWindow.Object;
+	  // html.removeChild(iframe);
+	  iframeDocument = iframe.contentWindow.document;
+	  iframeDocument.open();
+	  iframeDocument.write(lt + 'script' + gt + 'document.F=Object' + lt + '/script' + gt);
+	  iframeDocument.close();
+	  createDict = iframeDocument.F;
+	  while(i--)delete createDict[PROTOTYPE][enumBugKeys[i]];
+	  return createDict();
+	};
+
+	module.exports = Object.create || function create(O, Properties){
+	  var result;
+	  if(O !== null){
+	    Empty[PROTOTYPE] = anObject(O);
+	    result = new Empty;
+	    Empty[PROTOTYPE] = null;
+	    // add "__proto__" for Object.getPrototypeOf polyfill
+	    result[IE_PROTO] = O;
+	  } else result = createDict();
+	  return Properties === undefined ? result : dPs(result, Properties);
+	};
+
+
+/***/ },
+/* 216 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var dP       = __webpack_require__(174)
+	  , anObject = __webpack_require__(175)
+	  , getKeys  = __webpack_require__(184);
+
+	module.exports = __webpack_require__(178) ? Object.defineProperties : function defineProperties(O, Properties){
+	  anObject(O);
+	  var keys   = getKeys(Properties)
+	    , length = keys.length
+	    , i = 0
+	    , P;
+	  while(length > i)dP.f(O, P = keys[i++], Properties[P]);
+	  return O;
+	};
+
+/***/ },
+/* 217 */
+/***/ function(module, exports, __webpack_require__) {
+
+	module.exports = __webpack_require__(169).document && document.documentElement;
+
+/***/ },
+/* 218 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var def = __webpack_require__(174).f
+	  , has = __webpack_require__(186)
+	  , TAG = __webpack_require__(219)('toStringTag');
+
+	module.exports = function(it, tag, stat){
+	  if(it && !has(it = stat ? it : it.prototype, TAG))def(it, TAG, {configurable: true, value: tag});
+	};
+
+/***/ },
+/* 219 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var store      = __webpack_require__(196)('wks')
+	  , uid        = __webpack_require__(197)
+	  , Symbol     = __webpack_require__(169).Symbol
+	  , USE_SYMBOL = typeof Symbol == 'function';
+
+	var $exports = module.exports = function(name){
+	  return store[name] || (store[name] =
+	    USE_SYMBOL && Symbol[name] || (USE_SYMBOL ? Symbol : uid)('Symbol.' + name));
+	};
+
+	$exports.store = store;
+
+/***/ },
+/* 220 */
+/***/ function(module, exports, __webpack_require__) {
+
+	// 19.1.2.9 / 15.2.3.2 Object.getPrototypeOf(O)
+	var has         = __webpack_require__(186)
+	  , toObject    = __webpack_require__(201)
+	  , IE_PROTO    = __webpack_require__(195)('IE_PROTO')
+	  , ObjectProto = Object.prototype;
+
+	module.exports = Object.getPrototypeOf || function(O){
+	  O = toObject(O);
+	  if(has(O, IE_PROTO))return O[IE_PROTO];
+	  if(typeof O.constructor == 'function' && O instanceof O.constructor){
+	    return O.constructor.prototype;
+	  } return O instanceof Object ? ObjectProto : null;
+	};
+
+/***/ },
+/* 221 */
+/***/ function(module, exports, __webpack_require__) {
+
+	__webpack_require__(222);
+	var global        = __webpack_require__(169)
+	  , hide          = __webpack_require__(173)
+	  , Iterators     = __webpack_require__(213)
+	  , TO_STRING_TAG = __webpack_require__(219)('toStringTag');
+
+	for(var collections = ['NodeList', 'DOMTokenList', 'MediaList', 'StyleSheetList', 'CSSRuleList'], i = 0; i < 5; i++){
+	  var NAME       = collections[i]
+	    , Collection = global[NAME]
+	    , proto      = Collection && Collection.prototype;
+	  if(proto && !proto[TO_STRING_TAG])hide(proto, TO_STRING_TAG, NAME);
+	  Iterators[NAME] = Iterators.Array;
+	}
+
+/***/ },
+/* 222 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	var addToUnscopables = __webpack_require__(223)
+	  , step             = __webpack_require__(224)
+	  , Iterators        = __webpack_require__(213)
+	  , toIObject        = __webpack_require__(187);
+
+	// 22.1.3.4 Array.prototype.entries()
+	// 22.1.3.13 Array.prototype.keys()
+	// 22.1.3.29 Array.prototype.values()
+	// 22.1.3.30 Array.prototype[@@iterator]()
+	module.exports = __webpack_require__(210)(Array, 'Array', function(iterated, kind){
+	  this._t = toIObject(iterated); // target
+	  this._i = 0;                   // next index
+	  this._k = kind;                // kind
+	// 22.1.5.2.1 %ArrayIteratorPrototype%.next()
+	}, function(){
+	  var O     = this._t
+	    , kind  = this._k
+	    , index = this._i++;
+	  if(!O || index >= O.length){
+	    this._t = undefined;
+	    return step(1);
+	  }
+	  if(kind == 'keys'  )return step(0, index);
+	  if(kind == 'values')return step(0, O[index]);
+	  return step(0, [index, O[index]]);
+	}, 'values');
+
+	// argumentsList[@@iterator] is %ArrayProto_values% (9.4.4.6, 9.4.4.7)
+	Iterators.Arguments = Iterators.Array;
+
+	addToUnscopables('keys');
+	addToUnscopables('values');
+	addToUnscopables('entries');
+
+/***/ },
+/* 223 */
+/***/ function(module, exports) {
+
+	module.exports = function(){ /* empty */ };
+
+/***/ },
+/* 224 */
+/***/ function(module, exports) {
+
+	module.exports = function(done, value){
+	  return {value: value, done: !!done};
+	};
+
+/***/ },
+/* 225 */
+/***/ function(module, exports, __webpack_require__) {
+
+	exports.f = __webpack_require__(219);
+
+/***/ },
+/* 226 */
+/***/ function(module, exports, __webpack_require__) {
+
+	module.exports = { "default": __webpack_require__(227), __esModule: true };
+
+/***/ },
+/* 227 */
+/***/ function(module, exports, __webpack_require__) {
+
+	__webpack_require__(228);
+	__webpack_require__(237);
+	__webpack_require__(238);
+	__webpack_require__(239);
+	module.exports = __webpack_require__(170).Symbol;
+
+/***/ },
+/* 228 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	// ECMAScript 6 symbols shim
+	var global         = __webpack_require__(169)
+	  , has            = __webpack_require__(186)
+	  , DESCRIPTORS    = __webpack_require__(178)
+	  , $export        = __webpack_require__(168)
+	  , redefine       = __webpack_require__(212)
+	  , META           = __webpack_require__(229).KEY
+	  , $fails         = __webpack_require__(179)
+	  , shared         = __webpack_require__(196)
+	  , setToStringTag = __webpack_require__(218)
+	  , uid            = __webpack_require__(197)
+	  , wks            = __webpack_require__(219)
+	  , wksExt         = __webpack_require__(225)
+	  , wksDefine      = __webpack_require__(230)
+	  , keyOf          = __webpack_require__(231)
+	  , enumKeys       = __webpack_require__(232)
+	  , isArray        = __webpack_require__(233)
+	  , anObject       = __webpack_require__(175)
+	  , toIObject      = __webpack_require__(187)
+	  , toPrimitive    = __webpack_require__(181)
+	  , createDesc     = __webpack_require__(182)
+	  , _create        = __webpack_require__(215)
+	  , gOPNExt        = __webpack_require__(234)
+	  , $GOPD          = __webpack_require__(236)
+	  , $DP            = __webpack_require__(174)
+	  , $keys          = __webpack_require__(184)
+	  , gOPD           = $GOPD.f
+	  , dP             = $DP.f
+	  , gOPN           = gOPNExt.f
+	  , $Symbol        = global.Symbol
+	  , $JSON          = global.JSON
+	  , _stringify     = $JSON && $JSON.stringify
+	  , PROTOTYPE      = 'prototype'
+	  , HIDDEN         = wks('_hidden')
+	  , TO_PRIMITIVE   = wks('toPrimitive')
+	  , isEnum         = {}.propertyIsEnumerable
+	  , SymbolRegistry = shared('symbol-registry')
+	  , AllSymbols     = shared('symbols')
+	  , OPSymbols      = shared('op-symbols')
+	  , ObjectProto    = Object[PROTOTYPE]
+	  , USE_NATIVE     = typeof $Symbol == 'function'
+	  , QObject        = global.QObject;
+	// Don't use setters in Qt Script, https://github.com/zloirock/core-js/issues/173
+	var setter = !QObject || !QObject[PROTOTYPE] || !QObject[PROTOTYPE].findChild;
+
+	// fallback for old Android, https://code.google.com/p/v8/issues/detail?id=687
+	var setSymbolDesc = DESCRIPTORS && $fails(function(){
+	  return _create(dP({}, 'a', {
+	    get: function(){ return dP(this, 'a', {value: 7}).a; }
+	  })).a != 7;
+	}) ? function(it, key, D){
+	  var protoDesc = gOPD(ObjectProto, key);
+	  if(protoDesc)delete ObjectProto[key];
+	  dP(it, key, D);
+	  if(protoDesc && it !== ObjectProto)dP(ObjectProto, key, protoDesc);
+	} : dP;
+
+	var wrap = function(tag){
+	  var sym = AllSymbols[tag] = _create($Symbol[PROTOTYPE]);
+	  sym._k = tag;
+	  return sym;
+	};
+
+	var isSymbol = USE_NATIVE && typeof $Symbol.iterator == 'symbol' ? function(it){
+	  return typeof it == 'symbol';
+	} : function(it){
+	  return it instanceof $Symbol;
+	};
+
+	var $defineProperty = function defineProperty(it, key, D){
+	  if(it === ObjectProto)$defineProperty(OPSymbols, key, D);
+	  anObject(it);
+	  key = toPrimitive(key, true);
+	  anObject(D);
+	  if(has(AllSymbols, key)){
+	    if(!D.enumerable){
+	      if(!has(it, HIDDEN))dP(it, HIDDEN, createDesc(1, {}));
+	      it[HIDDEN][key] = true;
+	    } else {
+	      if(has(it, HIDDEN) && it[HIDDEN][key])it[HIDDEN][key] = false;
+	      D = _create(D, {enumerable: createDesc(0, false)});
+	    } return setSymbolDesc(it, key, D);
+	  } return dP(it, key, D);
+	};
+	var $defineProperties = function defineProperties(it, P){
+	  anObject(it);
+	  var keys = enumKeys(P = toIObject(P))
+	    , i    = 0
+	    , l = keys.length
+	    , key;
+	  while(l > i)$defineProperty(it, key = keys[i++], P[key]);
+	  return it;
+	};
+	var $create = function create(it, P){
+	  return P === undefined ? _create(it) : $defineProperties(_create(it), P);
+	};
+	var $propertyIsEnumerable = function propertyIsEnumerable(key){
+	  var E = isEnum.call(this, key = toPrimitive(key, true));
+	  if(this === ObjectProto && has(AllSymbols, key) && !has(OPSymbols, key))return false;
+	  return E || !has(this, key) || !has(AllSymbols, key) || has(this, HIDDEN) && this[HIDDEN][key] ? E : true;
+	};
+	var $getOwnPropertyDescriptor = function getOwnPropertyDescriptor(it, key){
+	  it  = toIObject(it);
+	  key = toPrimitive(key, true);
+	  if(it === ObjectProto && has(AllSymbols, key) && !has(OPSymbols, key))return;
+	  var D = gOPD(it, key);
+	  if(D && has(AllSymbols, key) && !(has(it, HIDDEN) && it[HIDDEN][key]))D.enumerable = true;
+	  return D;
+	};
+	var $getOwnPropertyNames = function getOwnPropertyNames(it){
+	  var names  = gOPN(toIObject(it))
+	    , result = []
+	    , i      = 0
+	    , key;
+	  while(names.length > i){
+	    if(!has(AllSymbols, key = names[i++]) && key != HIDDEN && key != META)result.push(key);
+	  } return result;
+	};
+	var $getOwnPropertySymbols = function getOwnPropertySymbols(it){
+	  var IS_OP  = it === ObjectProto
+	    , names  = gOPN(IS_OP ? OPSymbols : toIObject(it))
+	    , result = []
+	    , i      = 0
+	    , key;
+	  while(names.length > i){
+	    if(has(AllSymbols, key = names[i++]) && (IS_OP ? has(ObjectProto, key) : true))result.push(AllSymbols[key]);
+	  } return result;
+	};
+
+	// 19.4.1.1 Symbol([description])
+	if(!USE_NATIVE){
+	  $Symbol = function Symbol(){
+	    if(this instanceof $Symbol)throw TypeError('Symbol is not a constructor!');
+	    var tag = uid(arguments.length > 0 ? arguments[0] : undefined);
+	    var $set = function(value){
+	      if(this === ObjectProto)$set.call(OPSymbols, value);
+	      if(has(this, HIDDEN) && has(this[HIDDEN], tag))this[HIDDEN][tag] = false;
+	      setSymbolDesc(this, tag, createDesc(1, value));
+	    };
+	    if(DESCRIPTORS && setter)setSymbolDesc(ObjectProto, tag, {configurable: true, set: $set});
+	    return wrap(tag);
+	  };
+	  redefine($Symbol[PROTOTYPE], 'toString', function toString(){
+	    return this._k;
+	  });
+
+	  $GOPD.f = $getOwnPropertyDescriptor;
+	  $DP.f   = $defineProperty;
+	  __webpack_require__(235).f = gOPNExt.f = $getOwnPropertyNames;
+	  __webpack_require__(200).f  = $propertyIsEnumerable;
+	  __webpack_require__(199).f = $getOwnPropertySymbols;
+
+	  if(DESCRIPTORS && !__webpack_require__(211)){
+	    redefine(ObjectProto, 'propertyIsEnumerable', $propertyIsEnumerable, true);
+	  }
+
+	  wksExt.f = function(name){
+	    return wrap(wks(name));
+	  }
+	}
+
+	$export($export.G + $export.W + $export.F * !USE_NATIVE, {Symbol: $Symbol});
+
+	for(var symbols = (
+	  // 19.4.2.2, 19.4.2.3, 19.4.2.4, 19.4.2.6, 19.4.2.8, 19.4.2.9, 19.4.2.10, 19.4.2.11, 19.4.2.12, 19.4.2.13, 19.4.2.14
+	  'hasInstance,isConcatSpreadable,iterator,match,replace,search,species,split,toPrimitive,toStringTag,unscopables'
+	).split(','), i = 0; symbols.length > i; )wks(symbols[i++]);
+
+	for(var symbols = $keys(wks.store), i = 0; symbols.length > i; )wksDefine(symbols[i++]);
+
+	$export($export.S + $export.F * !USE_NATIVE, 'Symbol', {
+	  // 19.4.2.1 Symbol.for(key)
+	  'for': function(key){
+	    return has(SymbolRegistry, key += '')
+	      ? SymbolRegistry[key]
+	      : SymbolRegistry[key] = $Symbol(key);
+	  },
+	  // 19.4.2.5 Symbol.keyFor(sym)
+	  keyFor: function keyFor(key){
+	    if(isSymbol(key))return keyOf(SymbolRegistry, key);
+	    throw TypeError(key + ' is not a symbol!');
+	  },
+	  useSetter: function(){ setter = true; },
+	  useSimple: function(){ setter = false; }
+	});
+
+	$export($export.S + $export.F * !USE_NATIVE, 'Object', {
+	  // 19.1.2.2 Object.create(O [, Properties])
+	  create: $create,
+	  // 19.1.2.4 Object.defineProperty(O, P, Attributes)
+	  defineProperty: $defineProperty,
+	  // 19.1.2.3 Object.defineProperties(O, Properties)
+	  defineProperties: $defineProperties,
+	  // 19.1.2.6 Object.getOwnPropertyDescriptor(O, P)
+	  getOwnPropertyDescriptor: $getOwnPropertyDescriptor,
+	  // 19.1.2.7 Object.getOwnPropertyNames(O)
+	  getOwnPropertyNames: $getOwnPropertyNames,
+	  // 19.1.2.8 Object.getOwnPropertySymbols(O)
+	  getOwnPropertySymbols: $getOwnPropertySymbols
+	});
+
+	// 24.3.2 JSON.stringify(value [, replacer [, space]])
+	$JSON && $export($export.S + $export.F * (!USE_NATIVE || $fails(function(){
+	  var S = $Symbol();
+	  // MS Edge converts symbol values to JSON as {}
+	  // WebKit converts symbol values to JSON as null
+	  // V8 throws on boxed symbols
+	  return _stringify([S]) != '[null]' || _stringify({a: S}) != '{}' || _stringify(Object(S)) != '{}';
+	})), 'JSON', {
+	  stringify: function stringify(it){
+	    if(it === undefined || isSymbol(it))return; // IE8 returns string on undefined
+	    var args = [it]
+	      , i    = 1
+	      , replacer, $replacer;
+	    while(arguments.length > i)args.push(arguments[i++]);
+	    replacer = args[1];
+	    if(typeof replacer == 'function')$replacer = replacer;
+	    if($replacer || !isArray(replacer))replacer = function(key, value){
+	      if($replacer)value = $replacer.call(this, key, value);
+	      if(!isSymbol(value))return value;
+	    };
+	    args[1] = replacer;
+	    return _stringify.apply($JSON, args);
+	  }
+	});
+
+	// 19.4.3.4 Symbol.prototype[@@toPrimitive](hint)
+	$Symbol[PROTOTYPE][TO_PRIMITIVE] || __webpack_require__(173)($Symbol[PROTOTYPE], TO_PRIMITIVE, $Symbol[PROTOTYPE].valueOf);
+	// 19.4.3.5 Symbol.prototype[@@toStringTag]
+	setToStringTag($Symbol, 'Symbol');
+	// 20.2.1.9 Math[@@toStringTag]
+	setToStringTag(Math, 'Math', true);
+	// 24.3.3 JSON[@@toStringTag]
+	setToStringTag(global.JSON, 'JSON', true);
+
+/***/ },
+/* 229 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var META     = __webpack_require__(197)('meta')
+	  , isObject = __webpack_require__(176)
+	  , has      = __webpack_require__(186)
+	  , setDesc  = __webpack_require__(174).f
+	  , id       = 0;
+	var isExtensible = Object.isExtensible || function(){
+	  return true;
+	};
+	var FREEZE = !__webpack_require__(179)(function(){
+	  return isExtensible(Object.preventExtensions({}));
+	});
+	var setMeta = function(it){
+	  setDesc(it, META, {value: {
+	    i: 'O' + ++id, // object ID
+	    w: {}          // weak collections IDs
+	  }});
+	};
+	var fastKey = function(it, create){
+	  // return primitive with prefix
+	  if(!isObject(it))return typeof it == 'symbol' ? it : (typeof it == 'string' ? 'S' : 'P') + it;
+	  if(!has(it, META)){
+	    // can't set metadata to uncaught frozen object
+	    if(!isExtensible(it))return 'F';
+	    // not necessary to add metadata
+	    if(!create)return 'E';
+	    // add missing metadata
+	    setMeta(it);
+	  // return object ID
+	  } return it[META].i;
+	};
+	var getWeak = function(it, create){
+	  if(!has(it, META)){
+	    // can't set metadata to uncaught frozen object
+	    if(!isExtensible(it))return true;
+	    // not necessary to add metadata
+	    if(!create)return false;
+	    // add missing metadata
+	    setMeta(it);
+	  // return hash weak collections IDs
+	  } return it[META].w;
+	};
+	// add metadata on freeze-family methods calling
+	var onFreeze = function(it){
+	  if(FREEZE && meta.NEED && isExtensible(it) && !has(it, META))setMeta(it);
+	  return it;
+	};
+	var meta = module.exports = {
+	  KEY:      META,
+	  NEED:     false,
+	  fastKey:  fastKey,
+	  getWeak:  getWeak,
+	  onFreeze: onFreeze
+	};
+
+/***/ },
+/* 230 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var global         = __webpack_require__(169)
+	  , core           = __webpack_require__(170)
+	  , LIBRARY        = __webpack_require__(211)
+	  , wksExt         = __webpack_require__(225)
+	  , defineProperty = __webpack_require__(174).f;
+	module.exports = function(name){
+	  var $Symbol = core.Symbol || (core.Symbol = LIBRARY ? {} : global.Symbol || {});
+	  if(name.charAt(0) != '_' && !(name in $Symbol))defineProperty($Symbol, name, {value: wksExt.f(name)});
+	};
+
+/***/ },
+/* 231 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var getKeys   = __webpack_require__(184)
+	  , toIObject = __webpack_require__(187);
+	module.exports = function(object, el){
+	  var O      = toIObject(object)
+	    , keys   = getKeys(O)
+	    , length = keys.length
+	    , index  = 0
+	    , key;
+	  while(length > index)if(O[key = keys[index++]] === el)return key;
+	};
+
+/***/ },
+/* 232 */
+/***/ function(module, exports, __webpack_require__) {
+
+	// all enumerable object keys, includes symbols
+	var getKeys = __webpack_require__(184)
+	  , gOPS    = __webpack_require__(199)
+	  , pIE     = __webpack_require__(200);
+	module.exports = function(it){
+	  var result     = getKeys(it)
+	    , getSymbols = gOPS.f;
+	  if(getSymbols){
+	    var symbols = getSymbols(it)
+	      , isEnum  = pIE.f
+	      , i       = 0
+	      , key;
+	    while(symbols.length > i)if(isEnum.call(it, key = symbols[i++]))result.push(key);
+	  } return result;
+	};
+
+/***/ },
+/* 233 */
+/***/ function(module, exports, __webpack_require__) {
+
+	// 7.2.2 IsArray(argument)
+	var cof = __webpack_require__(189);
+	module.exports = Array.isArray || function isArray(arg){
+	  return cof(arg) == 'Array';
+	};
+
+/***/ },
+/* 234 */
+/***/ function(module, exports, __webpack_require__) {
+
+	// fallback for IE11 buggy Object.getOwnPropertyNames with iframe and window
+	var toIObject = __webpack_require__(187)
+	  , gOPN      = __webpack_require__(235).f
+	  , toString  = {}.toString;
+
+	var windowNames = typeof window == 'object' && window && Object.getOwnPropertyNames
+	  ? Object.getOwnPropertyNames(window) : [];
+
+	var getWindowNames = function(it){
+	  try {
+	    return gOPN(it);
+	  } catch(e){
+	    return windowNames.slice();
+	  }
+	};
+
+	module.exports.f = function getOwnPropertyNames(it){
+	  return windowNames && toString.call(it) == '[object Window]' ? getWindowNames(it) : gOPN(toIObject(it));
+	};
+
+
+/***/ },
+/* 235 */
+/***/ function(module, exports, __webpack_require__) {
+
+	// 19.1.2.7 / 15.2.3.4 Object.getOwnPropertyNames(O)
+	var $keys      = __webpack_require__(185)
+	  , hiddenKeys = __webpack_require__(198).concat('length', 'prototype');
+
+	exports.f = Object.getOwnPropertyNames || function getOwnPropertyNames(O){
+	  return $keys(O, hiddenKeys);
+	};
+
+/***/ },
+/* 236 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var pIE            = __webpack_require__(200)
+	  , createDesc     = __webpack_require__(182)
+	  , toIObject      = __webpack_require__(187)
+	  , toPrimitive    = __webpack_require__(181)
+	  , has            = __webpack_require__(186)
+	  , IE8_DOM_DEFINE = __webpack_require__(177)
+	  , gOPD           = Object.getOwnPropertyDescriptor;
+
+	exports.f = __webpack_require__(178) ? gOPD : function getOwnPropertyDescriptor(O, P){
+	  O = toIObject(O);
+	  P = toPrimitive(P, true);
+	  if(IE8_DOM_DEFINE)try {
+	    return gOPD(O, P);
+	  } catch(e){ /* empty */ }
+	  if(has(O, P))return createDesc(!pIE.f.call(O, P), O[P]);
+	};
+
+/***/ },
+/* 237 */
+/***/ function(module, exports) {
+
+	
+
+/***/ },
+/* 238 */
+/***/ function(module, exports, __webpack_require__) {
+
+	__webpack_require__(230)('asyncIterator');
+
+/***/ },
+/* 239 */
+/***/ function(module, exports, __webpack_require__) {
+
+	__webpack_require__(230)('observable');
+
+/***/ },
+/* 240 */
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+
+	exports.__esModule = true;
+
+	var _setPrototypeOf = __webpack_require__(241);
+
+	var _setPrototypeOf2 = _interopRequireDefault(_setPrototypeOf);
+
+	var _create = __webpack_require__(245);
+
+	var _create2 = _interopRequireDefault(_create);
+
+	var _typeof2 = __webpack_require__(205);
+
+	var _typeof3 = _interopRequireDefault(_typeof2);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	exports.default = function (subClass, superClass) {
+	  if (typeof superClass !== "function" && superClass !== null) {
+	    throw new TypeError("Super expression must either be null or a function, not " + (typeof superClass === "undefined" ? "undefined" : (0, _typeof3.default)(superClass)));
+	  }
+
+	  subClass.prototype = (0, _create2.default)(superClass && superClass.prototype, {
+	    constructor: {
+	      value: subClass,
+	      enumerable: false,
+	      writable: true,
+	      configurable: true
+	    }
+	  });
+	  if (superClass) _setPrototypeOf2.default ? (0, _setPrototypeOf2.default)(subClass, superClass) : subClass.__proto__ = superClass;
+	};
+
+/***/ },
+/* 241 */
+/***/ function(module, exports, __webpack_require__) {
+
+	module.exports = { "default": __webpack_require__(242), __esModule: true };
+
+/***/ },
+/* 242 */
+/***/ function(module, exports, __webpack_require__) {
+
+	__webpack_require__(243);
+	module.exports = __webpack_require__(170).Object.setPrototypeOf;
+
+/***/ },
+/* 243 */
+/***/ function(module, exports, __webpack_require__) {
+
+	// 19.1.3.19 Object.setPrototypeOf(O, proto)
+	var $export = __webpack_require__(168);
+	$export($export.S, 'Object', {setPrototypeOf: __webpack_require__(244).set});
+
+/***/ },
+/* 244 */
+/***/ function(module, exports, __webpack_require__) {
+
+	// Works with __proto__ only. Old v8 can't work with null proto objects.
+	/* eslint-disable no-proto */
+	var isObject = __webpack_require__(176)
+	  , anObject = __webpack_require__(175);
+	var check = function(O, proto){
+	  anObject(O);
+	  if(!isObject(proto) && proto !== null)throw TypeError(proto + ": can't set as prototype!");
+	};
+	module.exports = {
+	  set: Object.setPrototypeOf || ('__proto__' in {} ? // eslint-disable-line
+	    function(test, buggy, set){
+	      try {
+	        set = __webpack_require__(171)(Function.call, __webpack_require__(236).f(Object.prototype, '__proto__').set, 2);
+	        set(test, []);
+	        buggy = !(test instanceof Array);
+	      } catch(e){ buggy = true; }
+	      return function setPrototypeOf(O, proto){
+	        check(O, proto);
+	        if(buggy)O.__proto__ = proto;
+	        else set(O, proto);
+	        return O;
+	      };
+	    }({}, false) : undefined),
+	  check: check
+	};
+
+/***/ },
+/* 245 */
+/***/ function(module, exports, __webpack_require__) {
+
+	module.exports = { "default": __webpack_require__(246), __esModule: true };
+
+/***/ },
+/* 246 */
+/***/ function(module, exports, __webpack_require__) {
+
+	__webpack_require__(247);
+	var $Object = __webpack_require__(170).Object;
+	module.exports = function create(P, D){
+	  return $Object.create(P, D);
+	};
+
+/***/ },
+/* 247 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var $export = __webpack_require__(168)
+	// 19.1.2.2 / 15.2.3.5 Object.create(O [, Properties])
+	$export($export.S, 'Object', {create: __webpack_require__(215)});
+
+/***/ },
+/* 248 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	var _classCallCheck2 = __webpack_require__(203);
+
+	var _classCallCheck3 = _interopRequireDefault(_classCallCheck2);
+
+	var _invariant = __webpack_require__(249);
+
+	var _invariant2 = _interopRequireDefault(_invariant);
+
+	var _isEmpty = __webpack_require__(250);
+
+	var _isEmpty2 = _interopRequireDefault(_isEmpty);
+
+	var _warning = __webpack_require__(251);
+
+	var _warning2 = _interopRequireDefault(_warning);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
 
 	function defaultGetRowData(dataBlob, sectionID, rowID) {
 	  return dataBlob[sectionID][rowID];
@@ -21331,9 +22919,9 @@
 	   * - sectionHeaderHasChanged(prevSectionData, nextSectionData);
 	   */
 	  function ListViewDataSource(params) {
-	    _classCallCheck(this, ListViewDataSource);
+	    (0, _classCallCheck3["default"])(this, ListViewDataSource);
 
-	    (0, _invariant2.default)(params && typeof params.rowHasChanged === 'function', 'Must provide a rowHasChanged function.');
+	    (0, _invariant2["default"])(params && typeof params.rowHasChanged === 'function', 'Must provide a rowHasChanged function.');
 	    this._rowHasChanged = params.rowHasChanged;
 	    this._getRowData = params.getRowData || defaultGetRowData;
 	    this._sectionHeaderHasChanged = params.sectionHeaderHasChanged;
@@ -21368,221 +22956,207 @@
 	   */
 
 
-	  _createClass(ListViewDataSource, [{
-	    key: 'cloneWithRows',
-	    value: function cloneWithRows(dataBlob, rowIdentities) {
-	      var rowIds = rowIdentities ? [rowIdentities] : null;
-	      if (!this._sectionHeaderHasChanged) {
-	        this._sectionHeaderHasChanged = function () {
-	          return false;
-	        };
-	      }
-	      return this.cloneWithRowsAndSections({ s1: dataBlob }, ['s1'], rowIds);
+	  ListViewDataSource.prototype.cloneWithRows = function cloneWithRows(dataBlob, rowIdentities) {
+	    var rowIds = rowIdentities ? [rowIdentities] : null;
+	    if (!this._sectionHeaderHasChanged) {
+	      this._sectionHeaderHasChanged = function () {
+	        return false;
+	      };
 	    }
+	    return this.cloneWithRowsAndSections({ s1: dataBlob }, ['s1'], rowIds);
+	  };
 
-	    /**
-	     * This performs the same function as the `cloneWithRows` function but here
-	     * you also specify what your `sectionIdentities` are. If you don't care
-	     * about sections you should safely be able to use `cloneWithRows`.
-	     *
-	     * `sectionIdentities` is an array of identifiers for  sections.
-	     * ie. ['s1', 's2', ...].  If not provided, it's assumed that the
-	     * keys of dataBlob are the section identities.
-	     *
-	     * Note: this returns a new object!
-	     */
+	  /**
+	   * This performs the same function as the `cloneWithRows` function but here
+	   * you also specify what your `sectionIdentities` are. If you don't care
+	   * about sections you should safely be able to use `cloneWithRows`.
+	   *
+	   * `sectionIdentities` is an array of identifiers for  sections.
+	   * ie. ['s1', 's2', ...].  If not provided, it's assumed that the
+	   * keys of dataBlob are the section identities.
+	   *
+	   * Note: this returns a new object!
+	   */
 
-	  }, {
-	    key: 'cloneWithRowsAndSections',
-	    value: function cloneWithRowsAndSections(dataBlob, sectionIdentities, rowIdentities) {
-	      (0, _invariant2.default)(typeof this._sectionHeaderHasChanged === 'function', 'Must provide a sectionHeaderHasChanged function with section data.');
-	      (0, _invariant2.default)(!sectionIdentities || !rowIdentities || sectionIdentities.length === rowIdentities.length, 'row and section ids lengths must be the same');
 
-	      var newSource = new ListViewDataSource({
-	        getRowData: this._getRowData,
-	        getSectionHeaderData: this._getSectionHeaderData,
-	        rowHasChanged: this._rowHasChanged,
-	        sectionHeaderHasChanged: this._sectionHeaderHasChanged
+	  ListViewDataSource.prototype.cloneWithRowsAndSections = function cloneWithRowsAndSections(dataBlob, sectionIdentities, rowIdentities) {
+	    (0, _invariant2["default"])(typeof this._sectionHeaderHasChanged === 'function', 'Must provide a sectionHeaderHasChanged function with section data.');
+	    (0, _invariant2["default"])(!sectionIdentities || !rowIdentities || sectionIdentities.length === rowIdentities.length, 'row and section ids lengths must be the same');
+
+	    var newSource = new ListViewDataSource({
+	      getRowData: this._getRowData,
+	      getSectionHeaderData: this._getSectionHeaderData,
+	      rowHasChanged: this._rowHasChanged,
+	      sectionHeaderHasChanged: this._sectionHeaderHasChanged
+	    });
+	    newSource._dataBlob = dataBlob;
+	    if (sectionIdentities) {
+	      newSource.sectionIdentities = sectionIdentities;
+	    } else {
+	      newSource.sectionIdentities = Object.keys(dataBlob);
+	    }
+	    if (rowIdentities) {
+	      newSource.rowIdentities = rowIdentities;
+	    } else {
+	      newSource.rowIdentities = [];
+	      newSource.sectionIdentities.forEach(function (sectionID) {
+	        newSource.rowIdentities.push(Object.keys(dataBlob[sectionID]));
 	      });
-	      newSource._dataBlob = dataBlob;
-	      if (sectionIdentities) {
-	        newSource.sectionIdentities = sectionIdentities;
+	    }
+	    newSource._cachedRowCount = countRows(newSource.rowIdentities);
+
+	    newSource._calculateDirtyArrays(this._dataBlob, this.sectionIdentities, this.rowIdentities);
+
+	    return newSource;
+	  };
+
+	  ListViewDataSource.prototype.getRowCount = function getRowCount() {
+	    return this._cachedRowCount;
+	  };
+
+	  ListViewDataSource.prototype.getRowAndSectionCount = function getRowAndSectionCount() {
+	    return this._cachedRowCount + this.sectionIdentities.length;
+	  };
+
+	  /**
+	   * Returns if the row is dirtied and needs to be rerendered
+	   */
+
+
+	  ListViewDataSource.prototype.rowShouldUpdate = function rowShouldUpdate(sectionIndex, rowIndex) {
+	    var needsUpdate = this._dirtyRows[sectionIndex][rowIndex];
+	    (0, _warning2["default"])(needsUpdate !== undefined, 'missing dirtyBit for section, row: ' + sectionIndex + ', ' + rowIndex);
+	    return needsUpdate;
+	  };
+
+	  /**
+	   * Gets the data required to render the row.
+	   */
+
+
+	  ListViewDataSource.prototype.getRowData = function getRowData(sectionIndex, rowIndex) {
+	    var sectionID = this.sectionIdentities[sectionIndex];
+	    var rowID = this.rowIdentities[sectionIndex][rowIndex];
+	    (0, _warning2["default"])(sectionID !== undefined && rowID !== undefined, 'rendering invalid section, row: ' + sectionIndex + ', ' + rowIndex);
+	    return this._getRowData(this._dataBlob, sectionID, rowID);
+	  };
+
+	  /**
+	   * Gets the rowID at index provided if the dataSource arrays were flattened,
+	   * or null of out of range indexes.
+	   */
+
+
+	  ListViewDataSource.prototype.getRowIDForFlatIndex = function getRowIDForFlatIndex(index) {
+	    var accessIndex = index;
+	    for (var ii = 0; ii < this.sectionIdentities.length; ii++) {
+	      if (accessIndex >= this.rowIdentities[ii].length) {
+	        accessIndex -= this.rowIdentities[ii].length;
 	      } else {
-	        newSource.sectionIdentities = Object.keys(dataBlob);
+	        return this.rowIdentities[ii][accessIndex];
 	      }
-	      if (rowIdentities) {
-	        newSource.rowIdentities = rowIdentities;
+	    }
+	    return null;
+	  };
+
+	  /**
+	   * Gets the sectionID at index provided if the dataSource arrays were flattened,
+	   * or null for out of range indexes.
+	   */
+
+
+	  ListViewDataSource.prototype.getSectionIDForFlatIndex = function getSectionIDForFlatIndex(index) {
+	    var accessIndex = index;
+	    for (var ii = 0; ii < this.sectionIdentities.length; ii++) {
+	      if (accessIndex >= this.rowIdentities[ii].length) {
+	        accessIndex -= this.rowIdentities[ii].length;
 	      } else {
-	        newSource.rowIdentities = [];
-	        newSource.sectionIdentities.forEach(function (sectionID) {
-	          newSource.rowIdentities.push(Object.keys(dataBlob[sectionID]));
-	        });
+	        return this.sectionIdentities[ii];
 	      }
-	      newSource._cachedRowCount = countRows(newSource.rowIdentities);
-
-	      newSource._calculateDirtyArrays(this._dataBlob, this.sectionIdentities, this.rowIdentities);
-
-	      return newSource;
 	    }
-	  }, {
-	    key: 'getRowCount',
-	    value: function getRowCount() {
-	      return this._cachedRowCount;
+	    return null;
+	  };
+
+	  /**
+	   * Returns an array containing the number of rows in each section
+	   */
+
+
+	  ListViewDataSource.prototype.getSectionLengths = function getSectionLengths() {
+	    var results = [];
+	    for (var ii = 0; ii < this.sectionIdentities.length; ii++) {
+	      results.push(this.rowIdentities[ii].length);
 	    }
-	  }, {
-	    key: 'getRowAndSectionCount',
-	    value: function getRowAndSectionCount() {
-	      return this._cachedRowCount + this.sectionIdentities.length;
-	    }
+	    return results;
+	  };
 
-	    /**
-	     * Returns if the row is dirtied and needs to be rerendered
-	     */
+	  /**
+	   * Returns if the section header is dirtied and needs to be rerendered
+	   */
 
-	  }, {
-	    key: 'rowShouldUpdate',
-	    value: function rowShouldUpdate(sectionIndex, rowIndex) {
-	      var needsUpdate = this._dirtyRows[sectionIndex][rowIndex];
-	      (0, _warning2.default)(needsUpdate !== undefined, 'missing dirtyBit for section, row: ' + sectionIndex + ', ' + rowIndex);
-	      return needsUpdate;
-	    }
 
-	    /**
-	     * Gets the data required to render the row.
-	     */
+	  ListViewDataSource.prototype.sectionHeaderShouldUpdate = function sectionHeaderShouldUpdate(sectionIndex) {
+	    var needsUpdate = this._dirtySections[sectionIndex];
+	    (0, _warning2["default"])(needsUpdate !== undefined, 'missing dirtyBit for section: ' + sectionIndex);
+	    return needsUpdate;
+	  };
 
-	  }, {
-	    key: 'getRowData',
-	    value: function getRowData(sectionIndex, rowIndex) {
-	      var sectionID = this.sectionIdentities[sectionIndex];
-	      var rowID = this.rowIdentities[sectionIndex][rowIndex];
-	      (0, _warning2.default)(sectionID !== undefined && rowID !== undefined, 'rendering invalid section, row: ' + sectionIndex + ', ' + rowIndex);
-	      return this._getRowData(this._dataBlob, sectionID, rowID);
-	    }
+	  /**
+	   * Gets the data required to render the section header
+	   */
 
-	    /**
-	     * Gets the rowID at index provided if the dataSource arrays were flattened,
-	     * or null of out of range indexes.
-	     */
 
-	  }, {
-	    key: 'getRowIDForFlatIndex',
-	    value: function getRowIDForFlatIndex(index) {
-	      var accessIndex = index;
-	      for (var ii = 0; ii < this.sectionIdentities.length; ii++) {
-	        if (accessIndex >= this.rowIdentities[ii].length) {
-	          accessIndex -= this.rowIdentities[ii].length;
-	        } else {
-	          return this.rowIdentities[ii][accessIndex];
-	        }
-	      }
+	  ListViewDataSource.prototype.getSectionHeaderData = function getSectionHeaderData(sectionIndex) {
+	    if (!this._getSectionHeaderData) {
 	      return null;
 	    }
+	    var sectionID = this.sectionIdentities[sectionIndex];
+	    (0, _warning2["default"])(sectionID !== undefined, 'renderSection called on invalid section: ' + sectionIndex);
+	    return this._getSectionHeaderData(this._dataBlob, sectionID);
+	  };
 
-	    /**
-	     * Gets the sectionID at index provided if the dataSource arrays were flattened,
-	     * or null for out of range indexes.
-	     */
+	  /**
+	   * Private members and methods.
+	   */
 
-	  }, {
-	    key: 'getSectionIDForFlatIndex',
-	    value: function getSectionIDForFlatIndex(index) {
-	      var accessIndex = index;
-	      for (var ii = 0; ii < this.sectionIdentities.length; ii++) {
-	        if (accessIndex >= this.rowIdentities[ii].length) {
-	          accessIndex -= this.rowIdentities[ii].length;
-	        } else {
-	          return this.sectionIdentities[ii];
-	        }
-	      }
-	      return null;
+	  // These two 'protected' variables are accessed by ListView to iterate over
+	  // the data in this class.
+
+
+	  ListViewDataSource.prototype._calculateDirtyArrays = function _calculateDirtyArrays(prevDataBlob, prevSectionIDs, prevRowIDs) {
+	    // construct a hashmap of the existing (old) id arrays
+	    var prevSectionsHash = keyedDictionaryFromArray(prevSectionIDs);
+	    var prevRowsHash = {};
+	    for (var ii = 0; ii < prevRowIDs.length; ii++) {
+	      var sectionID = prevSectionIDs[ii];
+	      (0, _warning2["default"])(!prevRowsHash[sectionID], 'SectionID appears more than once: ' + sectionID);
+	      prevRowsHash[sectionID] = keyedDictionaryFromArray(prevRowIDs[ii]);
 	    }
 
-	    /**
-	     * Returns an array containing the number of rows in each section
-	     */
+	    // compare the 2 identity array and get the dirtied rows
+	    this._dirtySections = [];
+	    this._dirtyRows = [];
 
-	  }, {
-	    key: 'getSectionLengths',
-	    value: function getSectionLengths() {
-	      var results = [];
-	      for (var ii = 0; ii < this.sectionIdentities.length; ii++) {
-	        results.push(this.rowIdentities[ii].length);
+	    var dirty;
+	    for (var sIndex = 0; sIndex < this.sectionIdentities.length; sIndex++) {
+	      var sectionID = this.sectionIdentities[sIndex];
+	      // dirty if the sectionHeader is new or _sectionHasChanged is true
+	      dirty = !prevSectionsHash[sectionID];
+	      var sectionHeaderHasChanged = this._sectionHeaderHasChanged;
+	      if (!dirty && sectionHeaderHasChanged) {
+	        dirty = sectionHeaderHasChanged(this._getSectionHeaderData(prevDataBlob, sectionID), this._getSectionHeaderData(this._dataBlob, sectionID));
 	      }
-	      return results;
-	    }
+	      this._dirtySections.push(!!dirty);
 
-	    /**
-	     * Returns if the section header is dirtied and needs to be rerendered
-	     */
-
-	  }, {
-	    key: 'sectionHeaderShouldUpdate',
-	    value: function sectionHeaderShouldUpdate(sectionIndex) {
-	      var needsUpdate = this._dirtySections[sectionIndex];
-	      (0, _warning2.default)(needsUpdate !== undefined, 'missing dirtyBit for section: ' + sectionIndex);
-	      return needsUpdate;
-	    }
-
-	    /**
-	     * Gets the data required to render the section header
-	     */
-
-	  }, {
-	    key: 'getSectionHeaderData',
-	    value: function getSectionHeaderData(sectionIndex) {
-	      if (!this._getSectionHeaderData) {
-	        return null;
-	      }
-	      var sectionID = this.sectionIdentities[sectionIndex];
-	      (0, _warning2.default)(sectionID !== undefined, 'renderSection called on invalid section: ' + sectionIndex);
-	      return this._getSectionHeaderData(this._dataBlob, sectionID);
-	    }
-
-	    /**
-	     * Private members and methods.
-	     */
-
-	    // These two 'protected' variables are accessed by ListView to iterate over
-	    // the data in this class.
-
-	  }, {
-	    key: '_calculateDirtyArrays',
-	    value: function _calculateDirtyArrays(prevDataBlob, prevSectionIDs, prevRowIDs) {
-	      // construct a hashmap of the existing (old) id arrays
-	      var prevSectionsHash = keyedDictionaryFromArray(prevSectionIDs);
-	      var prevRowsHash = {};
-	      for (var ii = 0; ii < prevRowIDs.length; ii++) {
-	        var sectionID = prevSectionIDs[ii];
-	        (0, _warning2.default)(!prevRowsHash[sectionID], 'SectionID appears more than once: ' + sectionID);
-	        prevRowsHash[sectionID] = keyedDictionaryFromArray(prevRowIDs[ii]);
-	      }
-
-	      // compare the 2 identity array and get the dirtied rows
-	      this._dirtySections = [];
-	      this._dirtyRows = [];
-
-	      var dirty;
-	      for (var sIndex = 0; sIndex < this.sectionIdentities.length; sIndex++) {
-	        var sectionID = this.sectionIdentities[sIndex];
-	        // dirty if the sectionHeader is new or _sectionHasChanged is true
-	        dirty = !prevSectionsHash[sectionID];
-	        var sectionHeaderHasChanged = this._sectionHeaderHasChanged;
-	        if (!dirty && sectionHeaderHasChanged) {
-	          dirty = sectionHeaderHasChanged(this._getSectionHeaderData(prevDataBlob, sectionID), this._getSectionHeaderData(this._dataBlob, sectionID));
-	        }
-	        this._dirtySections.push(!!dirty);
-
-	        this._dirtyRows[sIndex] = [];
-	        for (var rIndex = 0; rIndex < this.rowIdentities[sIndex].length; rIndex++) {
-	          var rowID = this.rowIdentities[sIndex][rIndex];
-	          // dirty if the section is new, row is new or _rowHasChanged is true
-	          dirty = !prevSectionsHash[sectionID] || !prevRowsHash[sectionID][rowID] || this._rowHasChanged(this._getRowData(prevDataBlob, sectionID, rowID), this._getRowData(this._dataBlob, sectionID, rowID));
-	          this._dirtyRows[sIndex].push(!!dirty);
-	        }
+	      this._dirtyRows[sIndex] = [];
+	      for (var rIndex = 0; rIndex < this.rowIdentities[sIndex].length; rIndex++) {
+	        var rowID = this.rowIdentities[sIndex][rIndex];
+	        // dirty if the section is new, row is new or _rowHasChanged is true
+	        dirty = !prevSectionsHash[sectionID] || !prevRowsHash[sectionID][rowID] || this._rowHasChanged(this._getRowData(prevDataBlob, sectionID, rowID), this._getRowData(this._dataBlob, sectionID, rowID));
+	        this._dirtyRows[sIndex].push(!!dirty);
 	      }
 	    }
-	  }]);
+	  };
 
 	  return ListViewDataSource;
 	}();
@@ -21597,13 +23171,13 @@
 	}
 
 	function keyedDictionaryFromArray(arr) {
-	  if ((0, _isEmpty2.default)(arr)) {
+	  if ((0, _isEmpty2["default"])(arr)) {
 	    return {};
 	  }
 	  var result = {};
 	  for (var ii = 0; ii < arr.length; ii++) {
 	    var key = arr[ii];
-	    (0, _warning2.default)(!result[key], 'Value appears more than once in array: ' + key);
+	    (0, _warning2["default"])(!result[key], 'Value appears more than once in array: ' + key);
 	    result[key] = true;
 	  }
 	  return result;
@@ -21612,44 +23186,228 @@
 	module.exports = ListViewDataSource;
 
 /***/ },
-/* 165 */
-/***/ function(module, exports) {
+/* 249 */
+/***/ function(module, exports, __webpack_require__) {
 
-	/**
-	 * Copyright 2013-2015, Facebook, Inc.
+	/* WEBPACK VAR INJECTION */(function(process) {/**
+	 * Copyright (c) 2013-present, Facebook, Inc.
 	 * All rights reserved.
 	 *
 	 * This source code is licensed under the BSD-style license found in the
 	 * LICENSE file in the root directory of this source tree. An additional grant
 	 * of patent rights can be found in the PATENTS file in the same directory.
 	 *
-	 * @providesModule isEmpty
 	 */
 
-	/*eslint-disable no-unused-vars */
-
-	/**
-	 * Mimics empty from PHP.
-	 */
 	'use strict';
 
-	function isEmpty(obj) {
-	  if (Array.isArray(obj)) {
-	    return obj.length === 0;
-	  } else if (typeof obj === 'object') {
-	    for (var i in obj) {
-	      return false;
+	/**
+	 * Use invariant() to assert state which your program assumes to be true.
+	 *
+	 * Provide sprintf-style format (only %s is supported) and arguments
+	 * to provide information about what broke and what you were
+	 * expecting.
+	 *
+	 * The invariant message will be stripped in production, but the invariant
+	 * will remain to ensure logic does not differ in production.
+	 */
+
+	function invariant(condition, format, a, b, c, d, e, f) {
+	  if (process.env.NODE_ENV !== 'production') {
+	    if (format === undefined) {
+	      throw new Error('invariant requires an error message argument');
 	    }
-	    return true;
-	  } else {
-	    return !obj;
+	  }
+
+	  if (!condition) {
+	    var error;
+	    if (format === undefined) {
+	      error = new Error('Minified exception occurred; use the non-minified dev environment ' + 'for the full error message and additional helpful warnings.');
+	    } else {
+	      var args = [a, b, c, d, e, f];
+	      var argIndex = 0;
+	      error = new Error(format.replace(/%s/g, function () {
+	        return args[argIndex++];
+	      }));
+	      error.name = 'Invariant Violation';
+	    }
+
+	    error.framesToPop = 1; // we don't care about invariant's own frame
+	    throw error;
 	  }
 	}
 
-	module.exports = isEmpty;
+	module.exports = invariant;
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(7)))
 
 /***/ },
-/* 166 */
+/* 250 */
+/***/ function(module, exports, __webpack_require__) {
+
+	/* WEBPACK VAR INJECTION */(function(process) {/**
+	 * Copyright (c) 2013-present, Facebook, Inc.
+	 * All rights reserved.
+	 *
+	 * This source code is licensed under the BSD-style license found in the
+	 * LICENSE file in the root directory of this source tree. An additional grant
+	 * of patent rights can be found in the PATENTS file in the same directory.
+	 *
+	 * 
+	 */
+
+	'use strict';
+
+	/* eslint-disable fb-www/typeof-undefined */
+	/* eslint-disable no-unused-vars */
+
+	var invariant = __webpack_require__(249);
+
+	/**
+	 * Checks if a value is empty.
+	 */
+	function isEmpty(value) {
+	  if (Array.isArray(value)) {
+	    return value.length === 0;
+	  } else if (typeof value === 'object') {
+	    if (value) {
+	      !(!isIterable(value) || value.size === undefined) ? process.env.NODE_ENV !== 'production' ? invariant(false, 'isEmpty() does not support iterable collections.') : invariant(false) : void 0;
+	      for (var _ in value) {
+	        return false;
+	      }
+	    }
+	    return true;
+	  } else {
+	    return !value;
+	  }
+	}
+
+	function isIterable(value) {
+	  if (typeof Symbol === 'undefined') {
+	    return false;
+	  }
+	  return value[Symbol.iterator];
+	}
+
+	module.exports = isEmpty;
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(7)))
+
+/***/ },
+/* 251 */
+/***/ function(module, exports, __webpack_require__) {
+
+	/* WEBPACK VAR INJECTION */(function(process) {/**
+	 * Copyright 2014-2015, Facebook, Inc.
+	 * All rights reserved.
+	 *
+	 * This source code is licensed under the BSD-style license found in the
+	 * LICENSE file in the root directory of this source tree. An additional grant
+	 * of patent rights can be found in the PATENTS file in the same directory.
+	 *
+	 */
+
+	'use strict';
+
+	var emptyFunction = __webpack_require__(252);
+
+	/**
+	 * Similar to invariant but only logs a warning if the condition is not met.
+	 * This can be used to log issues in development environments in critical
+	 * paths. Removing the logging code for production environments will keep the
+	 * same logic and follow the same code paths.
+	 */
+
+	var warning = emptyFunction;
+
+	if (process.env.NODE_ENV !== 'production') {
+	  (function () {
+	    var printWarning = function printWarning(format) {
+	      for (var _len = arguments.length, args = Array(_len > 1 ? _len - 1 : 0), _key = 1; _key < _len; _key++) {
+	        args[_key - 1] = arguments[_key];
+	      }
+
+	      var argIndex = 0;
+	      var message = 'Warning: ' + format.replace(/%s/g, function () {
+	        return args[argIndex++];
+	      });
+	      if (typeof console !== 'undefined') {
+	        console.error(message);
+	      }
+	      try {
+	        // --- Welcome to debugging React ---
+	        // This error was thrown as a convenience so that you can use this stack
+	        // to find the callsite that caused this warning to fire.
+	        throw new Error(message);
+	      } catch (x) {}
+	    };
+
+	    warning = function warning(condition, format) {
+	      if (format === undefined) {
+	        throw new Error('`warning(condition, format, ...args)` requires a warning ' + 'message argument');
+	      }
+
+	      if (format.indexOf('Failed Composite propType: ') === 0) {
+	        return; // Ignore CompositeComponent proptype check.
+	      }
+
+	      if (!condition) {
+	        for (var _len2 = arguments.length, args = Array(_len2 > 2 ? _len2 - 2 : 0), _key2 = 2; _key2 < _len2; _key2++) {
+	          args[_key2 - 2] = arguments[_key2];
+	        }
+
+	        printWarning.apply(undefined, [format].concat(args));
+	      }
+	    };
+	  })();
+	}
+
+	module.exports = warning;
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(7)))
+
+/***/ },
+/* 252 */
+/***/ function(module, exports) {
+
+	"use strict";
+
+	/**
+	 * Copyright (c) 2013-present, Facebook, Inc.
+	 * All rights reserved.
+	 *
+	 * This source code is licensed under the BSD-style license found in the
+	 * LICENSE file in the root directory of this source tree. An additional grant
+	 * of patent rights can be found in the PATENTS file in the same directory.
+	 *
+	 * 
+	 */
+
+	function makeEmptyFunction(arg) {
+	  return function () {
+	    return arg;
+	  };
+	}
+
+	/**
+	 * This function accepts and discards inputs; it has no side effects. This is
+	 * primarily useful idiomatically for overridable function endpoints which
+	 * always need to be callable, since JS lacks a null-call idiom ala Cocoa.
+	 */
+	var emptyFunction = function emptyFunction() {};
+
+	emptyFunction.thatReturns = makeEmptyFunction;
+	emptyFunction.thatReturnsFalse = makeEmptyFunction(false);
+	emptyFunction.thatReturnsTrue = makeEmptyFunction(true);
+	emptyFunction.thatReturnsNull = makeEmptyFunction(null);
+	emptyFunction.thatReturnsThis = function () {
+	  return this;
+	};
+	emptyFunction.thatReturnsArgument = function (arg) {
+	  return arg;
+	};
+
+	module.exports = emptyFunction;
+
+/***/ },
+/* 253 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -21658,7 +23416,25 @@
 	  value: true
 	});
 
-	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+	var _extends2 = __webpack_require__(164);
+
+	var _extends3 = _interopRequireDefault(_extends2);
+
+	var _objectWithoutProperties2 = __webpack_require__(202);
+
+	var _objectWithoutProperties3 = _interopRequireDefault(_objectWithoutProperties2);
+
+	var _classCallCheck2 = __webpack_require__(203);
+
+	var _classCallCheck3 = _interopRequireDefault(_classCallCheck2);
+
+	var _possibleConstructorReturn2 = __webpack_require__(204);
+
+	var _possibleConstructorReturn3 = _interopRequireDefault(_possibleConstructorReturn2);
+
+	var _inherits2 = __webpack_require__(240);
+
+	var _inherits3 = _interopRequireDefault(_inherits2);
 
 	var _react = __webpack_require__(4);
 
@@ -21668,2334 +23444,561 @@
 
 	var _reactDom2 = _interopRequireDefault(_reactDom);
 
-	var _zscroller = __webpack_require__(167);
+	var _ScrollResponder = __webpack_require__(254);
 
-	var _zscroller2 = _interopRequireDefault(_zscroller);
+	var _ScrollResponder2 = _interopRequireDefault(_ScrollResponder);
 
-	var _objectAssign = __webpack_require__(170);
+	var _StyleSheet = __webpack_require__(255);
 
-	var _objectAssign2 = _interopRequireDefault(_objectAssign);
+	var _StyleSheet2 = _interopRequireDefault(_StyleSheet);
 
-	var _classnames = __webpack_require__(171);
+	var _View = __webpack_require__(256);
 
-	var _classnames2 = _interopRequireDefault(_classnames);
+	var _View2 = _interopRequireDefault(_View);
 
-	var _util = __webpack_require__(172);
+	var _reactMixin = __webpack_require__(262);
 
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	var _reactMixin2 = _interopRequireDefault(_reactMixin);
 
-	function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+	var _autobindDecorator = __webpack_require__(265);
 
-	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+	var _autobindDecorator2 = _interopRequireDefault(_autobindDecorator);
 
-	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
 
-	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-
-	// import mixin from 'react-mixin';
-	// import PullUpLoadMoreMixin from './PullUpLoadMoreMixin';
+	var throttle = __webpack_require__(266);
+	var invariant = __webpack_require__(249);
 
 	var SCROLLVIEW = 'ScrollView';
 	var INNERVIEW = 'InnerScrollView';
+	var CONTENT_EXT_STYLE = ['padding', 'paddingTop', 'paddingBottom', 'paddingLeft', 'paddingRight'];
 
-	// https://github.com/facebook/react-native/blob/master/Libraries/Components/ScrollView/ScrollView.js
-	// https://facebook.github.io/react-native/docs/refreshcontrol.html
+	/**
+	 * Component that wraps platform ScrollView while providing
+	 * integration with touch locking "responder" system.
+	 *
+	 * Keep in mind that ScrollViews must have a bounded height in order to work,
+	 * since they contain unbounded-height children into a bounded container (via
+	 * a scroll interaction). In order to bound the height of a ScrollView, either
+	 * set the height of the view directly (discouraged) or make sure all parent
+	 * views have bounded height. Forgetting to transfer `{flex: 1}` down the
+	 * view stack can lead to errors here, which the element inspector makes
+	 * easy to debug.
+	 *
+	 * Doesn't yet support other contained responders from blocking this scroll
+	 * view from becoming the responder.
+	 */
 
-	var propTypes = {
-	  contentContainerStyle: _react.PropTypes.object,
+	var ScrollView = function (_React$Component) {
+	  (0, _inherits3["default"])(ScrollView, _React$Component);
+
+	  function ScrollView() {
+	    var _temp, _this, _ret;
+
+	    (0, _classCallCheck3["default"])(this, ScrollView);
+
+	    for (var _len = arguments.length, args = Array(_len), _key = 0; _key < _len; _key++) {
+	      args[_key] = arguments[_key];
+	    }
+
+	    return _ret = (_temp = (_this = (0, _possibleConstructorReturn3["default"])(this, _React$Component.call.apply(_React$Component, [this].concat(args))), _this), _this.state = _this.scrollResponderMixinGetInitialState(), _temp), (0, _possibleConstructorReturn3["default"])(_this, _ret);
+	  }
+
+	  ScrollView.prototype.componentDidMount = function componentDidMount() {
+	    if (this.props.stickyHeader || this.props.useBodyScroll) {
+	      return;
+	    }
+	    var scrollView = _reactDom2["default"].findDOMNode(this.refs[SCROLLVIEW]);
+	    this.__handleScroll = this._handleScroll();
+	    scrollView.addEventListener('scroll', this.__handleScroll);
+	  };
+
+	  ScrollView.prototype.componentWillUnmount = function componentWillUnmount() {
+	    if (this.props.stickyHeader || this.props.useBodyScroll) {
+	      return;
+	    }
+	    var scrollView = _reactDom2["default"].findDOMNode(this.refs[SCROLLVIEW]);
+	    scrollView.removeEventListener('scroll', this.__handleScroll);
+	  };
+	  /**
+	   * Returns a reference to the underlying scroll responder, which supports
+	   * operations like `scrollTo`. All ScrollView-like components should
+	   * implement this method so that they can be composed while providing access
+	   * to the underlying scroll responder's methods.
+	   */
+
+
+	  ScrollView.prototype.getScrollResponder = function getScrollResponder() {
+	    return this;
+	  };
+
+	  ScrollView.prototype.getInnerViewNode = function getInnerViewNode() {
+	    return this.refs[INNERVIEW];
+	  };
+
+	  ScrollView.prototype.scrollTo = function scrollTo(destY, destX) {
+	    // $FlowFixMe - Don't know how to pass Mixin correctly. Postpone for now
+	    // this.getScrollResponder().scrollResponderScrollTo(destX || 0, destY || 0);
+	    this.scrollWithoutAnimationTo(destY, destX);
+	  };
+
+	  ScrollView.prototype.scrollWithoutAnimationTo = function scrollWithoutAnimationTo(destY, destX) {
+	    // $FlowFixMe - Don't know how to pass Mixin correctly. Postpone for now
+	    // this.getScrollResponder().scrollResponderScrollWithouthAnimationTo(
+	    //   destX || 0,
+	    //   destY || 0,
+	    // );
+
+	    var scrollView = _reactDom2["default"].findDOMNode(this.refs[SCROLLVIEW]);
+	    scrollView.scrollTop = destY || 0;
+	    scrollView.scrollLeft = destX || 0;
+	  };
+
+	  ScrollView.prototype._handleScroll = function _handleScroll(e) {
+	    var handleScroll = function handleScroll() {};
+	    // let handleScroll = this.handleScroll;
+	    if (this.props.scrollEventThrottle && this.props.onScroll) {
+	      handleScroll = throttle(this.handleScroll, this.props.scrollEventThrottle);
+	    }
+	    return handleScroll;
+	  };
+
+	  ScrollView.prototype.handleScroll = function handleScroll(e) {
+	    // if (__DEV__) {
+	    //   if (this.props.onScroll && !this.props.scrollEventThrottle) {
+	    //     console.log(
+	    //       'You specified `onScroll` on a <ScrollView> but not ' +
+	    //       '`scrollEventThrottle`. You will only receive one event. ' +
+	    //       'Using `16` you get all the events but be aware that it may ' +
+	    //       'cause frame drops, use a bigger number if you don\'t need as ' +
+	    //       'much precision.'
+	    //     );
+	    //   }
+	    // }
+	    // if (Platform.OS === 'android') {
+	    //   if (this.props.keyboardDismissMode === 'on-drag') {
+	    //     dismissKeyboard();
+	    //   }
+	    // }
+
+	    this.props.onScroll && this.props.onScroll(e);
+	  };
+
+	  // _handleContentOnLayout(e) {
+	  //   const {width, height} = e.nativeEvent.layout;
+	  //   this.props.onContentSizeChange && this.props.onContentSizeChange(width, height);
+	  // }
+
+	  ScrollView.prototype.render = function render() {
+	    var _props = this.props;
+	    var _props$style = _props.style;
+	    var style = _props$style === undefined ? {} : _props$style;
+	    var otherProps = (0, _objectWithoutProperties3["default"])(_props, ['style']);
+
+
+	    var contentContainerExtStyle = {};
+
+	    for (var i = 0; i < CONTENT_EXT_STYLE.length; i++) {
+	      if (typeof style[CONTENT_EXT_STYLE[i]] === 'number') {
+	        contentContainerExtStyle[CONTENT_EXT_STYLE[i]] = style[CONTENT_EXT_STYLE[i]];
+	      }
+	    }
+
+	    var contentContainerStyle = [styles.contentContainer, this.props.horizontal && styles.contentContainerHorizontal, this.props.contentContainerStyle, contentContainerExtStyle];
+	    // if (__DEV__ && this.props.style) {
+	    //   let style = flattenStyle(this.props.style);
+	    //   let childLayoutProps = ['alignItems', 'justifyContent']
+	    //     .filter((prop) => style && style[prop] !== undefined);
+	    //   invariant(
+	    //     childLayoutProps.length === 0,
+	    //     'ScrollView child layout (' + JSON.stringify(childLayoutProps) +
+	    //       ') must by applied through the contentContainerStyle prop.'
+	    //   );
+	    // }
+
+	    var contentSizeChangeProps = {};
+	    // if (this.props.onContentSizeChange) { // 会多次触发 scroll 事件
+	    //   contentSizeChangeProps = {
+	    //     onLayout: this._handleContentOnLayout,
+	    //   };
+	    // }
+
+	    var contentContainer = _react2["default"].createElement(
+	      _View2["default"],
+	      (0, _extends3["default"])({}, contentSizeChangeProps, {
+	        ref: INNERVIEW,
+	        style: _StyleSheet2["default"].flattenStyle(contentContainerStyle),
+	        removeClippedSubviews: this.props.removeClippedSubviews,
+	        collapsable: false }),
+	      this.props.children
+	    );
+
+	    var alwaysBounceHorizontal = this.props.alwaysBounceHorizontal !== undefined ? this.props.alwaysBounceHorizontal : this.props.horizontal;
+
+	    var alwaysBounceVertical = this.props.alwaysBounceVertical !== undefined ? this.props.alwaysBounceVertical : !this.props.horizontal;
+
+	    // const handleScroll = this._handleScroll();
+
+	    var props = (0, _extends3["default"])({}, otherProps, {
+	      alwaysBounceHorizontal: alwaysBounceHorizontal,
+	      alwaysBounceVertical: alwaysBounceVertical,
+	      style: _StyleSheet2["default"].flattenStyle([otherProps.stickyHeader || otherProps.useBodyScroll ? null : styles.base, this.props.style]),
+	      onTouchStart: this.scrollResponderHandleTouchStart,
+	      onTouchMove: this.scrollResponderHandleTouchMove,
+	      onTouchEnd: this.scrollResponderHandleTouchEnd,
+	      onScrollBeginDrag: this.scrollResponderHandleScrollBeginDrag,
+	      onScrollEndDrag: this.scrollResponderHandleScrollEndDrag,
+	      onMomentumScrollBegin: this.scrollResponderHandleMomentumScrollBegin,
+	      onMomentumScrollEnd: this.scrollResponderHandleMomentumScrollEnd,
+	      onStartShouldSetResponder: this.scrollResponderHandleStartShouldSetResponder,
+	      onStartShouldSetResponderCapture: this.scrollResponderHandleStartShouldSetResponderCapture,
+	      // onScrollShouldSetResponder: this.scrollResponderHandleScrollShouldSetResponder,
+	      // onScroll: handleScroll,
+	      // onScrollShouldSetResponder: handleScroll,
+	      // replace onScroll in the props
+	      // onScroll: () => {},
+	      onResponderGrant: this.scrollResponderHandleResponderGrant,
+	      onResponderTerminationRequest: this.scrollResponderHandleTerminationRequest,
+	      onResponderTerminate: this.scrollResponderHandleTerminate,
+	      onResponderRelease: this.scrollResponderHandleResponderRelease,
+	      onResponderReject: this.scrollResponderHandleResponderReject
+	    });
+	    // 这里会绑定多次？放在 componentDidMount 里绑定 onScroll
+	    delete props.onScroll;
+
+	    var decelerationRate = this.props.decelerationRate;
+
+	    if (decelerationRate) {
+	      props.decelerationRate = processDecelerationRate(decelerationRate);
+	    }
+
+	    var ScrollViewClass = _View2["default"];
+	    // if (Platform.OS === 'ios') {
+	    //   ScrollViewClass = RCTScrollView;
+	    // } else if (Platform.OS === 'android') {
+	    //   if (this.props.horizontal) {
+	    //     ScrollViewClass = AndroidHorizontalScrollView;
+	    //   } else {
+	    //     ScrollViewClass = AndroidScrollView;
+	    //   }
+	    // }
+	    // invariant(
+	    //   ScrollViewClass !== undefined,
+	    //   'ScrollViewClass must not be undefined'
+	    // );
+
+	    var refreshControl = this.props.refreshControl;
+	    if (refreshControl) {
+	      // if (Platform.OS === 'ios') {
+	      //   // On iOS the RefreshControl is a child of the ScrollView.
+	      //   return (
+	      //     <ScrollViewClass {...props} ref={this._setScrollViewRef}>
+	      //       {refreshControl}
+	      //       {contentContainer}
+	      //     </ScrollViewClass>
+	      //   );
+	      // } else if (Platform.OS === 'android') {
+	      //   // On Android wrap the ScrollView with a AndroidSwipeRefreshLayout.
+	      //   // Since the ScrollView is wrapped add the style props to the
+	      //   // AndroidSwipeRefreshLayout and use flex: 1 for the ScrollView.
+	      //   return React.cloneElement(
+	      //     refreshControl,
+	      //     {style: props.style},
+	      //     <ScrollViewClass {...props} style={styles.base} ref={this._setScrollViewRef}>
+	      //       {contentContainer}
+	      //     </ScrollViewClass>
+	      //   );
+	      // }
+	      if (props.stickyHeader || props.useBodyScroll) {
+	        return _react2["default"].createElement(
+	          ScrollViewClass,
+	          (0, _extends3["default"])({}, props, { ref: SCROLLVIEW }),
+	          refreshControl,
+	          this.props.children
+	        );
+	      }
+	      return _react2["default"].createElement(
+	        ScrollViewClass,
+	        (0, _extends3["default"])({}, props, { ref: SCROLLVIEW }),
+	        refreshControl,
+	        contentContainer
+	      );
+	    }
+
+	    if (props.stickyHeader || props.useBodyScroll) {
+	      return _react2["default"].createElement(
+	        ScrollViewClass,
+	        (0, _extends3["default"])({}, props, { ref: SCROLLVIEW }),
+	        this.props.children
+	      );
+	    }
+	    return _react2["default"].createElement(
+	      ScrollViewClass,
+	      (0, _extends3["default"])({}, props, { ref: SCROLLVIEW }),
+	      contentContainer
+	    );
+	  };
+
+	  return ScrollView;
+	}(_react2["default"].Component);
+
+	ScrollView.propTypes = {
+	  /**
+	   * Controls whether iOS should automatically adjust the content inset
+	   * for scroll views that are placed behind a navigation bar or
+	   * tab bar/ toolbar. The default value is true.
+	   * @platform ios
+	   */
+	  automaticallyAdjustContentInsets: _react.PropTypes.bool,
+	  /**
+	   * The amount by which the scroll view content is inset from the edges
+	   * of the scroll view. Defaults to `{0, 0, 0, 0}`.
+	   * @platform ios
+	   */
+	  // contentInset: EdgeInsetsPropType,
+	  /**
+	   * Used to manually set the starting scroll offset.
+	   * The default value is `{x: 0, y: 0}`.
+	   * @platform ios
+	   */
+	  // contentOffset: PointPropType,
+	  /**
+	   * When true, the scroll view bounces when it reaches the end of the
+	   * content if the content is larger then the scroll view along the axis of
+	   * the scroll direction. When false, it disables all bouncing even if
+	   * the `alwaysBounce*` props are true. The default value is true.
+	   * @platform ios
+	   */
+	  bounces: _react.PropTypes.bool,
+	  /**
+	   * When true, gestures can drive zoom past min/max and the zoom will animate
+	   * to the min/max value at gesture end, otherwise the zoom will not exceed
+	   * the limits.
+	   * @platform ios
+	   */
+	  bouncesZoom: _react.PropTypes.bool,
+	  /**
+	   * When true, the scroll view bounces horizontally when it reaches the end
+	   * even if the content is smaller than the scroll view itself. The default
+	   * value is true when `horizontal={true}` and false otherwise.
+	   * @platform ios
+	   */
+	  alwaysBounceHorizontal: _react.PropTypes.bool,
+	  /**
+	   * When true, the scroll view bounces vertically when it reaches the end
+	   * even if the content is smaller than the scroll view itself. The default
+	   * value is false when `horizontal={true}` and true otherwise.
+	   * @platform ios
+	   */
+	  alwaysBounceVertical: _react.PropTypes.bool,
+	  /**
+	   * When true, the scroll view automatically centers the content when the
+	   * content is smaller than the scroll view bounds; when the content is
+	   * larger than the scroll view, this property has no effect. The default
+	   * value is false.
+	   * @platform ios
+	   */
+	  centerContent: _react.PropTypes.bool,
+	  /**
+	   * These styles will be applied to the scroll view content container which
+	   * wraps all of the child views. Example:
+	   *
+	   *   return (
+	   *     <ScrollView contentContainerStyle={styles.contentContainer}>
+	   *     </ScrollView>
+	   *   );
+	   *   ...
+	   *   var styles = StyleSheet.create({
+	   *     contentContainer: {
+	   *       paddingVertical: 20
+	   *     }
+	   *   });
+	   */
+	  // contentContainerStyle: StyleSheetPropType(ViewStylePropTypes),
+	  /**
+	   * A floating-point number that determines how quickly the scroll view
+	   * decelerates after the user lifts their finger. Reasonable choices include
+	   *   - Normal: 0.998 (the default)
+	   *   - Fast: 0.9
+	   * @platform ios
+	   */
+	  decelerationRate: _react.PropTypes.number,
+	  /**
+	   * When true, the scroll view's children are arranged horizontally in a row
+	   * instead of vertically in a column. The default value is false.
+	   */
+	  horizontal: _react.PropTypes.bool,
+	  /**
+	   * When true, the ScrollView will try to lock to only vertical or horizontal
+	   * scrolling while dragging.  The default value is false.
+	   * @platform ios
+	   */
+	  directionalLockEnabled: _react.PropTypes.bool,
+	  /**
+	   * When false, once tracking starts, won't try to drag if the touch moves.
+	   * The default value is true.
+	   * @platform ios
+	   */
+	  canCancelContentTouches: _react.PropTypes.bool,
+	  /**
+	   * Determines whether the keyboard gets dismissed in response to a drag.
+	   *   - 'none' (the default), drags do not dismiss the keyboard.
+	   *   - 'on-drag', the keyboard is dismissed when a drag begins.
+	   *   - 'interactive', the keyboard is dismissed interactively with the drag and moves in
+	   *     synchrony with the touch; dragging upwards cancels the dismissal.
+	   *     On android this is not supported and it will have the same behavior as 'none'.
+	   */
+	  keyboardDismissMode: _react.PropTypes.oneOf(['none', // default
+	  'interactive', 'on-drag']),
+	  /**
+	   * When false, tapping outside of the focused text input when the keyboard
+	   * is up dismisses the keyboard. When true, the scroll view will not catch
+	   * taps, and the keyboard will not dismiss automatically. The default value
+	   * is false.
+	   */
+	  keyboardShouldPersistTaps: _react.PropTypes.bool,
+	  /**
+	   * The maximum allowed zoom scale. The default value is 1.0.
+	   * @platform ios
+	   */
+	  maximumZoomScale: _react.PropTypes.number,
+	  /**
+	   * The minimum allowed zoom scale. The default value is 1.0.
+	   * @platform ios
+	   */
+	  minimumZoomScale: _react.PropTypes.number,
+	  /**
+	   * Fires at most once per frame during scrolling. The frequency of the
+	   * events can be contolled using the `scrollEventThrottle` prop.
+	   */
 	  onScroll: _react.PropTypes.func,
+	  /**
+	   * Called when a scrolling animation ends.
+	   * @platform ios
+	   */
+	  onScrollAnimationEnd: _react.PropTypes.func,
+	  /**
+	   * When true, the scroll view stops on multiples of the scroll view's size
+	   * when scrolling. This can be used for horizontal pagination. The default
+	   * value is false.
+	   * @platform ios
+	   */
+	  pagingEnabled: _react.PropTypes.bool,
+	  /**
+	   * When false, the content does not scroll.
+	   * The default value is true.
+	   * @platform ios
+	   */
+	  scrollEnabled: _react.PropTypes.bool,
+	  /**
+	   * This controls how often the scroll event will be fired while scrolling
+	   * (in events per seconds). A higher number yields better accuracy for code
+	   * that is tracking the scroll position, but can lead to scroll performance
+	   * problems due to the volume of information being send over the bridge.
+	   * The default value is zero, which means the scroll event will be sent
+	   * only once each time the view is scrolled.
+	   * @platform ios
+	   */
 	  scrollEventThrottle: _react.PropTypes.number,
-	  removeClippedSubviews: _react.PropTypes.bool, // offscreen views are removed
+	  /**
+	   * The amount by which the scroll view indicators are inset from the edges
+	   * of the scroll view. This should normally be set to the same value as
+	   * the `contentInset`. Defaults to `{0, 0, 0, 0}`.
+	   * @platform ios
+	   */
+	  // scrollIndicatorInsets: EdgeInsetsPropType,
+	  /**
+	   * When true, the scroll view scrolls to top when the status bar is tapped.
+	   * The default value is true.
+	   * @platform ios
+	   */
+	  scrollsToTop: _react.PropTypes.bool,
+	  /**
+	   * When true, shows a horizontal scroll indicator.
+	   */
+	  showsHorizontalScrollIndicator: _react.PropTypes.bool,
+	  /**
+	   * When true, shows a vertical scroll indicator.
+	   */
+	  showsVerticalScrollIndicator: _react.PropTypes.bool,
+	  /**
+	   * An array of child indices determining which children get docked to the
+	   * top of the screen when scrolling. For example, passing
+	   * `stickyHeaderIndices={[0]}` will cause the first child to be fixed to the
+	   * top of the scroll view. This property is not supported in conjunction
+	   * with `horizontal={true}`.
+	   * @platform ios
+	   */
+	  stickyHeaderIndices: _react.PropTypes.arrayOf(_react.PropTypes.number),
+	  // style: StyleSheetPropType(ViewStylePropTypes),
+	  /**
+	   * When set, causes the scroll view to stop at multiples of the value of
+	   * `snapToInterval`. This can be used for paginating through children
+	   * that have lengths smaller than the scroll view. Used in combination
+	   * with `snapToAlignment`.
+	   * @platform ios
+	   */
+	  snapToInterval: _react.PropTypes.number,
+	  /**
+	   * When `snapToInterval` is set, `snapToAlignment` will define the relationship
+	   * of the the snapping to the scroll view.
+	   *   - `start` (the default) will align the snap at the left (horizontal) or top (vertical)
+	   *   - `center` will align the snap in the center
+	   *   - `end` will align the snap at the right (horizontal) or bottom (vertical)
+	   * @platform ios
+	   */
+	  snapToAlignment: _react.PropTypes.oneOf(['start', // default
+	  'center', 'end']),
+	  /**
+	   * Experimental: When true, offscreen child views (whose `overflow` value is
+	   * `hidden`) are removed from their native backing superview when offscreen.
+	   * This can improve scrolling performance on long lists. The default value is
+	   * false.
+	   */
+	  removeClippedSubviews: _react.PropTypes.bool,
+	  /**
+	   * The current scale of the scroll view content. The default value is 1.0.
+	   * @platform ios
+	   */
+	  zoomScale: _react.PropTypes.number,
+
+	  /**
+	   * A RefreshControl component, used to provide pull-to-refresh
+	   * functionality for the ScrollView.
+	   *
+	   * See [RefreshControl](docs/refreshcontrol.html).
+	   */
 	  refreshControl: _react.PropTypes.element
 	};
-	var styles = {
+	;
+
+	var styles = _StyleSheet2["default"].create({
 	  base: {
 	    position: 'relative',
 	    overflow: 'auto',
 	    WebkitOverflowScrolling: 'touch',
 	    flex: 1
 	  },
-	  zScroller: {
-	    position: 'relative',
-	    overflow: 'hidden',
-	    flex: 1
+	  contentContainer: {
+	    position: 'absolute',
+	    minWidth: '100%'
+	  },
+	  contentContainerHorizontal: {
+	    alignSelf: 'flex-start',
+	    flexDirection: 'row'
 	  }
-	};
-
-	var ScrollView = function (_React$Component) {
-	  _inherits(ScrollView, _React$Component);
-
-	  function ScrollView() {
-	    var _ref;
-
-	    var _temp, _this, _ret;
-
-	    _classCallCheck(this, ScrollView);
-
-	    for (var _len = arguments.length, args = Array(_len), _key = 0; _key < _len; _key++) {
-	      args[_key] = arguments[_key];
-	    }
-
-	    return _ret = (_temp = (_this = _possibleConstructorReturn(this, (_ref = ScrollView.__proto__ || Object.getPrototypeOf(ScrollView)).call.apply(_ref, [this].concat(args))), _this), _this.handleScroll = function (e) {
-	      _this.props.onScroll && _this.props.onScroll(e);
-	    }, _this.throttleScroll = function () {
-	      var handleScroll = function handleScroll() {};
-	      if (_this.props.scrollEventThrottle && _this.props.onScroll) {
-	        handleScroll = (0, _util.throttle)(_this.handleScroll, _this.props.scrollEventThrottle);
-	      }
-	      return handleScroll;
-	    }, _temp), _possibleConstructorReturn(_this, _ret);
-	  }
-
-	  _createClass(ScrollView, [{
-	    key: 'componentDidUpdate',
-	    value: function componentDidUpdate(prevProps, prevState) {
-	      if (prevProps.refreshControl && this.props.refreshControl) {
-	        var preRefreshing = prevProps.refreshControl.props.refreshing;
-	        var nowRefreshing = this.props.refreshControl.props.refreshing;
-	        if (preRefreshing && !nowRefreshing && this.refreshControlRefresh) {
-	          this.refreshControlRefresh();
-	        } else if (!this.manuallyRefresh && !preRefreshing && nowRefreshing) {
-	          this.domScroller.scroller.triggerPullToRefresh();
-	        }
-	      }
-	    }
-	  }, {
-	    key: 'componentDidMount',
-	    value: function componentDidMount() {
-	      var _this2 = this;
-
-	      var _props = this.props;
-	      var stickyHeader = _props.stickyHeader;
-	      var useBodyScroll = _props.useBodyScroll;
-	      var useZscroller = _props.useZscroller;
-	      var scrollerOptions = _props.scrollerOptions;
-	      var refreshControl = _props.refreshControl;
-
-	      if (stickyHeader || useBodyScroll) {
-	        return;
-	      }
-	      this.tsExec = this.throttleScroll();
-	      if (useZscroller) {
-	        this.domScroller = new _zscroller2.default(_reactDom2.default.findDOMNode(this.refs[INNERVIEW]), (0, _objectAssign2.default)({}, {
-	          scrollingX: false,
-	          onScroll: this.tsExec
-	        }, scrollerOptions));
-	        if (refreshControl) {
-	          (function () {
-	            var scroller = _this2.domScroller.scroller;
-	            var _refreshControl$props = refreshControl.props;
-	            var distanceToRefresh = _refreshControl$props.distanceToRefresh;
-	            var onRefresh = _refreshControl$props.onRefresh;
-
-	            scroller.activatePullToRefresh(distanceToRefresh, function () {
-	              _this2.manuallyRefresh = true;
-	              _this2.refs.refreshControl.setState({ active: true });
-	            }, function () {
-	              _this2.manuallyRefresh = false;
-	              _this2.refs.refreshControl.setState({ active: false, loadingState: false });
-	            }, function () {
-	              _this2.refs.refreshControl.setState({ loadingState: true });
-	              var finishPullToRefresh = function finishPullToRefresh() {
-	                scroller.finishPullToRefresh();
-	                _this2.refreshControlRefresh = null;
-	              };
-	              Promise.all([new Promise(function (resolve) {
-	                onRefresh();
-	                _this2.refreshControlRefresh = resolve;
-	              }),
-	              // at lease 1s for ux
-	              new Promise(function (resolve) {
-	                return setTimeout(resolve, 1000);
-	              })]).then(finishPullToRefresh, finishPullToRefresh);
-	            });
-	            if (refreshControl.props.refreshing) {
-	              scroller.triggerPullToRefresh();
-	            }
-	          })();
-	        }
-	        return;
-	      }
-	      _reactDom2.default.findDOMNode(this.refs[SCROLLVIEW]).addEventListener('scroll', this.tsExec);
-	    }
-	  }, {
-	    key: 'componentWillUnmount',
-	    value: function componentWillUnmount() {
-	      var _props2 = this.props;
-	      var stickyHeader = _props2.stickyHeader;
-	      var useBodyScroll = _props2.useBodyScroll;
-	      var useZscroller = _props2.useZscroller;
-
-	      if (stickyHeader || useBodyScroll) {
-	        return;
-	      }
-	      if (useZscroller) {
-	        this.domScroller.destroy();
-	        return;
-	      }
-	      _reactDom2.default.findDOMNode(this.refs[SCROLLVIEW]).removeEventListener('scroll', this.tsExec);
-	    }
-	  }, {
-	    key: 'render',
-	    value: function render() {
-	      var _classNames, _classNames2;
-
-	      var _props3 = this.props;
-	      var children = _props3.children;
-	      var className = _props3.className;
-	      var _props3$prefixCls = _props3.prefixCls;
-	      var prefixCls = _props3$prefixCls === undefined ? '' : _props3$prefixCls;
-	      var _props3$listPrefixCls = _props3.listPrefixCls;
-	      var listPrefixCls = _props3$listPrefixCls === undefined ? '' : _props3$listPrefixCls;
-	      var _props3$listViewPrefi = _props3.listViewPrefixCls;
-	      var listViewPrefixCls = _props3$listViewPrefi === undefined ? 'rmc-list-view' : _props3$listViewPrefi;
-	      var _props3$style = _props3.style;
-	      var style = _props3$style === undefined ? {} : _props3$style;
-	      var contentContainerStyle = _props3.contentContainerStyle;
-	      var useZscroller = _props3.useZscroller;
-	      var refreshControl = _props3.refreshControl;
-	      var stickyHeader = _props3.stickyHeader;
-	      var useBodyScroll = _props3.useBodyScroll;
-
-
-	      var styleBase = styles.base;
-	      if (stickyHeader || useBodyScroll) {
-	        styleBase = null;
-	      } else if (useZscroller) {
-	        styleBase = styles.zScroller;
-	      }
-
-	      var preCls = prefixCls || listViewPrefixCls || '';
-
-	      var containerProps = {
-	        ref: SCROLLVIEW,
-	        style: (0, _objectAssign2.default)({}, styleBase, style),
-	        className: (0, _classnames2.default)((_classNames = {}, _defineProperty(_classNames, className, !!className), _defineProperty(_classNames, preCls + '-scrollview', true), _classNames))
-	      };
-	      var contentContainerProps = {
-	        ref: INNERVIEW,
-	        style: (0, _objectAssign2.default)({}, { position: 'absolute', minWidth: '100%' }, contentContainerStyle),
-	        className: (0, _classnames2.default)((_classNames2 = {}, _defineProperty(_classNames2, preCls + '-scrollview-content', true), _defineProperty(_classNames2, listPrefixCls, !!listPrefixCls), _classNames2))
-	      };
-
-	      if (refreshControl) {
-	        return _react2.default.createElement(
-	          'div',
-	          containerProps,
-	          _react2.default.createElement(
-	            'div',
-	            contentContainerProps,
-	            _react2.default.cloneElement(refreshControl, { ref: 'refreshControl' }),
-	            children
-	          )
-	        );
-	      }
-
-	      if (stickyHeader || useBodyScroll) {
-	        return _react2.default.createElement(
-	          'div',
-	          containerProps,
-	          children
-	        );
-	      }
-	      return _react2.default.createElement(
-	        'div',
-	        containerProps,
-	        _react2.default.createElement(
-	          'div',
-	          contentContainerProps,
-	          children
-	        )
-	      );
-	    }
-	  }]);
-
-	  return ScrollView;
-	}(_react2.default.Component);
-	// mixin(ScrollView.prototype, PullUpLoadMoreMixin);
-
-
-	ScrollView.propTypes = propTypes;
-	exports.default = ScrollView;
-
-/***/ },
-/* 167 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-
-	var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
-
-	var Scroller = __webpack_require__(168);
-	var MIN_INDICATOR_SIZE = 8;
-
-	function setTransform(nodeStyle, value) {
-	  nodeStyle.transform = value;
-	  nodeStyle.webkitTransform = value;
-	  nodeStyle.MozTransform = value;
-	}
-
-	function setTransformOrigin(nodeStyle, value) {
-	  nodeStyle.transformOrigin = value;
-	  nodeStyle.webkitTransformOrigin = value;
-	  nodeStyle.MozTransformOrigin = value;
-	}
-
-	function DOMScroller(content) {
-	  var _this = this;
-
-	  var options = arguments.length <= 1 || arguments[1] === undefined ? {} : arguments[1];
-
-	  var scrollbars = void 0;
-	  var indicators = void 0;
-	  var indicatorsSize = void 0;
-	  var scrollbarsSize = void 0;
-	  var indicatorsPos = void 0;
-	  var scrollbarsOpacity = void 0;
-	  var contentSize = void 0;
-	  var clientSize = void 0;
-
-	  this.content = content;
-	  this.container = content.parentNode;
-	  this.options = _extends({}, options, {
-	    scrollingComplete: function scrollingComplete() {
-	      _this.clearScrollbarTimer();
-	      _this.timer = setTimeout(function () {
-	        if (options.scrollingComplete) {
-	          options.scrollingComplete();
-	        }
-	        if (scrollbars) {
-	          ['x', 'y'].forEach(function (k) {
-	            if (scrollbars[k]) {
-	              _this.setScrollbarOpacity(k, 0);
-	            }
-	          });
-	        }
-	      }, 0);
-	    }
-	  });
-
-	  if (this.options.scrollbars) {
-	    scrollbars = this.scrollbars = {};
-	    indicators = this.indicators = {};
-	    indicatorsSize = this.indicatorsSize = {};
-	    scrollbarsSize = this.scrollbarsSize = {};
-	    indicatorsPos = this.indicatorsPos = {};
-	    scrollbarsOpacity = this.scrollbarsOpacity = {};
-	    contentSize = this.contentSize = {};
-	    clientSize = this.clientSize = {};
-
-	    ['x', 'y'].forEach(function (k) {
-	      var optionName = k === 'x' ? 'scrollingX' : 'scrollingY';
-	      if (_this.options[optionName] !== false) {
-	        scrollbars[k] = document.createElement('div');
-	        scrollbars[k].className = 'zscroller-scrollbar-' + k;
-	        indicators[k] = document.createElement('div');
-	        indicators[k].className = 'zscroller-indicator-' + k;
-	        scrollbars[k].appendChild(indicators[k]);
-	        indicatorsSize[k] = -1;
-	        scrollbarsOpacity[k] = 0;
-	        indicatorsPos[k] = 0;
-	        _this.container.appendChild(scrollbars[k]);
-	      }
-	    });
-	  }
-
-	  var init = true;
-	  var contentStyle = content.style;
-
-	  // create Scroller instance
-	  this.scroller = new Scroller(function (left, top, zoom) {
-	    if (!init && options.onScroll) {
-	      options.onScroll();
-	    }
-	    setTransform(contentStyle, 'translate3d(' + -left + 'px,' + -top + 'px,0) scale(' + zoom + ')');
-	    if (scrollbars) {
-	      ['x', 'y'].forEach(function (k) {
-	        if (scrollbars[k]) {
-	          var pos = k === 'x' ? left : top;
-	          if (clientSize[k] >= contentSize[k]) {
-	            _this.setScrollbarOpacity(k, 0);
-	          } else {
-	            if (!init) {
-	              _this.setScrollbarOpacity(k, 1);
-	            }
-	            var normalIndicatorSize = clientSize[k] / contentSize[k] * scrollbarsSize[k];
-	            var size = normalIndicatorSize;
-	            var indicatorPos = void 0;
-	            if (pos < 0) {
-	              size = Math.max(normalIndicatorSize + pos, MIN_INDICATOR_SIZE);
-	              indicatorPos = 0;
-	            } else if (pos > contentSize[k] - clientSize[k]) {
-	              size = Math.max(normalIndicatorSize + contentSize[k] - clientSize[k] - pos, MIN_INDICATOR_SIZE);
-	              indicatorPos = scrollbarsSize[k] - size;
-	            } else {
-	              indicatorPos = pos / contentSize[k] * scrollbarsSize[k];
-	            }
-	            _this.setIndicatorSize(k, size);
-	            _this.setIndicatorPos(k, indicatorPos);
-	          }
-	        }
-	      });
-	    }
-	    init = false;
-	  }, this.options);
-
-	  // bind events
-	  this.bindEvents();
-
-	  // the content element needs a correct transform origin for zooming
-	  setTransformOrigin(content.style, 'left top');
-
-	  // reflow for the first time
-	  this.reflow();
-	}
-
-	DOMScroller.prototype.setDisabled = function setDisabled(disabled) {
-	  this.disabled = disabled;
-	};
-
-	DOMScroller.prototype.clearScrollbarTimer = function clearScrollbarTimer() {
-	  if (this.timer) {
-	    clearTimeout(this.timer);
-	    this.timer = null;
-	  }
-	};
-
-	DOMScroller.prototype.setScrollbarOpacity = function setScrollbarOpacity(axis, opacity) {
-	  if (this.scrollbarsOpacity[axis] !== opacity) {
-	    this.scrollbars[axis].style.opacity = opacity;
-	    this.scrollbarsOpacity[axis] = opacity;
-	  }
-	};
-
-	DOMScroller.prototype.setIndicatorPos = function setIndicatorPos(axis, value) {
-	  if (this.indicatorsPos[axis] !== value) {
-	    if (axis === 'x') {
-	      setTransform(this.indicators[axis].style, 'translate3d(' + value + 'px,0,0)');
-	    } else {
-	      setTransform(this.indicators[axis].style, 'translate3d(0, ' + value + 'px,0)');
-	    }
-	    this.indicatorsPos[axis] = value;
-	  }
-	};
-
-	DOMScroller.prototype.setIndicatorSize = function setIndicatorSize(axis, value) {
-	  if (this.indicatorsSize[axis] !== value) {
-	    this.indicators[axis].style[axis === 'x' ? 'width' : 'height'] = value + 'px';
-	    this.indicatorsSize[axis] = value;
-	  }
-	};
-
-	DOMScroller.prototype.reflow = function reflow() {
-	  if (this.scrollbars) {
-	    this.contentSize.x = this.content.offsetWidth;
-	    this.contentSize.y = this.content.offsetHeight;
-	    this.clientSize.x = this.container.clientWidth;
-	    this.clientSize.y = this.container.clientHeight;
-	    if (this.scrollbars.x) {
-	      this.scrollbarsSize.x = this.scrollbars.x.offsetWidth;
-	    }
-	    if (this.scrollbars.y) {
-	      this.scrollbarsSize.y = this.scrollbars.y.offsetHeight;
-	    }
-	  }
-	  // set the right scroller dimensions
-	  this.scroller.setDimensions(this.container.clientWidth, this.container.clientHeight, this.content.offsetWidth, this.content.offsetHeight);
-
-	  // refresh the position for zooming purposes
-	  var rect = this.container.getBoundingClientRect();
-	  this.scroller.setPosition(rect.x + this.container.clientLeft, rect.y + this.container.clientTop);
-	};
-
-	DOMScroller.prototype.destroy = function destroy() {
-	  window.removeEventListener('resize', this.onResize, false);
-	  this.container.removeEventListener('touchstart', this.onTouchStart, false);
-	  this.container.removeEventListener('touchmove', this.onTouchMove, false);
-	  this.container.removeEventListener('touchend', this.onTouchEnd, false);
-	  this.container.removeEventListener('touchcancel', this.onTouchCancel, false);
-	  this.container.removeEventListener('mousedown', this.onMouseDown, false);
-	  document.removeEventListener('mousemove', this.onMouseMove, false);
-	  document.removeEventListener('mouseup', this.onMouseUp, false);
-	  this.container.removeEventListener('mousewheel', this.onMouseWheel, false);
-	};
-
-	DOMScroller.prototype.bindEvents = function bindEvents() {
-	  var _this2 = this;
-
-	  var that = this;
-
-	  // reflow handling
-	  window.addEventListener('resize', this.onResize = function () {
-	    that.reflow();
-	  }, false);
-
-	  // touch devices bind touch events
-	  if ('ontouchstart' in window) {
-	    this.container.addEventListener('touchstart', this.onTouchStart = function (e) {
-	      // Don't react if initial down happens on a form element
-	      if (e.touches[0] && e.touches[0].target && e.touches[0].target.tagName.match(/input|textarea|select/i) || _this2.disabled) {
-	        return;
-	      }
-	      _this2.clearScrollbarTimer();
-	      // reflow since the container may have changed
-	      that.reflow();
-	      that.scroller.doTouchStart(e.touches, e.timeStamp);
-	    }, false);
-
-	    this.container.addEventListener('touchmove', this.onTouchMove = function (e) {
-	      e.preventDefault();
-	      that.scroller.doTouchMove(e.touches, e.timeStamp, e.scale);
-	    }, false);
-
-	    this.container.addEventListener('touchend', this.onTouchEnd = function (e) {
-	      that.scroller.doTouchEnd(e.timeStamp);
-	    }, false);
-
-	    this.container.addEventListener('touchcancel', this.onTouchCancel = function (e) {
-	      that.scroller.doTouchEnd(e.timeStamp);
-	    }, false);
-
-	    // non-touch bind mouse events
-	  } else {
-	    (function () {
-	      var mousedown = false;
-	      _this2.container.addEventListener('mousedown', _this2.onMouseDown = function (e) {
-	        if (e.target.tagName.match(/input|textarea|select/i) || _this2.disabled) {
-	          return;
-	        }
-	        _this2.clearScrollbarTimer();
-	        that.scroller.doTouchStart([{
-	          pageX: e.pageX,
-	          pageY: e.pageY
-	        }], e.timeStamp);
-	        mousedown = true;
-	        // reflow since the container may have changed
-	        that.reflow();
-	        e.preventDefault();
-	      }, false);
-
-	      document.addEventListener('mousemove', _this2.onMouseMove = function (e) {
-	        if (!mousedown) {
-	          return;
-	        }
-	        that.scroller.doTouchMove([{
-	          pageX: e.pageX,
-	          pageY: e.pageY
-	        }], e.timeStamp);
-	        mousedown = true;
-	      }, false);
-
-	      document.addEventListener('mouseup', _this2.onMouseUp = function (e) {
-	        if (!mousedown) {
-	          return;
-	        }
-	        that.scroller.doTouchEnd(e.timeStamp);
-	        mousedown = false;
-	      }, false);
-
-	      _this2.container.addEventListener('mousewheel', _this2.onMouseWheel = function (e) {
-	        if (that.options.zooming) {
-	          that.scroller.doMouseZoom(e.wheelDelta, e.timeStamp, e.pageX, e.pageY);
-	          e.preventDefault();
-	        }
-	      }, false);
-	    })();
-	  }
-	};
-
-	module.exports = DOMScroller;
-
-/***/ },
-/* 168 */
-/***/ function(module, exports, __webpack_require__) {
-
-	/*
-	 * Scroller
-	 * http://github.com/zynga/scroller
-	 *
-	 * Copyright 2011, Zynga Inc.
-	 * Licensed under the MIT License.
-	 * https://raw.github.com/zynga/scroller/master/MIT-LICENSE.txt
-	 *
-	 * Based on the work of: Unify Project (unify-project.org)
-	 * http://unify-project.org
-	 * Copyright 2011, Deutsche Telekom AG
-	 * License: MIT + Apache (V2)
-	 */
-
-	var Scroller;
-	var Animate = __webpack_require__(169);
-
-	var NOOP = function () {
-	};
-
-	/**
-	 * A pure logic 'component' for 'virtual' scrolling/zooming.
-	 */
-	Scroller = function (callback, options) {
-
-	  this.__callback = callback;
-
-	  this.options = {
-
-	    /** Enable scrolling on x-axis */
-	    scrollingX: true,
-
-	    /** Enable scrolling on y-axis */
-	    scrollingY: true,
-
-	    /** Enable animations for deceleration, snap back, zooming and scrolling */
-	    animating: true,
-
-	    /** duration for animations triggered by scrollTo/zoomTo */
-	    animationDuration: 250,
-
-	    /** Enable bouncing (content can be slowly moved outside and jumps back after releasing) */
-	    bouncing: true,
-
-	    /** Enable locking to the main axis if user moves only slightly on one of them at start */
-	    locking: true,
-
-	    /** Enable pagination mode (switching between full page content panes) */
-	    paging: false,
-
-	    /** Enable snapping of content to a configured pixel grid */
-	    snapping: false,
-
-	    /** Enable zooming of content via API, fingers and mouse wheel */
-	    zooming: false,
-
-	    /** Minimum zoom level */
-	    minZoom: 0.5,
-
-	    /** Maximum zoom level */
-	    maxZoom: 3,
-
-	    /** Multiply or decrease scrolling speed **/
-	    speedMultiplier: 1,
-
-	    /** Callback that is fired on the later of touch end or deceleration end,
-	     provided that another scrolling action has not begun. Used to know
-	     when to fade out a scrollbar. */
-	    scrollingComplete: NOOP,
-
-	    /** This configures the amount of change applied to deceleration when reaching boundaries  **/
-	    penetrationDeceleration: 0.03,
-
-	    /** This configures the amount of change applied to acceleration when reaching boundaries  **/
-	    penetrationAcceleration: 0.08
-
-	  };
-
-	  for (var key in options) {
-	    this.options[key] = options[key];
-	  }
-
-	};
-
-
-	// Easing Equations (c) 2003 Robert Penner, all rights reserved.
-	// Open source under the BSD License.
-
-	/**
-	 * @param pos {Number} position between 0 (start of effect) and 1 (end of effect)
-	 **/
-	var easeOutCubic = function (pos) {
-	  return (Math.pow((pos - 1), 3) + 1);
-	};
-
-	/**
-	 * @param pos {Number} position between 0 (start of effect) and 1 (end of effect)
-	 **/
-	var easeInOutCubic = function (pos) {
-	  if ((pos /= 0.5) < 1) {
-	    return 0.5 * Math.pow(pos, 3);
-	  }
-
-	  return 0.5 * (Math.pow((pos - 2), 3) + 2);
-	};
-
-
-	var members = {
-
-	  /*
-	   ---------------------------------------------------------------------------
-	   INTERNAL FIELDS :: STATUS
-	   ---------------------------------------------------------------------------
-	   */
-
-	  /** {Boolean} Whether only a single finger is used in touch handling */
-	  __isSingleTouch: false,
-
-	  /** {Boolean} Whether a touch event sequence is in progress */
-	  __isTracking: false,
-
-	  /** {Boolean} Whether a deceleration animation went to completion. */
-	  __didDecelerationComplete: false,
-
-	  /**
-	   * {Boolean} Whether a gesture zoom/rotate event is in progress. Activates when
-	   * a gesturestart event happens. This has higher priority than dragging.
-	   */
-	  __isGesturing: false,
-
-	  /**
-	   * {Boolean} Whether the user has moved by such a distance that we have enabled
-	   * dragging mode. Hint: It's only enabled after some pixels of movement to
-	   * not interrupt with clicks etc.
-	   */
-	  __isDragging: false,
-
-	  /**
-	   * {Boolean} Not touching and dragging anymore, and smoothly animating the
-	   * touch sequence using deceleration.
-	   */
-	  __isDecelerating: false,
-
-	  /**
-	   * {Boolean} Smoothly animating the currently configured change
-	   */
-	  __isAnimating: false,
-
-
-	  /*
-	   ---------------------------------------------------------------------------
-	   INTERNAL FIELDS :: DIMENSIONS
-	   ---------------------------------------------------------------------------
-	   */
-
-	  /** {Integer} Available outer left position (from document perspective) */
-	  __clientLeft: 0,
-
-	  /** {Integer} Available outer top position (from document perspective) */
-	  __clientTop: 0,
-
-	  /** {Integer} Available outer width */
-	  __clientWidth: 0,
-
-	  /** {Integer} Available outer height */
-	  __clientHeight: 0,
-
-	  /** {Integer} Outer width of content */
-	  __contentWidth: 0,
-
-	  /** {Integer} Outer height of content */
-	  __contentHeight: 0,
-
-	  /** {Integer} Snapping width for content */
-	  __snapWidth: 100,
-
-	  /** {Integer} Snapping height for content */
-	  __snapHeight: 100,
-
-	  /** {Integer} Height to assign to refresh area */
-	  __refreshHeight: null,
-
-	  /** {Boolean} Whether the refresh process is enabled when the event is released now */
-	  __refreshActive: false,
-
-	  /** {Function} Callback to execute on activation. This is for signalling the user about a refresh is about to happen when he release */
-	  __refreshActivate: null,
-
-	  /** {Function} Callback to execute on deactivation. This is for signalling the user about the refresh being cancelled */
-	  __refreshDeactivate: null,
-
-	  /** {Function} Callback to execute to start the actual refresh. Call {@link #refreshFinish} when done */
-	  __refreshStart: null,
-
-	  /** {Number} Zoom level */
-	  __zoomLevel: 1,
-
-	  /** {Number} Scroll position on x-axis */
-	  __scrollLeft: 0,
-
-	  /** {Number} Scroll position on y-axis */
-	  __scrollTop: 0,
-
-	  /** {Integer} Maximum allowed scroll position on x-axis */
-	  __maxScrollLeft: 0,
-
-	  /** {Integer} Maximum allowed scroll position on y-axis */
-	  __maxScrollTop: 0,
-
-	  /* {Number} Scheduled left position (final position when animating) */
-	  __scheduledLeft: 0,
-
-	  /* {Number} Scheduled top position (final position when animating) */
-	  __scheduledTop: 0,
-
-	  /* {Number} Scheduled zoom level (final scale when animating) */
-	  __scheduledZoom: 0,
-
-
-	  /*
-	   ---------------------------------------------------------------------------
-	   INTERNAL FIELDS :: LAST POSITIONS
-	   ---------------------------------------------------------------------------
-	   */
-
-	  /** {Number} Left position of finger at start */
-	  __lastTouchLeft: null,
-
-	  /** {Number} Top position of finger at start */
-	  __lastTouchTop: null,
-
-	  /** {Date} Timestamp of last move of finger. Used to limit tracking range for deceleration speed. */
-	  __lastTouchMove: null,
-
-	  /** {Array} List of positions, uses three indexes for each state: left, top, timestamp */
-	  __positions: null,
-
-
-	  /*
-	   ---------------------------------------------------------------------------
-	   INTERNAL FIELDS :: DECELERATION SUPPORT
-	   ---------------------------------------------------------------------------
-	   */
-
-	  /** {Integer} Minimum left scroll position during deceleration */
-	  __minDecelerationScrollLeft: null,
-
-	  /** {Integer} Minimum top scroll position during deceleration */
-	  __minDecelerationScrollTop: null,
-
-	  /** {Integer} Maximum left scroll position during deceleration */
-	  __maxDecelerationScrollLeft: null,
-
-	  /** {Integer} Maximum top scroll position during deceleration */
-	  __maxDecelerationScrollTop: null,
-
-	  /** {Number} Current factor to modify horizontal scroll position with on every step */
-	  __decelerationVelocityX: null,
-
-	  /** {Number} Current factor to modify vertical scroll position with on every step */
-	  __decelerationVelocityY: null,
-
-
-	  /*
-	   ---------------------------------------------------------------------------
-	   PUBLIC API
-	   ---------------------------------------------------------------------------
-	   */
-
-	  /**
-	   * Configures the dimensions of the client (outer) and content (inner) elements.
-	   * Requires the available space for the outer element and the outer size of the inner element.
-	   * All values which are falsy (null or zero etc.) are ignored and the old value is kept.
-	   *
-	   * @param clientWidth {Integer ? null} Inner width of outer element
-	   * @param clientHeight {Integer ? null} Inner height of outer element
-	   * @param contentWidth {Integer ? null} Outer width of inner element
-	   * @param contentHeight {Integer ? null} Outer height of inner element
-	   */
-	  setDimensions: function (clientWidth, clientHeight, contentWidth, contentHeight) {
-
-	    var self = this;
-
-	    // Only update values which are defined
-	    if (clientWidth === +clientWidth) {
-	      self.__clientWidth = clientWidth;
-	    }
-
-	    if (clientHeight === +clientHeight) {
-	      self.__clientHeight = clientHeight;
-	    }
-
-	    if (contentWidth === +contentWidth) {
-	      self.__contentWidth = contentWidth;
-	    }
-
-	    if (contentHeight === +contentHeight) {
-	      self.__contentHeight = contentHeight;
-	    }
-
-	    // Refresh maximums
-	    self.__computeScrollMax();
-
-	    // Refresh scroll position
-	    self.scrollTo(self.__scrollLeft, self.__scrollTop, true);
-
-	  },
-
-
-	  /**
-	   * Sets the client coordinates in relation to the document.
-	   *
-	   * @param left {Integer ? 0} Left position of outer element
-	   * @param top {Integer ? 0} Top position of outer element
-	   */
-	  setPosition: function (left, top) {
-
-	    var self = this;
-
-	    self.__clientLeft = left || 0;
-	    self.__clientTop = top || 0;
-
-	  },
-
-
-	  /**
-	   * Configures the snapping (when snapping is active)
-	   *
-	   * @param width {Integer} Snapping width
-	   * @param height {Integer} Snapping height
-	   */
-	  setSnapSize: function (width, height) {
-
-	    var self = this;
-
-	    self.__snapWidth = width;
-	    self.__snapHeight = height;
-
-	  },
-
-
-	  /**
-	   * Activates pull-to-refresh. A special zone on the top of the list to start a list refresh whenever
-	   * the user event is released during visibility of this zone. This was introduced by some apps on iOS like
-	   * the official Twitter client.
-	   *
-	   * @param height {Integer} Height of pull-to-refresh zone on top of rendered list
-	   * @param activateCallback {Function} Callback to execute on activation. This is for signalling the user about a refresh is about to happen when he release.
-	   * @param deactivateCallback {Function} Callback to execute on deactivation. This is for signalling the user about the refresh being cancelled.
-	   * @param startCallback {Function} Callback to execute to start the real async refresh action. Call {@link #finishPullToRefresh} after finish of refresh.
-	   */
-	  activatePullToRefresh: function (height, activateCallback, deactivateCallback, startCallback) {
-
-	    var self = this;
-
-	    self.__refreshHeight = height;
-	    self.__refreshActivate = activateCallback;
-	    self.__refreshDeactivate = deactivateCallback;
-	    self.__refreshStart = startCallback;
-
-	  },
-
-
-	  /**
-	   * Starts pull-to-refresh manually.
-	   */
-	  triggerPullToRefresh: function () {
-	    // Use publish instead of scrollTo to allow scrolling to out of boundary position
-	    // We don't need to normalize scrollLeft, zoomLevel, etc. here because we only y-scrolling when pull-to-refresh is enabled
-	    this.__publish(this.__scrollLeft, -this.__refreshHeight, this.__zoomLevel, true);
-
-	    if (this.__refreshStart) {
-	      this.__refreshStart();
-	    }
-	  },
-
-
-	  /**
-	   * Signalizes that pull-to-refresh is finished.
-	   */
-	  finishPullToRefresh: function () {
-
-	    var self = this;
-
-	    self.__refreshActive = false;
-	    if (self.__refreshDeactivate) {
-	      self.__refreshDeactivate();
-	    }
-
-	    self.scrollTo(self.__scrollLeft, self.__scrollTop, true);
-
-	  },
-
-
-	  /**
-	   * Returns the scroll position and zooming values
-	   *
-	   * @return {Map} `left` and `top` scroll position and `zoom` level
-	   */
-	  getValues: function () {
-
-	    var self = this;
-
-	    return {
-	      left: self.__scrollLeft,
-	      top: self.__scrollTop,
-	      zoom: self.__zoomLevel
-	    };
-
-	  },
-
-
-	  /**
-	   * Returns the maximum scroll values
-	   *
-	   * @return {Map} `left` and `top` maximum scroll values
-	   */
-	  getScrollMax: function () {
-
-	    var self = this;
-
-	    return {
-	      left: self.__maxScrollLeft,
-	      top: self.__maxScrollTop
-	    };
-
-	  },
-
-
-	  /**
-	   * Zooms to the given level. Supports optional animation. Zooms
-	   * the center when no coordinates are given.
-	   *
-	   * @param level {Number} Level to zoom to
-	   * @param animate {Boolean ? false} Whether to use animation
-	   * @param originLeft {Number ? null} Zoom in at given left coordinate
-	   * @param originTop {Number ? null} Zoom in at given top coordinate
-	   * @param callback {Function ? null} A callback that gets fired when the zoom is complete.
-	   */
-	  zoomTo: function (level, animate, originLeft, originTop, callback) {
-
-	    var self = this;
-
-	    if (!self.options.zooming) {
-	      throw new Error("Zooming is not enabled!");
-	    }
-
-	    // Add callback if exists
-	    if (callback) {
-	      self.__zoomComplete = callback;
-	    }
-
-	    // Stop deceleration
-	    if (self.__isDecelerating) {
-	      Animate.stop(self.__isDecelerating);
-	      self.__isDecelerating = false;
-	    }
-
-	    var oldLevel = self.__zoomLevel;
-
-	    // Normalize input origin to center of viewport if not defined
-	    if (originLeft == null) {
-	      originLeft = self.__clientWidth / 2;
-	    }
-
-	    if (originTop == null) {
-	      originTop = self.__clientHeight / 2;
-	    }
-
-	    // Limit level according to configuration
-	    level = Math.max(Math.min(level, self.options.maxZoom), self.options.minZoom);
-
-	    // Recompute maximum values while temporary tweaking maximum scroll ranges
-	    self.__computeScrollMax(level);
-
-	    // Recompute left and top coordinates based on new zoom level
-	    var left = ((originLeft + self.__scrollLeft) * level / oldLevel) - originLeft;
-	    var top = ((originTop + self.__scrollTop) * level / oldLevel) - originTop;
-
-	    // Limit x-axis
-	    if (left > self.__maxScrollLeft) {
-	      left = self.__maxScrollLeft;
-	    } else if (left < 0) {
-	      left = 0;
-	    }
-
-	    // Limit y-axis
-	    if (top > self.__maxScrollTop) {
-	      top = self.__maxScrollTop;
-	    } else if (top < 0) {
-	      top = 0;
-	    }
-
-	    // Push values out
-	    self.__publish(left, top, level, animate);
-
-	  },
-
-
-	  /**
-	   * Zooms the content by the given factor.
-	   *
-	   * @param factor {Number} Zoom by given factor
-	   * @param animate {Boolean ? false} Whether to use animation
-	   * @param originLeft {Number ? 0} Zoom in at given left coordinate
-	   * @param originTop {Number ? 0} Zoom in at given top coordinate
-	   * @param callback {Function ? null} A callback that gets fired when the zoom is complete.
-	   */
-	  zoomBy: function (factor, animate, originLeft, originTop, callback) {
-
-	    var self = this;
-
-	    self.zoomTo(self.__zoomLevel * factor, animate, originLeft, originTop, callback);
-
-	  },
-
-
-	  /**
-	   * Scrolls to the given position. Respect limitations and snapping automatically.
-	   *
-	   * @param left {Number?null} Horizontal scroll position, keeps current if value is <code>null</code>
-	   * @param top {Number?null} Vertical scroll position, keeps current if value is <code>null</code>
-	   * @param animate {Boolean?false} Whether the scrolling should happen using an animation
-	   * @param zoom {Number?null} Zoom level to go to
-	   */
-	  scrollTo: function (left, top, animate, zoom, callback) {
-
-	    var self = this;
-
-	    // Stop deceleration
-	    if (self.__isDecelerating) {
-	      Animate.stop(self.__isDecelerating);
-	      self.__isDecelerating = false;
-	    }
-
-	    // Correct coordinates based on new zoom level
-	    if (zoom != null && zoom !== self.__zoomLevel) {
-
-	      if (!self.options.zooming) {
-	        throw new Error("Zooming is not enabled!");
-	      }
-
-	      left *= zoom;
-	      top *= zoom;
-
-	      // Recompute maximum values while temporary tweaking maximum scroll ranges
-	      self.__computeScrollMax(zoom);
-
-	    } else {
-
-	      // Keep zoom when not defined
-	      zoom = self.__zoomLevel;
-
-	    }
-
-	    if (!self.options.scrollingX) {
-
-	      left = self.__scrollLeft;
-
-	    } else {
-
-	      if (self.options.paging) {
-	        left = Math.round(left / self.__clientWidth) * self.__clientWidth;
-	      } else if (self.options.snapping) {
-	        left = Math.round(left / self.__snapWidth) * self.__snapWidth;
-	      }
-
-	    }
-
-	    if (!self.options.scrollingY) {
-
-	      top = self.__scrollTop;
-
-	    } else {
-
-	      if (self.options.paging) {
-	        top = Math.round(top / self.__clientHeight) * self.__clientHeight;
-	      } else if (self.options.snapping) {
-	        top = Math.round(top / self.__snapHeight) * self.__snapHeight;
-	      }
-
-	    }
-
-	    // Limit for allowed ranges
-	    left = Math.max(Math.min(self.__maxScrollLeft, left), 0);
-	    top = Math.max(Math.min(self.__maxScrollTop, top), 0);
-
-	    // Don't animate when no change detected, still call publish to make sure
-	    // that rendered position is really in-sync with internal data
-	    if (left === self.__scrollLeft && top === self.__scrollTop) {
-	      animate = false;
-	      if (callback) {
-	        callback();
-	      }
-	    }
-
-	    // Publish new values
-	    if (!self.__isTracking) {
-	      self.__publish(left, top, zoom, animate);
-	    }
-
-	  },
-
-
-	  /**
-	   * Scroll by the given offset
-	   *
-	   * @param left {Number ? 0} Scroll x-axis by given offset
-	   * @param top {Number ? 0} Scroll x-axis by given offset
-	   * @param animate {Boolean ? false} Whether to animate the given change
-	   */
-	  scrollBy: function (left, top, animate) {
-
-	    var self = this;
-
-	    var startLeft = self.__isAnimating ? self.__scheduledLeft : self.__scrollLeft;
-	    var startTop = self.__isAnimating ? self.__scheduledTop : self.__scrollTop;
-
-	    self.scrollTo(startLeft + (left || 0), startTop + (top || 0), animate);
-
-	  },
-
-
-	  /*
-	   ---------------------------------------------------------------------------
-	   EVENT CALLBACKS
-	   ---------------------------------------------------------------------------
-	   */
-
-	  /**
-	   * Mouse wheel handler for zooming support
-	   */
-	  doMouseZoom: function (wheelDelta, timeStamp, pageX, pageY) {
-
-	    var self = this;
-	    var change = wheelDelta > 0 ? 0.97 : 1.03;
-
-	    return self.zoomTo(self.__zoomLevel * change, false, pageX - self.__clientLeft, pageY - self.__clientTop);
-
-	  },
-
-
-	  /**
-	   * Touch start handler for scrolling support
-	   */
-	  doTouchStart: function (touches, timeStamp) {
-
-	    // Array-like check is enough here
-	    if (touches.length == null) {
-	      throw new Error("Invalid touch list: " + touches);
-	    }
-
-	    if (timeStamp instanceof Date) {
-	      timeStamp = timeStamp.valueOf();
-	    }
-	    if (typeof timeStamp !== "number") {
-	      throw new Error("Invalid timestamp value: " + timeStamp);
-	    }
-
-	    var self = this;
-
-	    // Reset interruptedAnimation flag
-	    self.__interruptedAnimation = true;
-
-	    // Stop deceleration
-	    if (self.__isDecelerating) {
-	      Animate.stop(self.__isDecelerating);
-	      self.__isDecelerating = false;
-	      self.__interruptedAnimation = true;
-	    }
-
-	    // Stop animation
-	    if (self.__isAnimating) {
-	      Animate.stop(self.__isAnimating);
-	      self.__isAnimating = false;
-	      self.__interruptedAnimation = true;
-	    }
-
-	    // Use center point when dealing with two fingers
-	    var currentTouchLeft, currentTouchTop;
-	    var isSingleTouch = touches.length === 1;
-	    if (isSingleTouch) {
-	      currentTouchLeft = touches[0].pageX;
-	      currentTouchTop = touches[0].pageY;
-	    } else {
-	      currentTouchLeft = Math.abs(touches[0].pageX + touches[1].pageX) / 2;
-	      currentTouchTop = Math.abs(touches[0].pageY + touches[1].pageY) / 2;
-	    }
-
-	    // Store initial positions
-	    self.__initialTouchLeft = currentTouchLeft;
-	    self.__initialTouchTop = currentTouchTop;
-
-	    // Store current zoom level
-	    self.__zoomLevelStart = self.__zoomLevel;
-
-	    // Store initial touch positions
-	    self.__lastTouchLeft = currentTouchLeft;
-	    self.__lastTouchTop = currentTouchTop;
-
-	    // Store initial move time stamp
-	    self.__lastTouchMove = timeStamp;
-
-	    // Reset initial scale
-	    self.__lastScale = 1;
-
-	    // Reset locking flags
-	    self.__enableScrollX = !isSingleTouch && self.options.scrollingX;
-	    self.__enableScrollY = !isSingleTouch && self.options.scrollingY;
-
-	    // Reset tracking flag
-	    self.__isTracking = true;
-
-	    // Reset deceleration complete flag
-	    self.__didDecelerationComplete = false;
-
-	    // Dragging starts directly with two fingers, otherwise lazy with an offset
-	    self.__isDragging = !isSingleTouch;
-
-	    // Some features are disabled in multi touch scenarios
-	    self.__isSingleTouch = isSingleTouch;
-
-	    // Clearing data structure
-	    self.__positions = [];
-
-	  },
-
-
-	  /**
-	   * Touch move handler for scrolling support
-	   */
-	  doTouchMove: function (touches, timeStamp, scale) {
-
-	    // Array-like check is enough here
-	    if (touches.length == null) {
-	      throw new Error("Invalid touch list: " + touches);
-	    }
-
-	    if (timeStamp instanceof Date) {
-	      timeStamp = timeStamp.valueOf();
-	    }
-	    if (typeof timeStamp !== "number") {
-	      throw new Error("Invalid timestamp value: " + timeStamp);
-	    }
-
-	    var self = this;
-
-	    // Ignore event when tracking is not enabled (event might be outside of element)
-	    if (!self.__isTracking) {
-	      return;
-	    }
-
-
-	    var currentTouchLeft, currentTouchTop;
-
-	    // Compute move based around of center of fingers
-	    if (touches.length === 2) {
-	      currentTouchLeft = Math.abs(touches[0].pageX + touches[1].pageX) / 2;
-	      currentTouchTop = Math.abs(touches[0].pageY + touches[1].pageY) / 2;
-	    } else {
-	      currentTouchLeft = touches[0].pageX;
-	      currentTouchTop = touches[0].pageY;
-	    }
-
-	    var positions = self.__positions;
-
-	    // Are we already is dragging mode?
-	    if (self.__isDragging) {
-
-	      // Compute move distance
-	      var moveX = currentTouchLeft - self.__lastTouchLeft;
-	      var moveY = currentTouchTop - self.__lastTouchTop;
-
-	      // Read previous scroll position and zooming
-	      var scrollLeft = self.__scrollLeft;
-	      var scrollTop = self.__scrollTop;
-	      var level = self.__zoomLevel;
-
-	      // Work with scaling
-	      if (scale != null && self.options.zooming) {
-
-	        var oldLevel = level;
-
-	        // Recompute level based on previous scale and new scale
-	        level = level / self.__lastScale * scale;
-
-	        // Limit level according to configuration
-	        level = Math.max(Math.min(level, self.options.maxZoom), self.options.minZoom);
-
-	        // Only do further compution when change happened
-	        if (oldLevel !== level) {
-
-	          // Compute relative event position to container
-	          var currentTouchLeftRel = currentTouchLeft - self.__clientLeft;
-	          var currentTouchTopRel = currentTouchTop - self.__clientTop;
-
-	          // Recompute left and top coordinates based on new zoom level
-	          scrollLeft = ((currentTouchLeftRel + scrollLeft) * level / oldLevel) - currentTouchLeftRel;
-	          scrollTop = ((currentTouchTopRel + scrollTop) * level / oldLevel) - currentTouchTopRel;
-
-	          // Recompute max scroll values
-	          self.__computeScrollMax(level);
-
-	        }
-	      }
-
-	      if (self.__enableScrollX) {
-
-	        scrollLeft -= moveX * this.options.speedMultiplier;
-	        var maxScrollLeft = self.__maxScrollLeft;
-
-	        if (scrollLeft > maxScrollLeft || scrollLeft < 0) {
-
-	          // Slow down on the edges
-	          if (self.options.bouncing) {
-
-	            scrollLeft += (moveX / 2 * this.options.speedMultiplier);
-
-	          } else if (scrollLeft > maxScrollLeft) {
-
-	            scrollLeft = maxScrollLeft;
-
-	          } else {
-
-	            scrollLeft = 0;
-
-	          }
-	        }
-	      }
-
-	      // Compute new vertical scroll position
-	      if (self.__enableScrollY) {
-
-	        scrollTop -= moveY * this.options.speedMultiplier;
-	        var maxScrollTop = self.__maxScrollTop;
-
-	        if (scrollTop > maxScrollTop || scrollTop < 0) {
-
-	          // Slow down on the edges
-	          if (self.options.bouncing) {
-
-	            scrollTop += (moveY / 2 * this.options.speedMultiplier);
-
-	            // Support pull-to-refresh (only when only y is scrollable)
-	            if (!self.__enableScrollX && self.__refreshHeight != null) {
-
-	              if (!self.__refreshActive && scrollTop <= -self.__refreshHeight) {
-
-	                self.__refreshActive = true;
-	                if (self.__refreshActivate) {
-	                  self.__refreshActivate();
-	                }
-
-	              } else if (self.__refreshActive && scrollTop > -self.__refreshHeight) {
-
-	                self.__refreshActive = false;
-	                if (self.__refreshDeactivate) {
-	                  self.__refreshDeactivate();
-	                }
-
-	              }
-	            }
-
-	          } else if (scrollTop > maxScrollTop) {
-
-	            scrollTop = maxScrollTop;
-
-	          } else {
-
-	            scrollTop = 0;
-
-	          }
-	        }
-	      }
-
-	      // Keep list from growing infinitely (holding min 10, max 20 measure points)
-	      if (positions.length > 60) {
-	        positions.splice(0, 30);
-	      }
-
-	      // Track scroll movement for decleration
-	      positions.push(scrollLeft, scrollTop, timeStamp);
-
-	      // Sync scroll position
-	      self.__publish(scrollLeft, scrollTop, level);
-
-	      // Otherwise figure out whether we are switching into dragging mode now.
-	    } else {
-
-	      var minimumTrackingForScroll = self.options.locking ? 3 : 0;
-	      var minimumTrackingForDrag = 5;
-
-	      var distanceX = Math.abs(currentTouchLeft - self.__initialTouchLeft);
-	      var distanceY = Math.abs(currentTouchTop - self.__initialTouchTop);
-
-	      self.__enableScrollX = self.options.scrollingX && distanceX >= minimumTrackingForScroll;
-	      self.__enableScrollY = self.options.scrollingY && distanceY >= minimumTrackingForScroll;
-
-	      positions.push(self.__scrollLeft, self.__scrollTop, timeStamp);
-
-	      self.__isDragging = (self.__enableScrollX || self.__enableScrollY) && (distanceX >= minimumTrackingForDrag || distanceY >= minimumTrackingForDrag);
-	      if (self.__isDragging) {
-	        self.__interruptedAnimation = false;
-	      }
-
-	    }
-
-	    // Update last touch positions and time stamp for next event
-	    self.__lastTouchLeft = currentTouchLeft;
-	    self.__lastTouchTop = currentTouchTop;
-	    self.__lastTouchMove = timeStamp;
-	    self.__lastScale = scale;
-
-	  },
-
-
-	  /**
-	   * Touch end handler for scrolling support
-	   */
-	  doTouchEnd: function (timeStamp) {
-
-	    if (timeStamp instanceof Date) {
-	      timeStamp = timeStamp.valueOf();
-	    }
-	    if (typeof timeStamp !== "number") {
-	      throw new Error("Invalid timestamp value: " + timeStamp);
-	    }
-
-	    var self = this;
-
-	    // Ignore event when tracking is not enabled (no touchstart event on element)
-	    // This is required as this listener ('touchmove') sits on the document and not on the element itself.
-	    if (!self.__isTracking) {
-	      return;
-	    }
-
-	    // Not touching anymore (when two finger hit the screen there are two touch end events)
-	    self.__isTracking = false;
-
-	    // Be sure to reset the dragging flag now. Here we also detect whether
-	    // the finger has moved fast enough to switch into a deceleration animation.
-	    if (self.__isDragging) {
-
-	      // Reset dragging flag
-	      self.__isDragging = false;
-
-	      // Start deceleration
-	      // Verify that the last move detected was in some relevant time frame
-	      if (self.__isSingleTouch && self.options.animating && (timeStamp - self.__lastTouchMove) <= 100) {
-
-	        // Then figure out what the scroll position was about 100ms ago
-	        var positions = self.__positions;
-	        var endPos = positions.length - 1;
-	        var startPos = endPos;
-
-	        // Move pointer to position measured 100ms ago
-	        for (var i = endPos; i > 0 && positions[i] > (self.__lastTouchMove - 100); i -= 3) {
-	          startPos = i;
-	        }
-
-	        // If start and stop position is identical in a 100ms timeframe,
-	        // we cannot compute any useful deceleration.
-	        if (startPos !== endPos) {
-
-	          // Compute relative movement between these two points
-	          var timeOffset = positions[endPos] - positions[startPos];
-	          var movedLeft = self.__scrollLeft - positions[startPos - 2];
-	          var movedTop = self.__scrollTop - positions[startPos - 1];
-
-	          // Based on 50ms compute the movement to apply for each render step
-	          self.__decelerationVelocityX = movedLeft / timeOffset * (1000 / 60);
-	          self.__decelerationVelocityY = movedTop / timeOffset * (1000 / 60);
-
-	          // How much velocity is required to start the deceleration
-	          var minVelocityToStartDeceleration = self.options.paging || self.options.snapping ? 4 : 1;
-
-	          // Verify that we have enough velocity to start deceleration
-	          if (Math.abs(self.__decelerationVelocityX) > minVelocityToStartDeceleration || Math.abs(self.__decelerationVelocityY) > minVelocityToStartDeceleration) {
-
-	            // Deactivate pull-to-refresh when decelerating
-	            if (!self.__refreshActive) {
-	              self.__startDeceleration(timeStamp);
-	            }
-	          } else {
-	            self.options.scrollingComplete();
-	          }
-	        } else {
-	          self.options.scrollingComplete();
-	        }
-	      } else if ((timeStamp - self.__lastTouchMove) > 100) {
-	        self.options.scrollingComplete();
-	      }
-	    }
-
-	    // If this was a slower move it is per default non decelerated, but this
-	    // still means that we want snap back to the bounds which is done here.
-	    // This is placed outside the condition above to improve edge case stability
-	    // e.g. touchend fired without enabled dragging. This should normally do not
-	    // have modified the scroll positions or even showed the scrollbars though.
-	    if (!self.__isDecelerating) {
-
-	      if (self.__refreshActive && self.__refreshStart) {
-
-	        // Use publish instead of scrollTo to allow scrolling to out of boundary position
-	        // We don't need to normalize scrollLeft, zoomLevel, etc. here because we only y-scrolling when pull-to-refresh is enabled
-	        self.__publish(self.__scrollLeft, -self.__refreshHeight, self.__zoomLevel, true);
-
-	        if (self.__refreshStart) {
-	          self.__refreshStart();
-	        }
-
-	      } else {
-
-	        if (self.__interruptedAnimation || self.__isDragging) {
-	          self.options.scrollingComplete();
-	        }
-	        self.scrollTo(self.__scrollLeft, self.__scrollTop, true, self.__zoomLevel);
-
-	        // Directly signalize deactivation (nothing todo on refresh?)
-	        if (self.__refreshActive) {
-
-	          self.__refreshActive = false;
-	          if (self.__refreshDeactivate) {
-	            self.__refreshDeactivate();
-	          }
-
-	        }
-	      }
-	    }
-
-	    // Fully cleanup list
-	    self.__positions.length = 0;
-
-	  },
-
-
-	  /*
-	   ---------------------------------------------------------------------------
-	   PRIVATE API
-	   ---------------------------------------------------------------------------
-	   */
-
-	  /**
-	   * Applies the scroll position to the content element
-	   *
-	   * @param left {Number} Left scroll position
-	   * @param top {Number} Top scroll position
-	   * @param animate {Boolean?false} Whether animation should be used to move to the new coordinates
-	   */
-	  __publish: function (left, top, zoom, animate) {
-
-	    var self = this;
-
-	    // Remember whether we had an animation, then we try to continue based on the current "drive" of the animation
-	    var wasAnimating = self.__isAnimating;
-	    if (wasAnimating) {
-	      Animate.stop(wasAnimating);
-	      self.__isAnimating = false;
-	    }
-
-	    if (animate && self.options.animating) {
-
-	      // Keep scheduled positions for scrollBy/zoomBy functionality
-	      self.__scheduledLeft = left;
-	      self.__scheduledTop = top;
-	      self.__scheduledZoom = zoom;
-
-	      var oldLeft = self.__scrollLeft;
-	      var oldTop = self.__scrollTop;
-	      var oldZoom = self.__zoomLevel;
-
-	      var diffLeft = left - oldLeft;
-	      var diffTop = top - oldTop;
-	      var diffZoom = zoom - oldZoom;
-
-	      var step = function (percent, now, render) {
-
-	        if (render) {
-
-	          self.__scrollLeft = oldLeft + (diffLeft * percent);
-	          self.__scrollTop = oldTop + (diffTop * percent);
-	          self.__zoomLevel = oldZoom + (diffZoom * percent);
-
-	          // Push values out
-	          if (self.__callback) {
-	            self.__callback(self.__scrollLeft, self.__scrollTop, self.__zoomLevel);
-	          }
-
-	        }
-	      };
-
-	      var verify = function (id) {
-	        return self.__isAnimating === id;
-	      };
-
-	      var completed = function (renderedFramesPerSecond, animationId, wasFinished) {
-	        if (animationId === self.__isAnimating) {
-	          self.__isAnimating = false;
-	        }
-
-	        if (self.__didDecelerationComplete || wasFinished) {
-	          self.options.scrollingComplete();
-	        }
-
-	        if (self.options.zooming) {
-	          self.__computeScrollMax();
-	          if (self.__zoomComplete) {
-	            self.__zoomComplete();
-	            self.__zoomComplete = null;
-	          }
-	        }
-	      };
-
-	      // When continuing based on previous animation we choose an ease-out animation instead of ease-in-out
-	      self.__isAnimating = Animate.start(step, verify, completed, self.options.animationDuration, wasAnimating ? easeOutCubic : easeInOutCubic);
-
-	    } else {
-
-	      self.__scheduledLeft = self.__scrollLeft = left;
-	      self.__scheduledTop = self.__scrollTop = top;
-	      self.__scheduledZoom = self.__zoomLevel = zoom;
-
-	      // Push values out
-	      if (self.__callback) {
-	        self.__callback(left, top, zoom);
-	      }
-
-	      // Fix max scroll ranges
-	      if (self.options.zooming) {
-	        self.__computeScrollMax();
-	        if (self.__zoomComplete) {
-	          self.__zoomComplete();
-	          self.__zoomComplete = null;
-	        }
-	      }
-	    }
-	  },
-
-
-	  /**
-	   * Recomputes scroll minimum values based on client dimensions and content dimensions.
-	   */
-	  __computeScrollMax: function (zoomLevel) {
-
-	    var self = this;
-
-	    if (zoomLevel == null) {
-	      zoomLevel = self.__zoomLevel;
-	    }
-
-	    self.__maxScrollLeft = Math.max((self.__contentWidth * zoomLevel) - self.__clientWidth, 0);
-	    self.__maxScrollTop = Math.max((self.__contentHeight * zoomLevel) - self.__clientHeight, 0);
-
-	  },
-
-
-	  /*
-	   ---------------------------------------------------------------------------
-	   ANIMATION (DECELERATION) SUPPORT
-	   ---------------------------------------------------------------------------
-	   */
-
-	  /**
-	   * Called when a touch sequence end and the speed of the finger was high enough
-	   * to switch into deceleration mode.
-	   */
-	  __startDeceleration: function (timeStamp) {
-
-	    var self = this;
-
-	    if (self.options.paging) {
-
-	      var scrollLeft = Math.max(Math.min(self.__scrollLeft, self.__maxScrollLeft), 0);
-	      var scrollTop = Math.max(Math.min(self.__scrollTop, self.__maxScrollTop), 0);
-	      var clientWidth = self.__clientWidth;
-	      var clientHeight = self.__clientHeight;
-
-	      // We limit deceleration not to the min/max values of the allowed range, but to the size of the visible client area.
-	      // Each page should have exactly the size of the client area.
-	      self.__minDecelerationScrollLeft = Math.floor(scrollLeft / clientWidth) * clientWidth;
-	      self.__minDecelerationScrollTop = Math.floor(scrollTop / clientHeight) * clientHeight;
-	      self.__maxDecelerationScrollLeft = Math.ceil(scrollLeft / clientWidth) * clientWidth;
-	      self.__maxDecelerationScrollTop = Math.ceil(scrollTop / clientHeight) * clientHeight;
-
-	    } else {
-
-	      self.__minDecelerationScrollLeft = 0;
-	      self.__minDecelerationScrollTop = 0;
-	      self.__maxDecelerationScrollLeft = self.__maxScrollLeft;
-	      self.__maxDecelerationScrollTop = self.__maxScrollTop;
-
-	    }
-
-	    // Wrap class method
-	    var step = function (percent, now, render) {
-	      self.__stepThroughDeceleration(render);
-	    };
-
-	    // How much velocity is required to keep the deceleration running
-	    // added by yiminghe
-	    var minVelocityToKeepDecelerating = self.options.minVelocityToKeepDecelerating;
-
-	    if (!minVelocityToKeepDecelerating) {
-	      minVelocityToKeepDecelerating = self.options.snapping ? 4 : 0.001;
-	    }
-
-	    // Detect whether it's still worth to continue animating steps
-	    // If we are already slow enough to not being user perceivable anymore, we stop the whole process here.
-	    var verify = function () {
-	      var shouldContinue = Math.abs(self.__decelerationVelocityX) >= minVelocityToKeepDecelerating || Math.abs(self.__decelerationVelocityY) >= minVelocityToKeepDecelerating;
-	      if (!shouldContinue) {
-	        self.__didDecelerationComplete = true;
-	      }
-	      return shouldContinue;
-	    };
-
-	    var completed = function (renderedFramesPerSecond, animationId, wasFinished) {
-	      self.__isDecelerating = false;
-	      // Animate to grid when snapping is active, otherwise just fix out-of-boundary positions
-	      // fixed by yiminghe, in case call scrollingComplete twice
-	      self.scrollTo(self.__scrollLeft, self.__scrollTop, self.options.snapping, null, self.__didDecelerationComplete && self.options.scrollingComplete);
-	    };
-
-	    // Start animation and switch on flag
-	    self.__isDecelerating = Animate.start(step, verify, completed);
-
-	  },
-
-
-	  /**
-	   * Called on every step of the animation
-	   *
-	   * @param inMemory {Boolean?false} Whether to not render the current step, but keep it in memory only. Used internally only!
-	   */
-	  __stepThroughDeceleration: function (render) {
-
-	    var self = this;
-
-
-	    //
-	    // COMPUTE NEXT SCROLL POSITION
-	    //
-
-	    // Add deceleration to scroll position
-	    var scrollLeft = self.__scrollLeft + self.__decelerationVelocityX;
-	    var scrollTop = self.__scrollTop + self.__decelerationVelocityY;
-
-
-	    //
-	    // HARD LIMIT SCROLL POSITION FOR NON BOUNCING MODE
-	    //
-
-	    if (!self.options.bouncing) {
-
-	      var scrollLeftFixed = Math.max(Math.min(self.__maxDecelerationScrollLeft, scrollLeft), self.__minDecelerationScrollLeft);
-	      if (scrollLeftFixed !== scrollLeft) {
-	        scrollLeft = scrollLeftFixed;
-	        self.__decelerationVelocityX = 0;
-	      }
-
-	      var scrollTopFixed = Math.max(Math.min(self.__maxDecelerationScrollTop, scrollTop), self.__minDecelerationScrollTop);
-	      if (scrollTopFixed !== scrollTop) {
-	        scrollTop = scrollTopFixed;
-	        self.__decelerationVelocityY = 0;
-	      }
-
-	    }
-
-	    //
-	    // UPDATE SCROLL POSITION
-	    //
-
-	    if (render) {
-
-	      self.__publish(scrollLeft, scrollTop, self.__zoomLevel);
-
-	    } else {
-
-	      self.__scrollLeft = scrollLeft;
-	      self.__scrollTop = scrollTop;
-
-	    }
-
-
-	    //
-	    // SLOW DOWN
-	    //
-
-	    // Slow down velocity on every iteration
-	    if (!self.options.paging) {
-
-	      // This is the factor applied to every iteration of the animation
-	      // to slow down the process. This should emulate natural behavior where
-	      // objects slow down when the initiator of the movement is removed
-	      var frictionFactor = 0.95;
-
-	      self.__decelerationVelocityX *= frictionFactor;
-	      self.__decelerationVelocityY *= frictionFactor;
-
-	    }
-
-
-	    //
-	    // BOUNCING SUPPORT
-	    //
-
-	    if (self.options.bouncing) {
-
-	      var scrollOutsideX = 0;
-	      var scrollOutsideY = 0;
-
-	      // This configures the amount of change applied to deceleration/acceleration when reaching boundaries
-	      var penetrationDeceleration = self.options.penetrationDeceleration;
-	      var penetrationAcceleration = self.options.penetrationAcceleration;
-
-	      // Check limits
-	      if (scrollLeft < self.__minDecelerationScrollLeft) {
-	        scrollOutsideX = self.__minDecelerationScrollLeft - scrollLeft;
-	      } else if (scrollLeft > self.__maxDecelerationScrollLeft) {
-	        scrollOutsideX = self.__maxDecelerationScrollLeft - scrollLeft;
-	      }
-
-	      if (scrollTop < self.__minDecelerationScrollTop) {
-	        scrollOutsideY = self.__minDecelerationScrollTop - scrollTop;
-	      } else if (scrollTop > self.__maxDecelerationScrollTop) {
-	        scrollOutsideY = self.__maxDecelerationScrollTop - scrollTop;
-	      }
-
-	      // Slow down until slow enough, then flip back to snap position
-	      if (scrollOutsideX !== 0) {
-	        if (scrollOutsideX * self.__decelerationVelocityX <= 0) {
-	          self.__decelerationVelocityX += scrollOutsideX * penetrationDeceleration;
-	        } else {
-	          self.__decelerationVelocityX = scrollOutsideX * penetrationAcceleration;
-	        }
-	      }
-
-	      if (scrollOutsideY !== 0) {
-	        if (scrollOutsideY * self.__decelerationVelocityY <= 0) {
-	          self.__decelerationVelocityY += scrollOutsideY * penetrationDeceleration;
-	        } else {
-	          self.__decelerationVelocityY = scrollOutsideY * penetrationAcceleration;
-	        }
-	      }
-	    }
-	  }
-	};
-
-	// Copy over members to prototype
-	for (var key in members) {
-	  Scroller.prototype[key] = members[key];
-	}
-
-	module.exports = Scroller;
-
-
-/***/ },
-/* 169 */
-/***/ function(module, exports) {
-
-	/* WEBPACK VAR INJECTION */(function(global) {/*
-	 * Scroller
-	 * http://github.com/zynga/scroller
-	 *
-	 * Copyright 2011, Zynga Inc.
-	 * Licensed under the MIT License.
-	 * https://raw.github.com/zynga/scroller/master/MIT-LICENSE.txt
-	 *
-	 * Based on the work of: Unify Project (unify-project.org)
-	 * http://unify-project.org
-	 * Copyright 2011, Deutsche Telekom AG
-	 * License: MIT + Apache (V2)
-	 */
-
-	/**
-	 * Generic animation class with support for dropped frames both optional easing and duration.
-	 *
-	 * Optional duration is useful when the lifetime is defined by another condition than time
-	 * e.g. speed of an animating object, etc.
-	 *
-	 * Dropped frame logic allows to keep using the same updater logic independent from the actual
-	 * rendering. This eases a lot of cases where it might be pretty complex to break down a state
-	 * based on the pure time difference.
-	 */
-
-	var desiredFrames = 60;
-	var millisecondsPerSecond = 1000;
-	var running = {};
-	var counter = 1;
-	var win = typeof window !== 'undefined' ? window : undefined;
-
-	if (!win) {
-	  win = typeof global !== 'undefined' ? global : {};
-	}
-
-	var Animate = {
-
-	  /**
-	   * A requestAnimationFrame wrapper / polyfill.
-	   *
-	   * @param callback {Function} The callback to be invoked before the next repaint.
-	   * @param root {HTMLElement} The root element for the repaint
-	   */
-	  requestAnimationFrame: (function () {
-
-	    // Check for request animation Frame support
-	    var requestFrame = win.requestAnimationFrame || win.webkitRequestAnimationFrame || win.mozRequestAnimationFrame || win.oRequestAnimationFrame;
-	    var isNative = !!requestFrame;
-
-	    if (requestFrame && !/requestAnimationFrame\(\)\s*\{\s*\[native code\]\s*\}/i.test(requestFrame.toString())) {
-	      isNative = false;
-	    }
-
-	    if (isNative) {
-	      return function (callback, root) {
-	        requestFrame(callback, root)
-	      };
-	    }
-
-	    var TARGET_FPS = 60;
-	    var requests = {};
-	    var requestCount = 0;
-	    var rafHandle = 1;
-	    var intervalHandle = null;
-	    var lastActive = +new Date();
-
-	    return function (callback, root) {
-	      var callbackHandle = rafHandle++;
-
-	      // Store callback
-	      requests[callbackHandle] = callback;
-	      requestCount++;
-
-	      // Create timeout at first request
-	      if (intervalHandle === null) {
-
-	        intervalHandle = setInterval(function () {
-
-	          var time = +new Date();
-	          var currentRequests = requests;
-
-	          // Reset data structure before executing callbacks
-	          requests = {};
-	          requestCount = 0;
-
-	          for (var key in currentRequests) {
-	            if (currentRequests.hasOwnProperty(key)) {
-	              currentRequests[key](time);
-	              lastActive = time;
-	            }
-	          }
-
-	          // Disable the timeout when nothing happens for a certain
-	          // period of time
-	          if (time - lastActive > 2500) {
-	            clearInterval(intervalHandle);
-	            intervalHandle = null;
-	          }
-
-	        }, 1000 / TARGET_FPS);
-	      }
-
-	      return callbackHandle;
-	    };
-
-	  })(),
-
-
-	  /**
-	   * Stops the given animation.
-	   *
-	   * @param id {Integer} Unique animation ID
-	   * @return {Boolean} Whether the animation was stopped (aka, was running before)
-	   */
-	  stop: function (id) {
-	    var cleared = running[id] != null;
-	    if (cleared) {
-	      running[id] = null;
-	    }
-
-	    return cleared;
-	  },
-
-
-	  /**
-	   * Whether the given animation is still running.
-	   *
-	   * @param id {Integer} Unique animation ID
-	   * @return {Boolean} Whether the animation is still running
-	   */
-	  isRunning: function (id) {
-	    return running[id] != null;
-	  },
-
-
-	  /**
-	   * Start the animation.
-	   *
-	   * @param stepCallback {Function} Pointer to function which is executed on every step.
-	   *   Signature of the method should be `function(percent, now, virtual) { return continueWithAnimation; }`
-	   * @param verifyCallback {Function} Executed before every animation step.
-	   *   Signature of the method should be `function() { return continueWithAnimation; }`
-	   * @param completedCallback {Function}
-	   *   Signature of the method should be `function(droppedFrames, finishedAnimation) {}`
-	   * @param duration {Integer} Milliseconds to run the animation
-	   * @param easingMethod {Function} Pointer to easing function
-	   *   Signature of the method should be `function(percent) { return modifiedValue; }`
-	   * @param root {Element ? document.body} Render root, when available. Used for internal
-	   *   usage of requestAnimationFrame.
-	   * @return {Integer} Identifier of animation. Can be used to stop it any time.
-	   */
-	  start: function (stepCallback, verifyCallback, completedCallback, duration, easingMethod, root) {
-
-	    var start = +new Date();
-	    var lastFrame = start;
-	    var percent = 0;
-	    var dropCounter = 0;
-	    var id = counter++;
-
-	    if (!root) {
-	      root = document.body;
-	    }
-
-	    // Compacting running db automatically every few new animations
-	    if (id % 20 === 0) {
-	      var newRunning = {};
-	      for (var usedId in running) {
-	        newRunning[usedId] = true;
-	      }
-	      running = newRunning;
-	    }
-
-	    // This is the internal step method which is called every few milliseconds
-	    var step = function (virtual) {
-
-	      // Normalize virtual value
-	      var render = virtual !== true;
-
-	      // Get current time
-	      var now = +new Date();
-
-	      // Verification is executed before next animation step
-	      if (!running[id] || (verifyCallback && !verifyCallback(id))) {
-
-	        running[id] = null;
-	        completedCallback && completedCallback(desiredFrames - (dropCounter / ((now - start) / millisecondsPerSecond)), id, false);
-	        return;
-
-	      }
-
-	      // For the current rendering to apply let's update omitted steps in memory.
-	      // This is important to bring internal state variables up-to-date with progress in time.
-	      if (render) {
-
-	        var droppedFrames = Math.round((now - lastFrame) / (millisecondsPerSecond / desiredFrames)) - 1;
-	        for (var j = 0; j < Math.min(droppedFrames, 4); j++) {
-	          step(true);
-	          dropCounter++;
-	        }
-
-	      }
-
-	      // Compute percent value
-	      if (duration) {
-	        percent = (now - start) / duration;
-	        if (percent > 1) {
-	          percent = 1;
-	        }
-	      }
-
-	      // Execute step callback, then...
-	      var value = easingMethod ? easingMethod(percent) : percent;
-	      if ((stepCallback(value, now, render) === false || percent === 1) && render) {
-	        running[id] = null;
-	        completedCallback && completedCallback(desiredFrames - (dropCounter / ((now - start) / millisecondsPerSecond)), id, percent === 1 || duration == null);
-	      } else if (render) {
-	        lastFrame = now;
-	        Animate.requestAnimationFrame(step, root);
-	      }
-	    };
-
-	    // Mark as running
-	    running[id] = true;
-
-	    // Init first step
-	    Animate.requestAnimationFrame(step, root);
-
-	    // Return unique animation ID
-	    return id;
-	  }
-	};
-
-	module.exports = Animate;
-
-	/* WEBPACK VAR INJECTION */}.call(exports, (function() { return this; }())))
-
-/***/ },
-/* 170 */
-/***/ function(module, exports) {
-
-	'use strict';
-	/* eslint-disable no-unused-vars */
-	var hasOwnProperty = Object.prototype.hasOwnProperty;
-	var propIsEnumerable = Object.prototype.propertyIsEnumerable;
-
-	function toObject(val) {
-		if (val === null || val === undefined) {
-			throw new TypeError('Object.assign cannot be called with null or undefined');
-		}
-
-		return Object(val);
-	}
-
-	function shouldUseNative() {
-		try {
-			if (!Object.assign) {
-				return false;
-			}
-
-			// Detect buggy property enumeration order in older V8 versions.
-
-			// https://bugs.chromium.org/p/v8/issues/detail?id=4118
-			var test1 = new String('abc');  // eslint-disable-line
-			test1[5] = 'de';
-			if (Object.getOwnPropertyNames(test1)[0] === '5') {
-				return false;
-			}
-
-			// https://bugs.chromium.org/p/v8/issues/detail?id=3056
-			var test2 = {};
-			for (var i = 0; i < 10; i++) {
-				test2['_' + String.fromCharCode(i)] = i;
-			}
-			var order2 = Object.getOwnPropertyNames(test2).map(function (n) {
-				return test2[n];
-			});
-			if (order2.join('') !== '0123456789') {
-				return false;
-			}
-
-			// https://bugs.chromium.org/p/v8/issues/detail?id=3056
-			var test3 = {};
-			'abcdefghijklmnopqrst'.split('').forEach(function (letter) {
-				test3[letter] = letter;
-			});
-			if (Object.keys(Object.assign({}, test3)).join('') !==
-					'abcdefghijklmnopqrst') {
-				return false;
-			}
-
-			return true;
-		} catch (e) {
-			// We don't expect any of the above to throw, but better to be safe.
-			return false;
-		}
-	}
-
-	module.exports = shouldUseNative() ? Object.assign : function (target, source) {
-		var from;
-		var to = toObject(target);
-		var symbols;
-
-		for (var s = 1; s < arguments.length; s++) {
-			from = Object(arguments[s]);
-
-			for (var key in from) {
-				if (hasOwnProperty.call(from, key)) {
-					to[key] = from[key];
-				}
-			}
-
-			if (Object.getOwnPropertySymbols) {
-				symbols = Object.getOwnPropertySymbols(from);
-				for (var i = 0; i < symbols.length; i++) {
-					if (propIsEnumerable.call(from, symbols[i])) {
-						to[symbols[i]] = from[symbols[i]];
-					}
-				}
-			}
-		}
-
-		return to;
-	};
-
-
-/***/ },
-/* 171 */
-/***/ function(module, exports, __webpack_require__) {
-
-	var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;/*!
-	  Copyright (c) 2016 Jed Watson.
-	  Licensed under the MIT License (MIT), see
-	  http://jedwatson.github.io/classnames
-	*/
-	/* global define */
-
-	(function () {
-		'use strict';
-
-		var hasOwn = {}.hasOwnProperty;
-
-		function classNames () {
-			var classes = [];
-
-			for (var i = 0; i < arguments.length; i++) {
-				var arg = arguments[i];
-				if (!arg) continue;
-
-				var argType = typeof arg;
-
-				if (argType === 'string' || argType === 'number') {
-					classes.push(arg);
-				} else if (Array.isArray(arg)) {
-					classes.push(classNames.apply(null, arg));
-				} else if (argType === 'object') {
-					for (var key in arg) {
-						if (hasOwn.call(arg, key) && arg[key]) {
-							classes.push(key);
-						}
-					}
-				}
-			}
-
-			return classes.join(' ');
-		}
-
-		if (typeof module !== 'undefined' && module.exports) {
-			module.exports = classNames;
-		} else if (true) {
-			// register as 'classnames', consistent with npm package name
-			!(__WEBPACK_AMD_DEFINE_ARRAY__ = [], __WEBPACK_AMD_DEFINE_RESULT__ = function () {
-				return classNames;
-			}.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
-		} else {
-			window.classNames = classNames;
-		}
-	}());
-
-
-/***/ },
-/* 172 */
-/***/ function(module, exports) {
-
-	"use strict";
-
-	Object.defineProperty(exports, "__esModule", {
-	  value: true
 	});
-	exports.getOffsetTop = getOffsetTop;
-	exports._event = _event;
-	exports.throttle = throttle;
-	function getOffsetTop(elem) {
-	  var offsetTop = 0;
-	  do {
-	    if (!isNaN(elem.offsetTop)) {
-	      offsetTop += elem.offsetTop;
-	    }
-	  } while (elem = elem.offsetParent);
-	  return offsetTop;
-	}
 
-	function _event(e) {
-	  if (e.touches && e.touches.length) {
-	    return e.touches[0];
-	  }
-	  if (e.changedTouches && e.changedTouches.length) {
-	    return e.changedTouches[0];
-	  }
-	  return e;
-	}
+	(0, _reactMixin2["default"])(ScrollView.prototype, _ScrollResponder2["default"].Mixin);
+	(0, _autobindDecorator2["default"])(ScrollView);
 
-	function throttle(fn, delay) {
-	  var allowSample = true;
-	  return function (e) {
-	    if (allowSample) {
-	      allowSample = false;
-	      setTimeout(function () {
-	        allowSample = true;
-	      }, delay);
-	      fn(e);
-	    }
-	  };
-	}
+	ScrollView.isReactNativeComponent = true;
+
+	exports["default"] = ScrollView;
+	module.exports = exports['default'];
 
 /***/ },
-/* 173 */
+/* 254 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -24008,11 +24011,11 @@
 
 	var _reactDom2 = _interopRequireDefault(_reactDom);
 
-	var _warning = __webpack_require__(28);
+	var _warning = __webpack_require__(251);
 
 	var _warning2 = _interopRequireDefault(_warning);
 
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
 
 	/**
 	 * Mixin that can be integrated in order to handle scrolling that plays well
@@ -24200,7 +24203,7 @@
 	   * a touch has already started.
 	   */
 	  scrollResponderHandleResponderReject: function scrollResponderHandleResponderReject() {
-	    (0, _warning2.default)(false, "ScrollView doesn't take rejection well - scrolls anyway");
+	    (0, _warning2["default"])(false, "ScrollView doesn't take rejection well - scrolls anyway");
 	  },
 
 	  /**
@@ -24357,7 +24360,7 @@
 	   */
 	  scrollResponderScrollWithouthAnimationTo: function scrollResponderScrollWithouthAnimationTo(offsetX, offsetY) {
 
-	    var node = _reactDom2.default.findDOMNode(this);
+	    var node = _reactDom2["default"].findDOMNode(this);
 	    node.offsetX = offsetX;
 	    node.offsetY = offsetY;
 	  },
@@ -24503,7 +24506,46 @@
 	module.exports = ScrollResponder;
 
 /***/ },
-/* 174 */
+/* 255 */
+/***/ function(module, exports) {
+
+	"use strict";
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	exports["default"] = {
+	  create: function create(styles) {
+	    return styles;
+	  },
+
+	  flattenStyle: function flattenStyle(style, processor) {
+	    if (!style) {
+	      return undefined;
+	    }
+
+	    if (!Array.isArray(style)) {
+	      return processor && processor(style) || style;
+	    }
+	    var result = {};
+	    for (var i = 0; i < style.length; ++i) {
+	      var computedStyle = flattenStyle(style[i]);
+	      if (computedStyle) {
+	        for (var key in computedStyle) {
+	          if (computedStyle.hasOwnProperty(key)) {
+	            result[key] = computedStyle[key];
+	          }
+	        }
+	      }
+	    }
+
+	    return processor && processor(result) || result;
+	  }
+	};
+	module.exports = exports['default'];
+
+/***/ },
+/* 256 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -24512,154 +24554,403 @@
 	  value: true
 	});
 
-	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+	var _react = __webpack_require__(4);
+
+	var _react2 = _interopRequireDefault(_react);
+
+	var _LayoutMixin = __webpack_require__(257);
+
+	var _NativeMethodsMixin = __webpack_require__(259);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
+
+	var View = _react2["default"].createClass({
+	  displayName: 'View',
+
+	  mixins: [_LayoutMixin.Mixin, _NativeMethodsMixin.Mixin],
+	  propTypes: {
+	    /**
+	     * When true, indicates that the view is an accessibility element. By default,
+	     * all the touchable elements are accessible.
+	     */
+	    accessible: _react.PropTypes.bool,
+
+	    /**
+	     * Overrides the text that's read by the screen reader when the user interacts
+	     * with the element. By default, the label is constructed by traversing all the
+	     * children and accumulating all the Text nodes separated by space.
+	     */
+	    accessibilityLabel: _react.PropTypes.string,
+	    /**
+	     * When `accessible` is true, the system will try to invoke this function
+	     * when the user performs accessibility tap gesture.
+	     */
+	    onAccessibilityTap: _react.PropTypes.func,
+
+	    /**
+	     * When `accessible` is true, the system will invoke this function when the
+	     * user performs the magic tap gesture.
+	     */
+	    onMagicTap: _react.PropTypes.func,
+
+	    /**
+	     * Used to locate this view in end-to-end tests. NB: disables the 'layout-only
+	     * view removal' optimization for this view!
+	     */
+	    testID: _react.PropTypes.string,
+
+	    /**
+	     * For most touch interactions, you'll simply want to wrap your component in
+	     * `TouchableHighlight` or `TouchableOpacity`. Check out `Touchable.js`,
+	     * `ScrollResponder.js` and `ResponderEventPlugin.js` for more discussion.
+	     */
+	    onResponderGrant: _react.PropTypes.func,
+	    onResponderMove: _react.PropTypes.func,
+	    onResponderReject: _react.PropTypes.func,
+	    onResponderRelease: _react.PropTypes.func,
+	    onResponderTerminate: _react.PropTypes.func,
+	    onResponderTerminationRequest: _react.PropTypes.func,
+	    onStartShouldSetResponder: _react.PropTypes.func,
+	    onStartShouldSetResponderCapture: _react.PropTypes.func,
+	    onMoveShouldSetResponder: _react.PropTypes.func,
+	    onMoveShouldSetResponderCapture: _react.PropTypes.func,
+
+	    /**
+	     * Invoked on mount and layout changes with
+	     *
+	     *   {nativeEvent: { layout: {x, y, width, height}}}.
+	     *
+	     * This event is fired immediately once the layout has been calculated, but
+	     * the new layout may not yet be reflected on the screen at the time the
+	     * event is received, especially if a layout animation is in progress.
+	     */
+	    onLayout: _react.PropTypes.func,
+
+	    /**
+	     * Controls whether the View can be the target of touch events.
+	     *
+	     *   - 'auto': The View can be the target of touch events.
+	     *   - 'none': The View is never the target of touch events.
+	     *   - 'box-none': The View is never the target of touch events but it's
+	     *     subviews can be. It behaves like if the view had the following classes
+	     *     in CSS:
+	     * ```
+	     * .box-none {
+	     * 		pointer-events: none;
+	     * }
+	     * .box-none * {
+	     * 		pointer-events: all;
+	     * }
+	     * ```
+	     *   - 'box-only': The view can be the target of touch events but it's
+	     *     subviews cannot be. It behaves like if the view had the following classes
+	     *     in CSS:
+	     * ```
+	     * .box-only {
+	     * 		pointer-events: all;
+	     * }
+	     * .box-only * {
+	     * 		pointer-events: none;
+	     * }
+	     * ```
+	     */
+	    // Since `pointerEvents` does not affect layout/appearance, and we are
+	    // already deviating from the spec by adding additional modes, we opt to not
+	    // include `pointerEvents` on `style`. On some platforms, we would need to
+	    // implement it as a `className` anyways. Using `style` or not is an
+	    // implementation detail of the platform.
+	    pointerEvents: _react.PropTypes.oneOf(['box-none', 'none', 'box-only', 'auto']),
+	    style: _react.PropTypes.oneOfType([_react.PropTypes.object, _react.PropTypes.array]),
+
+	    /**
+	     * This is a special performance property exposed by RCTView and is useful
+	     * for scrolling content when there are many subviews, most of which are
+	     * offscreen. For this property to be effective, it must be applied to a
+	     * view that contains many subviews that extend outside its bound. The
+	     * subviews must also have overflow: hidden, as should the containing view
+	     * (or one of its superviews).
+	     */
+	    removeClippedSubviews: _react.PropTypes.bool
+	  },
+	  render: function render() {
+	    var _props = this.props;
+	    var children = _props.children;
+	    var className = _props.className;
+	    var style = _props.style;
+	    var onScroll = _props.onScroll;
+	    var _props$onCick = _props.onCick;
+	    var onCick = _props$onCick === undefined ? function () {} : _props$onCick;
+
+	    var divProps = { className: className, style: style, onScroll: onScroll, onClick: onCick };
+	    return _react2["default"].createElement(
+	      'div',
+	      divProps,
+	      children
+	    );
+	  }
+	});
+
+	View.isReactNativeComponent = true;
+
+	exports["default"] = View;
+	module.exports = exports['default'];
+
+
+/***/ },
+/* 257 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
 
 	var _react = __webpack_require__(4);
 
 	var _react2 = _interopRequireDefault(_react);
 
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	var _reactDom = __webpack_require__(161);
 
-	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+	var _reactDom2 = _interopRequireDefault(_reactDom);
 
-	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+	var _getLayout = __webpack_require__(258);
 
-	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+	var _getLayout2 = _interopRequireDefault(_getLayout);
 
-	var StaticRenderer = function (_React$Component) {
-	  _inherits(StaticRenderer, _React$Component);
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
 
-	  function StaticRenderer() {
-	    _classCallCheck(this, StaticRenderer);
-
-	    return _possibleConstructorReturn(this, (StaticRenderer.__proto__ || Object.getPrototypeOf(StaticRenderer)).apply(this, arguments));
-	  }
-
-	  _createClass(StaticRenderer, [{
-	    key: 'shouldComponentUpdate',
-	    value: function shouldComponentUpdate(nextProps) {
-	      return nextProps.shouldUpdate;
-	    }
-	  }, {
-	    key: 'render',
-	    value: function render() {
-	      return this.props.render();
-	    }
-	  }]);
-
-	  return StaticRenderer;
-	}(_react2.default.Component);
-
-	StaticRenderer.propTypes = {
-	  shouldUpdate: _react.PropTypes.bool.isRequired,
-	  render: _react.PropTypes.func.isRequired
-	};
-	exports.default = StaticRenderer;
-
-/***/ },
-/* 175 */
-/***/ function(module, exports) {
-
-	/* WEBPACK VAR INJECTION */(function(global) {/*
-	 *  Copyright (c) 2015-present, Facebook, Inc.
-	 *  All rights reserved.
-	 *
-	 *  This source code is licensed under the BSD-style license found in the
-	 *  LICENSE file in the root directory of this source tree. An additional grant
-	 *  of patent rights can be found in the PATENTS file in the same directory.
-	 *
-	 */
-	'use strict';
-
-	var GLOBAL = typeof window === 'undefined' ? global : window;
-
-	var setter = function(_setter, _clearer, array) {
-	  return function(callback, delta) {
-	    var id = _setter(function() {
-	      _clearer.call(this, id);
-	      callback.apply(this, arguments);
-	    }.bind(this), delta);
-
-	    if (!this[array]) {
-	      this[array] = [id];
-	    } else {
-	      this[array].push(id);
-	    }
-	    return id;
-	  };
-	};
-
-	var clearer = function(_clearer, array) {
-	  return function(id) {
-	    if (this[array]) {
-	      var index = this[array].indexOf(id);
-	      if (index !== -1) {
-	        this[array].splice(index, 1);
-	      }
-	    }
-	    _clearer(id);
-	  };
-	};
-
-	var _timeouts = 'TimerMixin_timeouts';
-	var _clearTimeout = clearer(GLOBAL.clearTimeout, _timeouts);
-	var _setTimeout = setter(GLOBAL.setTimeout, _clearTimeout, _timeouts);
-
-	var _intervals = 'TimerMixin_intervals';
-	var _clearInterval = clearer(GLOBAL.clearInterval, _intervals);
-	var _setInterval = setter(GLOBAL.setInterval, function() {/* noop */}, _intervals);
-
-	var _immediates = 'TimerMixin_immediates';
-	var _clearImmediate = clearer(GLOBAL.clearImmediate, _immediates);
-	var _setImmediate = setter(GLOBAL.setImmediate, _clearImmediate, _immediates);
-
-	var _rafs = 'TimerMixin_rafs';
-	var _cancelAnimationFrame = clearer(GLOBAL.cancelAnimationFrame, _rafs);
-	var _requestAnimationFrame = setter(GLOBAL.requestAnimationFrame, _cancelAnimationFrame, _rafs);
-
-	var TimerMixin = {
-	  componentWillUnmount: function() {
-	    this[_timeouts] && this[_timeouts].forEach(function(id) {
-	      GLOBAL.clearTimeout(id);
-	    });
-	    this[_timeouts] = null;
-	    this[_intervals] && this[_intervals].forEach(function(id) {
-	      GLOBAL.clearInterval(id);
-	    });
-	    this[_intervals] = null;
-	    this[_immediates] && this[_immediates].forEach(function(id) {
-	      GLOBAL.clearImmediate(id);
-	    });
-	    this[_immediates] = null;
-	    this[_rafs] && this[_rafs].forEach(function(id) {
-	      GLOBAL.cancelAnimationFrame(id);
-	    });
-	    this[_rafs] = null;
+	var LayoutMixin = {
+	  getInitialState: function getInitialState() {
+	    return { layout: {} };
 	  },
 
-	  setTimeout: _setTimeout,
-	  clearTimeout: _clearTimeout,
+	  componentDidMount: function componentDidMount() {
+	    this.layoutHandle();
+	  },
 
-	  setInterval: _setInterval,
-	  clearInterval: _clearInterval,
+	  componentDidUpdate: function componentDidUpdate() {
+	    this.layoutHandle();
+	  },
 
-	  setImmediate: _setImmediate,
-	  clearImmediate: _clearImmediate,
+	  layoutHandle: function layoutHandle() {
+	    if (this.props.onLayout) {
 
-	  requestAnimationFrame: _requestAnimationFrame,
-	  cancelAnimationFrame: _cancelAnimationFrame,
+	      var layout = (0, _getLayout2["default"])(_reactDom2["default"].findDOMNode(this));
+	      var stateLayout = this.state.layout;
+	      if (stateLayout.x !== layout.x || stateLayout.y !== layout.y || stateLayout.width !== layout.width || stateLayout.height !== layout.height) {
+	        this.props.onLayout({ nativeEvent: { layout: layout } });
+	        this.setState({ layout: layout });
+	      }
+	    }
+	  }
+	};
+	// 'use strict';
+
+	module.exports = {
+	  Mixin: LayoutMixin
 	};
 
-	module.exports = TimerMixin;
+/***/ },
+/* 258 */
+/***/ function(module, exports) {
 
-	/* WEBPACK VAR INJECTION */}.call(exports, (function() { return this; }())))
+	"use strict";
+
+	// 'use strict';
+
+	// get element x, y
+	function getCumulativeOffset(obj) {
+	  var left, top;
+	  left = top = 0;
+	  if (obj.offsetParent) {
+	    do {
+	      left += obj.offsetLeft;
+	      top += obj.offsetTop;
+	    } while (obj = obj.offsetParent);
+	  }
+	  return {
+	    x: left,
+	    y: top
+	  };
+	}
+
+	// this functions returns the x, y, width and height of a given dom node
+	function getLayout(element) {
+	  var rect = getCumulativeOffset(element);
+	  return {
+	    x: rect.x,
+	    y: rect.y,
+	    width: element.offsetWidth,
+	    height: element.offsetHeight
+	  };
+	}
+
+	module.exports = getLayout;
 
 /***/ },
-/* 176 */
+/* 259 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var mixin = __webpack_require__(177);
-	var assign = __webpack_require__(170);
+	'use strict';
+
+	var _UIManager = __webpack_require__(260);
+
+	var _UIManager2 = _interopRequireDefault(_UIManager);
+
+	var _reactDom = __webpack_require__(161);
+
+	var _reactDom2 = _interopRequireDefault(_reactDom);
+
+	var _setNativeProps2 = __webpack_require__(261);
+
+	var _setNativeProps3 = _interopRequireDefault(_setNativeProps2);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
+
+	var NativeMethodsMixin = {
+	  /**
+	   * Determines the location on screen, width, and height of the given view and
+	   * returns the values via an async callback. If successful, the callback will
+	   * be called with the following arguments:
+	   *
+	   *  - x
+	   *  - y
+	   *  - width
+	   *  - height
+	   *  - pageX
+	   *  - pageY
+	   *
+	   * Note that these measurements are not available until after the rendering
+	   * has been completed in native. If you need the measurements as soon as
+	   * possible, consider using the [`onLayout`
+	   * prop](/react-native/docs/view.html#onlayout) instead.
+	   */
+	  measure: function measure(callback) {
+	    _UIManager2["default"].measure(_reactDom2["default"].findDOMNode(this), mountSafeCallback(this, callback));
+	  },
+
+	  /**
+	   * Like [`measure()`](#measure), but measures the view relative an ancestor,
+	   * specified as `relativeToNativeNode`. This means that the returned x, y
+	   * are relative to the origin x, y of the ancestor view.
+	   *
+	   * As always, to obtain a native node handle for a component, you can use
+	   * `ReactDOM.findDOMNode(component)`.
+	   */
+	  measureLayout: function measureLayout(relativeToNativeNode, onSuccess, onFail) {
+	    _UIManager2["default"].measureLayout(_reactDom2["default"].findDOMNode(this), relativeToNativeNode, mountSafeCallback(this, onFail), mountSafeCallback(this, onSuccess));
+	  },
+
+	  /**
+	   * This function sends props straight to native. They will not participate in
+	   * future diff process - this means that if you do not include them in the
+	   * next render, they will remain active (see [Direct
+	   * Manipulation](/react-native/docs/direct-manipulation.html)).
+	   */
+	  setNativeProps: function setNativeProps(nativeProps) {
+	    (0, _setNativeProps3["default"])(_reactDom2["default"].findDOMNode(this), nativeProps);
+	  },
+
+	  /**
+	   * Requests focus for the given input or view. The exact behavior triggered
+	   * will depend on the platform and type of view.
+	   */
+	  focus: function focus() {
+	    _reactDom2["default"].findDOMNode(this).focus();
+	  },
+
+	  /**
+	   * Removes focus from an input or view. This is the opposite of `focus()`.
+	   */
+	  blur: function blur() {
+	    _reactDom2["default"].findDOMNode(this).blur();
+	  }
+	};
+
+	/**
+	 * In the future, we should cleanup callbacks by cancelling them instead of
+	 * using this.
+	 */
+
+	// 'use strict';
+
+	var mountSafeCallback = function mountSafeCallback(context, callback) {
+	  return function () {
+	    if (!callback || context.isMounted && !context.isMounted()) {
+	      return;
+	    }
+	    return callback.apply(context, arguments);
+	  };
+	};
+
+	module.exports = { Mixin: NativeMethodsMixin };
+
+
+/***/ },
+/* 260 */
+/***/ function(module, exports) {
+
+	"use strict";
+
+	var UIManager = {
+	  measure: function measure(ref, callback) {
+	    var rect = ref.getBoundingClientRect();
+	    callback(0, 0, rect.width, rect.height, rect.left, rect.top);
+	  },
+	  measureLayout: function measureLayout(ref, relativeTo, errorCallback, callback) {
+	    var rect = ref.getBoundingClientRect();
+	    var relativeRef = relativeTo.getBoundingClientRect();
+	    callback(rect.left - relativeRef.left, rect.top - relativeRef.top, rect.width, rect.height);
+	  }
+	};
+
+	module.exports = UIManager;
+
+/***/ },
+/* 261 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	// 'use strict';
+
+	var CSSPropertyOperations = __webpack_require__(99);
+
+	function convertTransform(style) {
+	  var result = {};
+
+	  for (var k in style) {
+	    if (k === 'transformMatrix') {
+	      result.transform = 'matrix3d(' + style[k].join(',') + ') ';
+	    } else {
+	      result[k] = style[k];
+	    }
+	  }
+
+	  return result;
+	}
+
+	function setNativeProps(node, props) {
+
+	  for (var name in props) {
+	    if (name === 'style') {
+	      var style = props[name];
+	      if ('transformMatrix' in style) {
+	        style = convertTransform(style);
+	      }
+
+	      CSSPropertyOperations.setValueForStyles(node, style);
+	    } else {
+	      node.setAttribute(name, props[name]);
+	    }
+	  }
+	}
+
+	module.exports = setNativeProps;
+
+/***/ },
+/* 262 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var mixin = __webpack_require__(263);
+	var assign = __webpack_require__(264);
 
 	var mixinProto = mixin({
 	  // lifecycle stuff is as you'd expect
@@ -24814,7 +25105,7 @@
 
 
 /***/ },
-/* 177 */
+/* 263 */
 /***/ function(module, exports) {
 
 	function objToStr(x){ return Object.prototype.toString.call(x); };
@@ -24991,7 +25282,96 @@
 
 
 /***/ },
-/* 178 */
+/* 264 */
+/***/ function(module, exports) {
+
+	'use strict';
+	/* eslint-disable no-unused-vars */
+	var hasOwnProperty = Object.prototype.hasOwnProperty;
+	var propIsEnumerable = Object.prototype.propertyIsEnumerable;
+
+	function toObject(val) {
+		if (val === null || val === undefined) {
+			throw new TypeError('Object.assign cannot be called with null or undefined');
+		}
+
+		return Object(val);
+	}
+
+	function shouldUseNative() {
+		try {
+			if (!Object.assign) {
+				return false;
+			}
+
+			// Detect buggy property enumeration order in older V8 versions.
+
+			// https://bugs.chromium.org/p/v8/issues/detail?id=4118
+			var test1 = new String('abc');  // eslint-disable-line
+			test1[5] = 'de';
+			if (Object.getOwnPropertyNames(test1)[0] === '5') {
+				return false;
+			}
+
+			// https://bugs.chromium.org/p/v8/issues/detail?id=3056
+			var test2 = {};
+			for (var i = 0; i < 10; i++) {
+				test2['_' + String.fromCharCode(i)] = i;
+			}
+			var order2 = Object.getOwnPropertyNames(test2).map(function (n) {
+				return test2[n];
+			});
+			if (order2.join('') !== '0123456789') {
+				return false;
+			}
+
+			// https://bugs.chromium.org/p/v8/issues/detail?id=3056
+			var test3 = {};
+			'abcdefghijklmnopqrst'.split('').forEach(function (letter) {
+				test3[letter] = letter;
+			});
+			if (Object.keys(Object.assign({}, test3)).join('') !==
+					'abcdefghijklmnopqrst') {
+				return false;
+			}
+
+			return true;
+		} catch (e) {
+			// We don't expect any of the above to throw, but better to be safe.
+			return false;
+		}
+	}
+
+	module.exports = shouldUseNative() ? Object.assign : function (target, source) {
+		var from;
+		var to = toObject(target);
+		var symbols;
+
+		for (var s = 1; s < arguments.length; s++) {
+			from = Object(arguments[s]);
+
+			for (var key in from) {
+				if (hasOwnProperty.call(from, key)) {
+					to[key] = from[key];
+				}
+			}
+
+			if (Object.getOwnPropertySymbols) {
+				symbols = Object.getOwnPropertySymbols(from);
+				for (var i = 0; i < symbols.length; i++) {
+					if (propIsEnumerable.call(from, symbols[i])) {
+						to[symbols[i]] = from[symbols[i]];
+					}
+				}
+			}
+		}
+
+		return to;
+	};
+
+
+/***/ },
+/* 265 */
 /***/ function(module, exports) {
 
 	/**
@@ -25100,7 +25480,177 @@
 
 
 /***/ },
-/* 179 */
+/* 266 */
+/***/ function(module, exports) {
+
+	'use strict';
+
+	module.exports = function(fn, delay) {
+	  var allowSample = true;
+	  return function(e) {
+	    if (allowSample) {
+	      allowSample = false;
+	      setTimeout(function() { allowSample = true; }, delay);
+	      fn(e);
+	    }
+	  };
+	}
+
+
+/***/ },
+/* 267 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+
+	var _classCallCheck2 = __webpack_require__(203);
+
+	var _classCallCheck3 = _interopRequireDefault(_classCallCheck2);
+
+	var _possibleConstructorReturn2 = __webpack_require__(204);
+
+	var _possibleConstructorReturn3 = _interopRequireDefault(_possibleConstructorReturn2);
+
+	var _inherits2 = __webpack_require__(240);
+
+	var _inherits3 = _interopRequireDefault(_inherits2);
+
+	var _react = __webpack_require__(4);
+
+	var _react2 = _interopRequireDefault(_react);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
+
+	var StaticRenderer = function (_React$Component) {
+	  (0, _inherits3["default"])(StaticRenderer, _React$Component);
+
+	  function StaticRenderer() {
+	    (0, _classCallCheck3["default"])(this, StaticRenderer);
+	    return (0, _possibleConstructorReturn3["default"])(this, _React$Component.apply(this, arguments));
+	  }
+
+	  StaticRenderer.prototype.shouldComponentUpdate = function shouldComponentUpdate(nextProps) {
+	    return nextProps.shouldUpdate;
+	  };
+
+	  StaticRenderer.prototype.render = function render() {
+	    return this.props.render();
+	  };
+
+	  return StaticRenderer;
+	}(_react2["default"].Component);
+
+	StaticRenderer.propTypes = {
+	  shouldUpdate: _react.PropTypes.bool.isRequired,
+	  render: _react.PropTypes.func.isRequired
+	};
+	exports["default"] = StaticRenderer;
+	module.exports = exports['default'];
+
+/***/ },
+/* 268 */
+/***/ function(module, exports) {
+
+	/* WEBPACK VAR INJECTION */(function(global) {/*
+	 *  Copyright (c) 2015-present, Facebook, Inc.
+	 *  All rights reserved.
+	 *
+	 *  This source code is licensed under the BSD-style license found in the
+	 *  LICENSE file in the root directory of this source tree. An additional grant
+	 *  of patent rights can be found in the PATENTS file in the same directory.
+	 *
+	 */
+	'use strict';
+
+	var GLOBAL = typeof window === 'undefined' ? global : window;
+
+	var setter = function(_setter, _clearer, array) {
+	  return function(callback, delta) {
+	    var id = _setter(function() {
+	      _clearer.call(this, id);
+	      callback.apply(this, arguments);
+	    }.bind(this), delta);
+
+	    if (!this[array]) {
+	      this[array] = [id];
+	    } else {
+	      this[array].push(id);
+	    }
+	    return id;
+	  };
+	};
+
+	var clearer = function(_clearer, array) {
+	  return function(id) {
+	    if (this[array]) {
+	      var index = this[array].indexOf(id);
+	      if (index !== -1) {
+	        this[array].splice(index, 1);
+	      }
+	    }
+	    _clearer(id);
+	  };
+	};
+
+	var _timeouts = 'TimerMixin_timeouts';
+	var _clearTimeout = clearer(GLOBAL.clearTimeout, _timeouts);
+	var _setTimeout = setter(GLOBAL.setTimeout, _clearTimeout, _timeouts);
+
+	var _intervals = 'TimerMixin_intervals';
+	var _clearInterval = clearer(GLOBAL.clearInterval, _intervals);
+	var _setInterval = setter(GLOBAL.setInterval, function() {/* noop */}, _intervals);
+
+	var _immediates = 'TimerMixin_immediates';
+	var _clearImmediate = clearer(GLOBAL.clearImmediate, _immediates);
+	var _setImmediate = setter(GLOBAL.setImmediate, _clearImmediate, _immediates);
+
+	var _rafs = 'TimerMixin_rafs';
+	var _cancelAnimationFrame = clearer(GLOBAL.cancelAnimationFrame, _rafs);
+	var _requestAnimationFrame = setter(GLOBAL.requestAnimationFrame, _cancelAnimationFrame, _rafs);
+
+	var TimerMixin = {
+	  componentWillUnmount: function() {
+	    this[_timeouts] && this[_timeouts].forEach(function(id) {
+	      GLOBAL.clearTimeout(id);
+	    });
+	    this[_timeouts] = null;
+	    this[_intervals] && this[_intervals].forEach(function(id) {
+	      GLOBAL.clearInterval(id);
+	    });
+	    this[_intervals] = null;
+	    this[_immediates] && this[_immediates].forEach(function(id) {
+	      GLOBAL.clearImmediate(id);
+	    });
+	    this[_immediates] = null;
+	    this[_rafs] && this[_rafs].forEach(function(id) {
+	      GLOBAL.cancelAnimationFrame(id);
+	    });
+	    this[_rafs] = null;
+	  },
+
+	  setTimeout: _setTimeout,
+	  clearTimeout: _clearTimeout,
+
+	  setInterval: _setInterval,
+	  clearInterval: _clearInterval,
+
+	  setImmediate: _setImmediate,
+	  clearImmediate: _clearImmediate,
+
+	  requestAnimationFrame: _requestAnimationFrame,
+	  cancelAnimationFrame: _cancelAnimationFrame,
+	};
+
+	module.exports = TimerMixin;
+
+	/* WEBPACK VAR INJECTION */}.call(exports, (function() { return this; }())))
+
+/***/ },
+/* 269 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -25110,15 +25660,15 @@
 	});
 	exports.Channel = exports.StickyContainer = exports.Sticky = undefined;
 
-	var _sticky = __webpack_require__(180);
+	var _sticky = __webpack_require__(270);
 
 	var _sticky2 = _interopRequireDefault(_sticky);
 
-	var _container = __webpack_require__(181);
+	var _container = __webpack_require__(271);
 
 	var _container2 = _interopRequireDefault(_container);
 
-	var _channel = __webpack_require__(182);
+	var _channel = __webpack_require__(272);
 
 	var _channel2 = _interopRequireDefault(_channel);
 
@@ -25130,7 +25680,7 @@
 	exports.default = _sticky2.default;
 
 /***/ },
-/* 180 */
+/* 270 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -25400,7 +25950,7 @@
 	module.exports = exports['default'];
 
 /***/ },
-/* 181 */
+/* 271 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -25419,7 +25969,7 @@
 
 	var _reactDom2 = _interopRequireDefault(_reactDom);
 
-	var _channel = __webpack_require__(182);
+	var _channel = __webpack_require__(272);
 
 	var _channel2 = _interopRequireDefault(_channel);
 
@@ -25505,7 +26055,7 @@
 	module.exports = exports['default'];
 
 /***/ },
-/* 182 */
+/* 272 */
 /***/ function(module, exports) {
 
 	"use strict";
@@ -25543,7 +26093,7 @@
 	module.exports = exports['default'];
 
 /***/ },
-/* 183 */
+/* 273 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -25551,6 +26101,30 @@
 	Object.defineProperty(exports, "__esModule", {
 	  value: true
 	});
+
+	var _extends2 = __webpack_require__(164);
+
+	var _extends3 = _interopRequireDefault(_extends2);
+
+	var _defineProperty2 = __webpack_require__(274);
+
+	var _defineProperty3 = _interopRequireDefault(_defineProperty2);
+
+	var _objectWithoutProperties2 = __webpack_require__(202);
+
+	var _objectWithoutProperties3 = _interopRequireDefault(_objectWithoutProperties2);
+
+	var _classCallCheck2 = __webpack_require__(203);
+
+	var _classCallCheck3 = _interopRequireDefault(_classCallCheck2);
+
+	var _possibleConstructorReturn2 = __webpack_require__(204);
+
+	var _possibleConstructorReturn3 = _interopRequireDefault(_possibleConstructorReturn2);
+
+	var _inherits2 = __webpack_require__(240);
+
+	var _inherits3 = _interopRequireDefault(_inherits2);
 
 	var _react = __webpack_require__(4);
 
@@ -25560,94 +26134,7 @@
 
 	var _reactDom2 = _interopRequireDefault(_reactDom);
 
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-	exports.default = {
-	  bindEvt: function bindEvt() {
-	    var ele = this.getEle();
-	    ele.addEventListener('touchstart', this.onPullUpStart.bind(this));
-	    ele.addEventListener('touchmove', this.onPullUpMove.bind(this));
-	    ele.addEventListener('touchend', this.onPullUpEnd.bind(this));
-	    ele.addEventListener('touchcancel', this.onPullUpEnd.bind(this));
-	  },
-	  unBindEvt: function unBindEvt() {
-	    var ele = this.getEle();
-	    ele.removeEventListener('touchstart', this.onPullUpStart.bind(this));
-	    ele.removeEventListener('touchmove', this.onPullUpMove.bind(this));
-	    ele.removeEventListener('touchend', this.onPullUpEnd.bind(this));
-	    ele.removeEventListener('touchcancel', this.onPullUpEnd.bind(this));
-	  },
-	  getEle: function getEle() {
-	    var _props = this.props;
-	    var stickyHeader = _props.stickyHeader;
-	    var useBodyScroll = _props.useBodyScroll;
-	    var useZscroller = _props.useZscroller;
-
-	    var ele = void 0;
-	    if (stickyHeader || useBodyScroll) {
-	      ele = document.body;
-	    } else {
-	      ele = _reactDom2.default.findDOMNode(this.refs['listviewscroll'].refs['ScrollView']);
-	    }
-	    return ele;
-	  },
-	  componentDidMount: function componentDidMount() {
-	    this.bindEvt();
-	  },
-	  componentWillUnmount: function componentWillUnmount() {
-	    this.unBindEvt();
-	  },
-	  onPullUpStart: function onPullUpStart(e) {
-	    this._pullUpStartPageY = e.touches[0].screenY;
-	    this._isPullUp = false;
-	    this._pullUpEle = this.getEle();
-	  },
-	  onPullUpMove: function onPullUpMove(e) {
-	    // console.log(this._getDistanceFromEnd(this.scrollProperties), Object.keys(this.scrollProperties).every(i => this.scrollProperties[i] !== null))
-	    // 使用 pageY 对比有问题
-	    if (e.touches[0].screenY < this._pullUpStartPageY && this._reachBottom()) {
-	      // console.log('滚动条到了底部，pull up');
-	      this._isPullUp = true;
-	    }
-	  },
-	  onPullUpEnd: function onPullUpEnd(e) {
-	    if (this._isPullUp && this.props.onEndReached) {
-	      this.props.onEndReached(e);
-	    }
-	    this._isPullUp = false;
-	  },
-	  _reachBottom: function _reachBottom() {
-	    var element = this._pullUpEle;
-	    if (element === document.body) {
-	      return element.scrollHeight - element.scrollTop === window.innerHeight;
-	    }
-	    return element.scrollHeight - element.scrollTop === element.clientHeight;
-	  }
-	};
-
-/***/ },
-/* 184 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-
-	Object.defineProperty(exports, "__esModule", {
-	  value: true
-	});
-
-	var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
-
-	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-	var _react = __webpack_require__(4);
-
-	var _react2 = _interopRequireDefault(_react);
-
-	var _reactDom = __webpack_require__(161);
-
-	var _reactDom2 = _interopRequireDefault(_reactDom);
-
-	var _classnames = __webpack_require__(171);
+	var _classnames = __webpack_require__(278);
 
 	var _classnames2 = _interopRequireDefault(_classnames);
 
@@ -25655,27 +26142,17 @@
 
 	var _ListView2 = _interopRequireDefault(_ListView);
 
-	var _util = __webpack_require__(172);
+	var _indexedUtil = __webpack_require__(279);
 
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-	function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
-
-	function _objectWithoutProperties(obj, keys) { var target = {}; for (var i in obj) { if (keys.indexOf(i) >= 0) continue; if (!Object.prototype.hasOwnProperty.call(obj, i)) continue; target[i] = obj[i]; } return target; }
-
-	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
-
-	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
 
 	var IndexedList = function (_React$Component) {
-	  _inherits(IndexedList, _React$Component);
+	  (0, _inherits3["default"])(IndexedList, _React$Component);
 
 	  function IndexedList(props) {
-	    _classCallCheck(this, IndexedList);
+	    (0, _classCallCheck3["default"])(this, IndexedList);
 
-	    var _this = _possibleConstructorReturn(this, (IndexedList.__proto__ || Object.getPrototypeOf(IndexedList)).call(this, props));
+	    var _this = (0, _possibleConstructorReturn3["default"])(this, _React$Component.call(this, props));
 
 	    _initialiseProps.call(_this);
 
@@ -25686,153 +26163,23 @@
 	    return _this;
 	  }
 
-	  _createClass(IndexedList, [{
-	    key: 'componentWillReceiveProps',
-	    value: function componentWillReceiveProps(nextProps) {
-	      if (this.props.dataSource !== nextProps.dataSource) {
-	        this.dataChange(nextProps);
-	      }
+	  IndexedList.prototype.componentWillReceiveProps = function componentWillReceiveProps(nextProps) {
+	    if (this.props.dataSource !== nextProps.dataSource) {
+	      this.dataChange(nextProps);
 	    }
-	  }, {
-	    key: 'componentWillUnmount',
-	    value: function componentWillUnmount() {
-	      if (this._timer) {
-	        clearTimeout(this._timer);
-	      }
-	      this._hCache = null;
+	  };
+
+	  IndexedList.prototype.componentWillUnmount = function componentWillUnmount() {
+	    if (this._timer) {
+	      clearTimeout(this._timer);
 	    }
-	  }, {
-	    key: 'componentDidUpdate',
-	    value: function componentDidUpdate() {
-	      this.getQsInfo();
-	    }
-	  }, {
-	    key: 'componentDidMount',
-	    value: function componentDidMount() {
-	      this.dataChange(this.props);
-	      // handle quickSearchBar
-	      this.getQsInfo();
-	    }
-	  }, {
-	    key: 'renderQuickSearchBar',
-	    value: function renderQuickSearchBar(quickSearchBarTop, quickSearchBarStyle) {
-	      var _this2 = this;
+	    this._hCache = null;
+	  };
 
-	      var _props = this.props;
-	      var dataSource = _props.dataSource;
-	      var prefixCls = _props.prefixCls;
-
-	      var sectionKvs = dataSource.sectionIdentities.map(function (i) {
-	        return {
-	          value: i,
-	          label: dataSource._getSectionHeaderData(dataSource._dataBlob, i)
-	        };
-	      });
-	      return _react2.default.createElement(
-	        'ul',
-	        { ref: 'quickSearchBar',
-	          className: prefixCls + '-quick-search-bar', style: quickSearchBarStyle,
-	          onTouchStart: this.onTouchStart,
-	          onTouchMove: this.onTouchMove,
-	          onTouchEnd: this.onTouchEnd,
-	          onTouchCancel: this.onTouchEnd
-	        },
-	        _react2.default.createElement(
-	          'li',
-	          { 'data-qf-target': quickSearchBarTop.value,
-	            onClick: function onClick() {
-	              return _this2.onQuickSearchTop(undefined, quickSearchBarTop.value);
-	            }
-	          },
-	          quickSearchBarTop.label
-	        ),
-	        sectionKvs.map(function (i) {
-	          return _react2.default.createElement(
-	            'li',
-	            { key: i.value, 'data-qf-target': i.value,
-	              onClick: function onClick() {
-	                return _this2.onQuickSearch(i.value);
-	              }
-	            },
-	            i.label
-	          );
-	        })
-	      );
-	    }
-	  }, {
-	    key: 'render',
-	    value: function render() {
-	      var _classNames,
-	          _this3 = this;
-
-	      var _state = this.state;
-	      var _delay = _state._delay;
-	      var pageSize = _state.pageSize;
-	      var _props2 = this.props;
-	      var className = _props2.className;
-	      var prefixCls = _props2.prefixCls;
-	      var children = _props2.children;
-	      var quickSearchBarTop = _props2.quickSearchBarTop;
-	      var quickSearchBarStyle = _props2.quickSearchBarStyle;
-	      var _props2$initialListSi = _props2.initialListSize;
-	      var initialListSize = _props2$initialListSi === undefined ? Math.min(20, this.props.dataSource.getRowCount()) : _props2$initialListSi;
-	      var _renderSectionHeader = _props2.renderSectionHeader;
-	      var sectionHeaderClassName = _props2.sectionHeaderClassName;
-
-	      var other = _objectWithoutProperties(_props2, ['className', 'prefixCls', 'children', 'quickSearchBarTop', 'quickSearchBarStyle', 'initialListSize', 'renderSectionHeader', 'sectionHeaderClassName']);
-
-	      var wrapCls = (0, _classnames2.default)((_classNames = {}, _defineProperty(_classNames, className, className), _defineProperty(_classNames, prefixCls, true), _classNames));
-	      // initialListSize={this.props.dataSource.getRowCount()}
-	      return _react2.default.createElement(
-	        'div',
-	        { className: prefixCls + '-container' },
-	        _delay && this.props.delayActivityIndicator,
-	        _react2.default.createElement(
-	          _ListView2.default,
-	          _extends({}, other, {
-	            ref: 'indexedListView',
-	            className: wrapCls,
-	            initialListSize: initialListSize,
-	            pageSize: pageSize,
-	            renderSectionHeader: function renderSectionHeader(sectionData, sectionID) {
-	              return _react2.default.cloneElement(_renderSectionHeader(sectionData, sectionID), {
-	                ref: function ref(c) {
-	                  return _this3.sectionComponents[sectionID] = c;
-	                },
-	                className: sectionHeaderClassName || prefixCls + '-section-header'
-	              });
-	            }
-	          }),
-	          children
-	        ),
-	        this.renderQuickSearchBar(quickSearchBarTop, quickSearchBarStyle)
-	      );
-	    }
-	  }]);
-
-	  return IndexedList;
-	}(_react2.default.Component);
-
-	IndexedList.propTypes = {
-	  prefixCls: _react.PropTypes.string,
-	  sectionHeaderClassName: _react.PropTypes.string,
-	  quickSearchBarTop: _react.PropTypes.object,
-	  onQuickSearch: _react.PropTypes.func
-	};
-	IndexedList.defaultProps = {
-	  prefixCls: 'rmc-indexed-list',
-	  quickSearchBarTop: { value: '#', label: '#' },
-	  onQuickSearch: function onQuickSearch() {},
-	  delayTime: 100,
-	  // delayActivityIndicator: <div style={{padding: 5, textAlign: 'center'}}>rendering more</div>,
-	  delayActivityIndicator: ''
-	};
-
-	var _initialiseProps = function _initialiseProps() {
-	  var _this4 = this;
-
-	  this.getQsInfo = function () {
-	    var quickSearchBar = _this4.refs.quickSearchBar;
+	  IndexedList.prototype.componentDidMount = function componentDidMount() {
+	    this.dataChange(this.props);
+	    // handle quickSearchBar
+	    var quickSearchBar = this.refs.quickSearchBar;
 	    var height = quickSearchBar.offsetHeight;
 	    var hCache = [];
 	    [].slice.call(quickSearchBar.querySelectorAll('[data-qf-target]')).forEach(function (d) {
@@ -25844,10 +26191,125 @@
 	      _top = i * _avgH;
 	      hCache[i][1] = [_top, _top + _avgH];
 	    }
-	    _this4._qsHeight = height;
-	    _this4._avgH = _avgH;
-	    _this4._hCache = hCache;
+	    this._qsHeight = height;
+	    this._avgH = _avgH;
+	    this._hCache = hCache;
 	  };
+
+	  IndexedList.prototype.renderQuickSearchBar = function renderQuickSearchBar(quickSearchBarTop, quickSearchBarStyle) {
+	    var _this2 = this;
+
+	    var _props = this.props;
+	    var dataSource = _props.dataSource;
+	    var prefixCls = _props.prefixCls;
+
+	    var sectionKvs = dataSource.sectionIdentities.map(function (i) {
+	      return {
+	        value: i,
+	        label: dataSource._getSectionHeaderData(dataSource._dataBlob, i)
+	      };
+	    });
+	    return _react2["default"].createElement(
+	      'ul',
+	      { ref: 'quickSearchBar',
+	        className: prefixCls + '-quick-search-bar', style: quickSearchBarStyle,
+	        onTouchStart: this.onTouchStart,
+	        onTouchMove: this.onTouchMove,
+	        onTouchEnd: this.onTouchEnd,
+	        onTouchCancel: this.onTouchEnd
+	      },
+	      _react2["default"].createElement(
+	        'li',
+	        { 'data-qf-target': quickSearchBarTop.value,
+	          onClick: function onClick() {
+	            return _this2.onQuickSearchTop(undefined, quickSearchBarTop.value);
+	          }
+	        },
+	        quickSearchBarTop.label
+	      ),
+	      sectionKvs.map(function (i) {
+	        return _react2["default"].createElement(
+	          'li',
+	          { key: i.value, 'data-qf-target': i.value,
+	            onClick: function onClick() {
+	              return _this2.onQuickSearch(i.value);
+	            }
+	          },
+	          i.label
+	        );
+	      })
+	    );
+	  };
+
+	  IndexedList.prototype.render = function render() {
+	    var _classNames,
+	        _this3 = this;
+
+	    var _state = this.state;
+	    var _delay = _state._delay;
+	    var pageSize = _state.pageSize;
+	    var _props2 = this.props;
+	    var className = _props2.className;
+	    var prefixCls = _props2.prefixCls;
+	    var children = _props2.children;
+	    var quickSearchBarTop = _props2.quickSearchBarTop;
+	    var quickSearchBarStyle = _props2.quickSearchBarStyle;
+	    var _props2$initialListSi = _props2.initialListSize;
+	    var initialListSize = _props2$initialListSi === undefined ? Math.min(20, this.props.dataSource.getRowCount()) : _props2$initialListSi;
+	    var _renderSectionHeader = _props2.renderSectionHeader;
+	    var other = (0, _objectWithoutProperties3["default"])(_props2, ['className', 'prefixCls', 'children', 'quickSearchBarTop', 'quickSearchBarStyle', 'initialListSize', 'renderSectionHeader']);
+
+	    var wrapCls = (0, _classnames2["default"])((_classNames = {}, (0, _defineProperty3["default"])(_classNames, className, className), (0, _defineProperty3["default"])(_classNames, prefixCls, true), _classNames));
+	    // initialListSize={this.props.dataSource.getRowCount()}
+	    return _react2["default"].createElement(
+	      'div',
+	      { className: prefixCls + '-container' },
+	      _delay && this.props.delayActivityIndicator,
+	      _react2["default"].createElement(
+	        _ListView2["default"],
+	        (0, _extends3["default"])({}, other, {
+	          ref: 'indexedListView',
+	          className: wrapCls,
+	          initialListSize: initialListSize,
+	          pageSize: pageSize,
+	          renderSectionHeader: function renderSectionHeader(sectionData, sectionID) {
+	            return _react2["default"].createElement(
+	              'div',
+	              {
+	                className: prefixCls + '-section-header',
+	                ref: function ref(c) {
+	                  _this3.sectionComponents[sectionID] = c;
+	                }
+	              },
+	              _renderSectionHeader(sectionData, sectionID)
+	            );
+	          }
+	        }),
+	        children
+	      ),
+	      this.renderQuickSearchBar(quickSearchBarTop, quickSearchBarStyle)
+	    );
+	  };
+
+	  return IndexedList;
+	}(_react2["default"].Component);
+
+	IndexedList.propTypes = {
+	  prefixCls: _react.PropTypes.string,
+	  quickSearchBarTop: _react.PropTypes.object,
+	  onQuickSearch: _react.PropTypes.func
+	};
+	IndexedList.defaultProps = {
+	  prefixCls: 'am-indexed-list',
+	  quickSearchBarTop: { value: '#', label: '#' },
+	  onQuickSearch: function onQuickSearch() {},
+	  delayTime: 100,
+	  // delayActivityIndicator: <div style={{padding: 5, textAlign: 'center'}}>rendering more</div>,
+	  delayActivityIndicator: ''
+	};
+
+	var _initialiseProps = function _initialiseProps() {
+	  var _this4 = this;
 
 	  this.dataChange = function (props) {
 	    // delay render more
@@ -25877,21 +26339,21 @@
 	    if (_this4.props.stickyHeader) {
 	      window.document.body.scrollTop = 0;
 	    } else {
-	      _reactDom2.default.findDOMNode(_this4.refs.indexedListView.refs.listviewscroll).scrollTop = 0;
+	      _reactDom2["default"].findDOMNode(_this4.refs.indexedListView.refs.listviewscroll).scrollTop = 0;
 	    }
 	    _this4.props.onQuickSearch(sectionID, topId);
 	  };
 
 	  this.onQuickSearch = function (sectionID) {
-	    var lv = _reactDom2.default.findDOMNode(_this4.refs.indexedListView.refs.listviewscroll);
-	    var sec = _reactDom2.default.findDOMNode(_this4.sectionComponents[sectionID]);
+	    var lv = _reactDom2["default"].findDOMNode(_this4.refs.indexedListView.refs.listviewscroll);
+	    var sec = _reactDom2["default"].findDOMNode(_this4.sectionComponents[sectionID]);
 	    if (_this4.props.stickyHeader) {
 	      // react-sticky 会把 header 设置为 fixed ，但提供了 placeholder 记忆原来位置
 	      var stickyComponent = _this4.refs.indexedListView.stickyRefs[sectionID];
 	      if (stickyComponent && stickyComponent.refs.placeholder) {
-	        sec = _reactDom2.default.findDOMNode(stickyComponent.refs.placeholder);
+	        sec = _reactDom2["default"].findDOMNode(stickyComponent.refs.placeholder);
 	      }
-	      window.document.body.scrollTop = sec.getBoundingClientRect().top - lv.getBoundingClientRect().top + (0, _util.getOffsetTop)(lv);
+	      window.document.body.scrollTop = sec.getBoundingClientRect().top - lv.getBoundingClientRect().top + (0, _indexedUtil.getOffsetTop)(lv);
 	    } else {
 	      lv.scrollTop += sec.getBoundingClientRect().top - lv.getBoundingClientRect().top;
 	    }
@@ -25909,26 +26371,26 @@
 	  this.onTouchMove = function (e) {
 	    e.preventDefault();
 	    if (_this4._target) {
-	      var ex = (0, _util._event)(e);
+	      var ex = (0, _indexedUtil._event)(e);
 	      var basePos = _this4._basePos;
 	      var _pos = void 0;
 	      if (ex.clientY >= basePos.top && ex.clientY <= basePos.top + _this4._qsHeight) {
 	        _pos = Math.floor((ex.clientY - basePos.top) / _this4._avgH);
-	        var _target = void 0;
+	        var target = void 0;
 	        if (_pos in _this4._hCache) {
-	          _target = _this4._hCache[_pos][0];
+	          target = _this4._hCache[_pos][0];
 	        }
-	        if (_target) {
-	          var overValue = _target.getAttribute('data-qf-target');
-	          if (_this4._target !== _target) {
+	        if (target) {
+	          var overValue = target.getAttribute('data-qf-target');
+	          if (_this4._target !== target) {
 	            if (_this4.props.quickSearchBarTop.value === overValue) {
 	              _this4.onQuickSearchTop(undefined, overValue);
 	            } else {
 	              _this4.onQuickSearch(overValue);
 	            }
-	            _this4.updateCls(_target);
+	            _this4.updateCls(target);
 	          }
-	          _this4._target = _target;
+	          _this4._target = target;
 	        }
 	      }
 	    }
@@ -25961,10686 +26423,155 @@
 	  };
 	};
 
-	exports.default = IndexedList;
+	exports["default"] = IndexedList;
+	module.exports = exports['default'];
 
 /***/ },
-/* 185 */
+/* 274 */
 /***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+
+	exports.__esModule = true;
+
+	var _defineProperty = __webpack_require__(275);
+
+	var _defineProperty2 = _interopRequireDefault(_defineProperty);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	exports.default = function (obj, key, value) {
+	  if (key in obj) {
+	    (0, _defineProperty2.default)(obj, key, {
+	      value: value,
+	      enumerable: true,
+	      configurable: true,
+	      writable: true
+	    });
+	  } else {
+	    obj[key] = value;
+	  }
+
+	  return obj;
+	};
+
+/***/ },
+/* 275 */
+/***/ function(module, exports, __webpack_require__) {
+
+	module.exports = { "default": __webpack_require__(276), __esModule: true };
+
+/***/ },
+/* 276 */
+/***/ function(module, exports, __webpack_require__) {
+
+	__webpack_require__(277);
+	var $Object = __webpack_require__(170).Object;
+	module.exports = function defineProperty(it, key, desc){
+	  return $Object.defineProperty(it, key, desc);
+	};
+
+/***/ },
+/* 277 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var $export = __webpack_require__(168);
+	// 19.1.2.4 / 15.2.3.6 Object.defineProperty(O, P, Attributes)
+	$export($export.S + $export.F * !__webpack_require__(178), 'Object', {defineProperty: __webpack_require__(174).f});
+
+/***/ },
+/* 278 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;/*!
+	  Copyright (c) 2016 Jed Watson.
+	  Licensed under the MIT License (MIT), see
+	  http://jedwatson.github.io/classnames
+	*/
+	/* global define */
+
+	(function () {
+		'use strict';
+
+		var hasOwn = {}.hasOwnProperty;
+
+		function classNames () {
+			var classes = [];
+
+			for (var i = 0; i < arguments.length; i++) {
+				var arg = arguments[i];
+				if (!arg) continue;
+
+				var argType = typeof arg;
+
+				if (argType === 'string' || argType === 'number') {
+					classes.push(arg);
+				} else if (Array.isArray(arg)) {
+					classes.push(classNames.apply(null, arg));
+				} else if (argType === 'object') {
+					for (var key in arg) {
+						if (hasOwn.call(arg, key) && arg[key]) {
+							classes.push(key);
+						}
+					}
+				}
+			}
+
+			return classes.join(' ');
+		}
+
+		if (typeof module !== 'undefined' && module.exports) {
+			module.exports = classNames;
+		} else if (true) {
+			// register as 'classnames', consistent with npm package name
+			!(__WEBPACK_AMD_DEFINE_ARRAY__ = [], __WEBPACK_AMD_DEFINE_RESULT__ = function () {
+				return classNames;
+			}.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
+		} else {
+			window.classNames = classNames;
+		}
+	}());
+
+
+/***/ },
+/* 279 */
+/***/ function(module, exports) {
 
 	'use strict';
 
 	Object.defineProperty(exports, "__esModule", {
 	  value: true
 	});
+	exports.getOffsetTop = getOffsetTop;
+	exports._event = _event;
+	function getOffsetTop(elem) {
+	  var offsetTop = 0;
+	  do {
+	    if (!isNaN(elem.offsetTop)) {
+	      offsetTop += elem.offsetTop;
+	    }
+	  } while (elem = elem.offsetParent);
+	  return offsetTop;
+	}
 
-	var _react = __webpack_require__(4);
+	var isTouchable = exports.isTouchable = 'ontouchstart' in window;
+	var START = exports.START = isTouchable ? 'touchstart' : 'mousedown';
+	var MOVE = exports.MOVE = isTouchable ? 'touchmove' : 'mousemove';
+	var END = exports.END = isTouchable ? 'touchend' : 'mouseup';
+	var CANCEL = exports.CANCEL = isTouchable ? 'touchcancel' : 'mousecancel';
+	var CLICK = exports.CLICK = isTouchable ? 'touchstart' : 'click';
 
-	var _react2 = _interopRequireDefault(_react);
+	var isBadMobile = /Android[^\d]*(1|2|3|4\.0)/.test(window.navigator.appVersion) || /iPhone[^\d]*(5)/.test(window.navigator.appVersion);
 
-	var _reactDom = __webpack_require__(161);
-
-	var _reactDom2 = _interopRequireDefault(_reactDom);
-
-	var _classnames = __webpack_require__(171);
-
-	var _classnames2 = _interopRequireDefault(_classnames);
-
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-	function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
-
-	exports.default = _react2.default.createClass({
-	  displayName: 'RefreshControl',
-
-	  propTypes: {
-	    className: _react.PropTypes.string,
-	    style: _react.PropTypes.object,
-	    icon: _react.PropTypes.element,
-	    prefixCls: _react.PropTypes.string,
-	    loading: _react.PropTypes.element,
-	    distanceToRefresh: _react.PropTypes.number,
-	    refreshing: _react.PropTypes.bool,
-	    onRefresh: _react.PropTypes.func.isRequired
-	  },
-
-	  getInitialState: function getInitialState() {
-	    return {
-	      active: false,
-	      loadingState: false
-	    };
-	  },
-	  getDefaultProps: function getDefaultProps() {
-	    return {
-	      prefixCls: 'list-view-refresh-control',
-	      distanceToRefresh: 50,
-	      refreshing: false,
-	      icon: _react2.default.createElement(
-	        'div',
-	        { style: { lineHeight: '50px', textAlign: 'center' } },
-	        _react2.default.createElement(
-	          'div',
-	          { className: 'list-view-refresh-control-pull' },
-	          '\u2193 \u4E0B\u62C9'
-	        ),
-	        _react2.default.createElement(
-	          'div',
-	          { className: 'list-view-refresh-control-release' },
-	          '\u2191 \u91CA\u653E'
-	        )
-	      ),
-	      loading: _react2.default.createElement(
-	        'div',
-	        { style: { lineHeight: '50px', textAlign: 'center' } },
-	        'loading...'
-	      )
-	    };
-	  },
-	  render: function render() {
-	    var _classNames;
-
-	    var _props = this.props;
-	    var prefixCls = _props.prefixCls;
-	    var icon = _props.icon;
-	    var loading = _props.loading;
-	    var _props$className = _props.className;
-	    var className = _props$className === undefined ? '' : _props$className;
-	    var style = _props.style;
-	    var refreshing = _props.refreshing;
-	    var _state = this.state;
-	    var active = _state.active;
-	    var loadingState = _state.loadingState;
-
-	    var wrapCls = (0, _classnames2.default)((_classNames = {}, _defineProperty(_classNames, className, className), _defineProperty(_classNames, prefixCls + '-ptr', true), _defineProperty(_classNames, prefixCls + '-active', active), _defineProperty(_classNames, prefixCls + '-loading', loadingState || refreshing), _classNames));
-	    return _react2.default.createElement(
-	      'div',
-	      { ref: 'ptr', className: wrapCls, style: style },
-	      _react2.default.createElement(
-	        'div',
-	        { className: prefixCls + '-ptr-icon' },
-	        icon
-	      ),
-	      _react2.default.createElement(
-	        'div',
-	        { className: prefixCls + '-ptr-loading' },
-	        loading
-	      )
-	    );
+	function _event(e) {
+	  if (e.touches && e.touches.length) {
+	    return e.touches[0];
 	  }
-	});
-
-/***/ },
-/* 186 */
-/***/ function(module, exports, __webpack_require__) {
-
-	var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;/*!
-	 * jQuery JavaScript Library v3.1.1
-	 * https://jquery.com/
-	 *
-	 * Includes Sizzle.js
-	 * https://sizzlejs.com/
-	 *
-	 * Copyright jQuery Foundation and other contributors
-	 * Released under the MIT license
-	 * https://jquery.org/license
-	 *
-	 * Date: 2016-09-22T22:30Z
-	 */
-	( function( global, factory ) {
-
-		"use strict";
-
-		if ( typeof module === "object" && typeof module.exports === "object" ) {
-
-			// For CommonJS and CommonJS-like environments where a proper `window`
-			// is present, execute the factory and get jQuery.
-			// For environments that do not have a `window` with a `document`
-			// (such as Node.js), expose a factory as module.exports.
-			// This accentuates the need for the creation of a real `window`.
-			// e.g. var jQuery = require("jquery")(window);
-			// See ticket #14549 for more info.
-			module.exports = global.document ?
-				factory( global, true ) :
-				function( w ) {
-					if ( !w.document ) {
-						throw new Error( "jQuery requires a window with a document" );
-					}
-					return factory( w );
-				};
-		} else {
-			factory( global );
-		}
-
-	// Pass this if window is not defined yet
-	} )( typeof window !== "undefined" ? window : this, function( window, noGlobal ) {
-
-	// Edge <= 12 - 13+, Firefox <=18 - 45+, IE 10 - 11, Safari 5.1 - 9+, iOS 6 - 9.1
-	// throw exceptions when non-strict code (e.g., ASP.NET 4.5) accesses strict mode
-	// arguments.callee.caller (trac-13335). But as of jQuery 3.0 (2016), strict mode should be common
-	// enough that all such attempts are guarded in a try block.
-	"use strict";
-
-	var arr = [];
-
-	var document = window.document;
-
-	var getProto = Object.getPrototypeOf;
-
-	var slice = arr.slice;
-
-	var concat = arr.concat;
-
-	var push = arr.push;
-
-	var indexOf = arr.indexOf;
-
-	var class2type = {};
-
-	var toString = class2type.toString;
-
-	var hasOwn = class2type.hasOwnProperty;
-
-	var fnToString = hasOwn.toString;
-
-	var ObjectFunctionString = fnToString.call( Object );
-
-	var support = {};
-
-
-
-		function DOMEval( code, doc ) {
-			doc = doc || document;
-
-			var script = doc.createElement( "script" );
-
-			script.text = code;
-			doc.head.appendChild( script ).parentNode.removeChild( script );
-		}
-	/* global Symbol */
-	// Defining this global in .eslintrc.json would create a danger of using the global
-	// unguarded in another place, it seems safer to define global only for this module
-
-
-
-	var
-		version = "3.1.1",
-
-		// Define a local copy of jQuery
-		jQuery = function( selector, context ) {
-
-			// The jQuery object is actually just the init constructor 'enhanced'
-			// Need init if jQuery is called (just allow error to be thrown if not included)
-			return new jQuery.fn.init( selector, context );
-		},
-
-		// Support: Android <=4.0 only
-		// Make sure we trim BOM and NBSP
-		rtrim = /^[\s\uFEFF\xA0]+|[\s\uFEFF\xA0]+$/g,
-
-		// Matches dashed string for camelizing
-		rmsPrefix = /^-ms-/,
-		rdashAlpha = /-([a-z])/g,
-
-		// Used by jQuery.camelCase as callback to replace()
-		fcamelCase = function( all, letter ) {
-			return letter.toUpperCase();
-		};
-
-	jQuery.fn = jQuery.prototype = {
-
-		// The current version of jQuery being used
-		jquery: version,
-
-		constructor: jQuery,
-
-		// The default length of a jQuery object is 0
-		length: 0,
-
-		toArray: function() {
-			return slice.call( this );
-		},
-
-		// Get the Nth element in the matched element set OR
-		// Get the whole matched element set as a clean array
-		get: function( num ) {
-
-			// Return all the elements in a clean array
-			if ( num == null ) {
-				return slice.call( this );
-			}
-
-			// Return just the one element from the set
-			return num < 0 ? this[ num + this.length ] : this[ num ];
-		},
-
-		// Take an array of elements and push it onto the stack
-		// (returning the new matched element set)
-		pushStack: function( elems ) {
-
-			// Build a new jQuery matched element set
-			var ret = jQuery.merge( this.constructor(), elems );
-
-			// Add the old object onto the stack (as a reference)
-			ret.prevObject = this;
-
-			// Return the newly-formed element set
-			return ret;
-		},
-
-		// Execute a callback for every element in the matched set.
-		each: function( callback ) {
-			return jQuery.each( this, callback );
-		},
-
-		map: function( callback ) {
-			return this.pushStack( jQuery.map( this, function( elem, i ) {
-				return callback.call( elem, i, elem );
-			} ) );
-		},
-
-		slice: function() {
-			return this.pushStack( slice.apply( this, arguments ) );
-		},
-
-		first: function() {
-			return this.eq( 0 );
-		},
-
-		last: function() {
-			return this.eq( -1 );
-		},
-
-		eq: function( i ) {
-			var len = this.length,
-				j = +i + ( i < 0 ? len : 0 );
-			return this.pushStack( j >= 0 && j < len ? [ this[ j ] ] : [] );
-		},
-
-		end: function() {
-			return this.prevObject || this.constructor();
-		},
-
-		// For internal use only.
-		// Behaves like an Array's method, not like a jQuery method.
-		push: push,
-		sort: arr.sort,
-		splice: arr.splice
-	};
-
-	jQuery.extend = jQuery.fn.extend = function() {
-		var options, name, src, copy, copyIsArray, clone,
-			target = arguments[ 0 ] || {},
-			i = 1,
-			length = arguments.length,
-			deep = false;
-
-		// Handle a deep copy situation
-		if ( typeof target === "boolean" ) {
-			deep = target;
-
-			// Skip the boolean and the target
-			target = arguments[ i ] || {};
-			i++;
-		}
-
-		// Handle case when target is a string or something (possible in deep copy)
-		if ( typeof target !== "object" && !jQuery.isFunction( target ) ) {
-			target = {};
-		}
-
-		// Extend jQuery itself if only one argument is passed
-		if ( i === length ) {
-			target = this;
-			i--;
-		}
-
-		for ( ; i < length; i++ ) {
-
-			// Only deal with non-null/undefined values
-			if ( ( options = arguments[ i ] ) != null ) {
-
-				// Extend the base object
-				for ( name in options ) {
-					src = target[ name ];
-					copy = options[ name ];
-
-					// Prevent never-ending loop
-					if ( target === copy ) {
-						continue;
-					}
-
-					// Recurse if we're merging plain objects or arrays
-					if ( deep && copy && ( jQuery.isPlainObject( copy ) ||
-						( copyIsArray = jQuery.isArray( copy ) ) ) ) {
-
-						if ( copyIsArray ) {
-							copyIsArray = false;
-							clone = src && jQuery.isArray( src ) ? src : [];
-
-						} else {
-							clone = src && jQuery.isPlainObject( src ) ? src : {};
-						}
-
-						// Never move original objects, clone them
-						target[ name ] = jQuery.extend( deep, clone, copy );
-
-					// Don't bring in undefined values
-					} else if ( copy !== undefined ) {
-						target[ name ] = copy;
-					}
-				}
-			}
-		}
-
-		// Return the modified object
-		return target;
-	};
-
-	jQuery.extend( {
-
-		// Unique for each copy of jQuery on the page
-		expando: "jQuery" + ( version + Math.random() ).replace( /\D/g, "" ),
-
-		// Assume jQuery is ready without the ready module
-		isReady: true,
-
-		error: function( msg ) {
-			throw new Error( msg );
-		},
-
-		noop: function() {},
-
-		isFunction: function( obj ) {
-			return jQuery.type( obj ) === "function";
-		},
-
-		isArray: Array.isArray,
-
-		isWindow: function( obj ) {
-			return obj != null && obj === obj.window;
-		},
-
-		isNumeric: function( obj ) {
-
-			// As of jQuery 3.0, isNumeric is limited to
-			// strings and numbers (primitives or objects)
-			// that can be coerced to finite numbers (gh-2662)
-			var type = jQuery.type( obj );
-			return ( type === "number" || type === "string" ) &&
-
-				// parseFloat NaNs numeric-cast false positives ("")
-				// ...but misinterprets leading-number strings, particularly hex literals ("0x...")
-				// subtraction forces infinities to NaN
-				!isNaN( obj - parseFloat( obj ) );
-		},
-
-		isPlainObject: function( obj ) {
-			var proto, Ctor;
-
-			// Detect obvious negatives
-			// Use toString instead of jQuery.type to catch host objects
-			if ( !obj || toString.call( obj ) !== "[object Object]" ) {
-				return false;
-			}
-
-			proto = getProto( obj );
-
-			// Objects with no prototype (e.g., `Object.create( null )`) are plain
-			if ( !proto ) {
-				return true;
-			}
-
-			// Objects with prototype are plain iff they were constructed by a global Object function
-			Ctor = hasOwn.call( proto, "constructor" ) && proto.constructor;
-			return typeof Ctor === "function" && fnToString.call( Ctor ) === ObjectFunctionString;
-		},
-
-		isEmptyObject: function( obj ) {
-
-			/* eslint-disable no-unused-vars */
-			// See https://github.com/eslint/eslint/issues/6125
-			var name;
-
-			for ( name in obj ) {
-				return false;
-			}
-			return true;
-		},
-
-		type: function( obj ) {
-			if ( obj == null ) {
-				return obj + "";
-			}
-
-			// Support: Android <=2.3 only (functionish RegExp)
-			return typeof obj === "object" || typeof obj === "function" ?
-				class2type[ toString.call( obj ) ] || "object" :
-				typeof obj;
-		},
-
-		// Evaluates a script in a global context
-		globalEval: function( code ) {
-			DOMEval( code );
-		},
-
-		// Convert dashed to camelCase; used by the css and data modules
-		// Support: IE <=9 - 11, Edge 12 - 13
-		// Microsoft forgot to hump their vendor prefix (#9572)
-		camelCase: function( string ) {
-			return string.replace( rmsPrefix, "ms-" ).replace( rdashAlpha, fcamelCase );
-		},
-
-		nodeName: function( elem, name ) {
-			return elem.nodeName && elem.nodeName.toLowerCase() === name.toLowerCase();
-		},
-
-		each: function( obj, callback ) {
-			var length, i = 0;
-
-			if ( isArrayLike( obj ) ) {
-				length = obj.length;
-				for ( ; i < length; i++ ) {
-					if ( callback.call( obj[ i ], i, obj[ i ] ) === false ) {
-						break;
-					}
-				}
-			} else {
-				for ( i in obj ) {
-					if ( callback.call( obj[ i ], i, obj[ i ] ) === false ) {
-						break;
-					}
-				}
-			}
-
-			return obj;
-		},
-
-		// Support: Android <=4.0 only
-		trim: function( text ) {
-			return text == null ?
-				"" :
-				( text + "" ).replace( rtrim, "" );
-		},
-
-		// results is for internal usage only
-		makeArray: function( arr, results ) {
-			var ret = results || [];
-
-			if ( arr != null ) {
-				if ( isArrayLike( Object( arr ) ) ) {
-					jQuery.merge( ret,
-						typeof arr === "string" ?
-						[ arr ] : arr
-					);
-				} else {
-					push.call( ret, arr );
-				}
-			}
-
-			return ret;
-		},
-
-		inArray: function( elem, arr, i ) {
-			return arr == null ? -1 : indexOf.call( arr, elem, i );
-		},
-
-		// Support: Android <=4.0 only, PhantomJS 1 only
-		// push.apply(_, arraylike) throws on ancient WebKit
-		merge: function( first, second ) {
-			var len = +second.length,
-				j = 0,
-				i = first.length;
-
-			for ( ; j < len; j++ ) {
-				first[ i++ ] = second[ j ];
-			}
-
-			first.length = i;
-
-			return first;
-		},
-
-		grep: function( elems, callback, invert ) {
-			var callbackInverse,
-				matches = [],
-				i = 0,
-				length = elems.length,
-				callbackExpect = !invert;
-
-			// Go through the array, only saving the items
-			// that pass the validator function
-			for ( ; i < length; i++ ) {
-				callbackInverse = !callback( elems[ i ], i );
-				if ( callbackInverse !== callbackExpect ) {
-					matches.push( elems[ i ] );
-				}
-			}
-
-			return matches;
-		},
-
-		// arg is for internal usage only
-		map: function( elems, callback, arg ) {
-			var length, value,
-				i = 0,
-				ret = [];
-
-			// Go through the array, translating each of the items to their new values
-			if ( isArrayLike( elems ) ) {
-				length = elems.length;
-				for ( ; i < length; i++ ) {
-					value = callback( elems[ i ], i, arg );
-
-					if ( value != null ) {
-						ret.push( value );
-					}
-				}
-
-			// Go through every key on the object,
-			} else {
-				for ( i in elems ) {
-					value = callback( elems[ i ], i, arg );
-
-					if ( value != null ) {
-						ret.push( value );
-					}
-				}
-			}
-
-			// Flatten any nested arrays
-			return concat.apply( [], ret );
-		},
-
-		// A global GUID counter for objects
-		guid: 1,
-
-		// Bind a function to a context, optionally partially applying any
-		// arguments.
-		proxy: function( fn, context ) {
-			var tmp, args, proxy;
-
-			if ( typeof context === "string" ) {
-				tmp = fn[ context ];
-				context = fn;
-				fn = tmp;
-			}
-
-			// Quick check to determine if target is callable, in the spec
-			// this throws a TypeError, but we will just return undefined.
-			if ( !jQuery.isFunction( fn ) ) {
-				return undefined;
-			}
-
-			// Simulated bind
-			args = slice.call( arguments, 2 );
-			proxy = function() {
-				return fn.apply( context || this, args.concat( slice.call( arguments ) ) );
-			};
-
-			// Set the guid of unique handler to the same of original handler, so it can be removed
-			proxy.guid = fn.guid = fn.guid || jQuery.guid++;
-
-			return proxy;
-		},
-
-		now: Date.now,
-
-		// jQuery.support is not used in Core but other projects attach their
-		// properties to it so it needs to exist.
-		support: support
-	} );
-
-	if ( typeof Symbol === "function" ) {
-		jQuery.fn[ Symbol.iterator ] = arr[ Symbol.iterator ];
+	  if (e.changedTouches && e.changedTouches.length) {
+	    return e.changedTouches[0];
+	  }
+	  return e;
 	}
-
-	// Populate the class2type map
-	jQuery.each( "Boolean Number String Function Array Date RegExp Object Error Symbol".split( " " ),
-	function( i, name ) {
-		class2type[ "[object " + name + "]" ] = name.toLowerCase();
-	} );
-
-	function isArrayLike( obj ) {
-
-		// Support: real iOS 8.2 only (not reproducible in simulator)
-		// `in` check used to prevent JIT error (gh-2145)
-		// hasOwn isn't used here due to false negatives
-		// regarding Nodelist length in IE
-		var length = !!obj && "length" in obj && obj.length,
-			type = jQuery.type( obj );
-
-		if ( type === "function" || jQuery.isWindow( obj ) ) {
-			return false;
-		}
-
-		return type === "array" || length === 0 ||
-			typeof length === "number" && length > 0 && ( length - 1 ) in obj;
-	}
-	var Sizzle =
-	/*!
-	 * Sizzle CSS Selector Engine v2.3.3
-	 * https://sizzlejs.com/
-	 *
-	 * Copyright jQuery Foundation and other contributors
-	 * Released under the MIT license
-	 * http://jquery.org/license
-	 *
-	 * Date: 2016-08-08
-	 */
-	(function( window ) {
-
-	var i,
-		support,
-		Expr,
-		getText,
-		isXML,
-		tokenize,
-		compile,
-		select,
-		outermostContext,
-		sortInput,
-		hasDuplicate,
-
-		// Local document vars
-		setDocument,
-		document,
-		docElem,
-		documentIsHTML,
-		rbuggyQSA,
-		rbuggyMatches,
-		matches,
-		contains,
-
-		// Instance-specific data
-		expando = "sizzle" + 1 * new Date(),
-		preferredDoc = window.document,
-		dirruns = 0,
-		done = 0,
-		classCache = createCache(),
-		tokenCache = createCache(),
-		compilerCache = createCache(),
-		sortOrder = function( a, b ) {
-			if ( a === b ) {
-				hasDuplicate = true;
-			}
-			return 0;
-		},
-
-		// Instance methods
-		hasOwn = ({}).hasOwnProperty,
-		arr = [],
-		pop = arr.pop,
-		push_native = arr.push,
-		push = arr.push,
-		slice = arr.slice,
-		// Use a stripped-down indexOf as it's faster than native
-		// https://jsperf.com/thor-indexof-vs-for/5
-		indexOf = function( list, elem ) {
-			var i = 0,
-				len = list.length;
-			for ( ; i < len; i++ ) {
-				if ( list[i] === elem ) {
-					return i;
-				}
-			}
-			return -1;
-		},
-
-		booleans = "checked|selected|async|autofocus|autoplay|controls|defer|disabled|hidden|ismap|loop|multiple|open|readonly|required|scoped",
-
-		// Regular expressions
-
-		// http://www.w3.org/TR/css3-selectors/#whitespace
-		whitespace = "[\\x20\\t\\r\\n\\f]",
-
-		// http://www.w3.org/TR/CSS21/syndata.html#value-def-identifier
-		identifier = "(?:\\\\.|[\\w-]|[^\0-\\xa0])+",
-
-		// Attribute selectors: http://www.w3.org/TR/selectors/#attribute-selectors
-		attributes = "\\[" + whitespace + "*(" + identifier + ")(?:" + whitespace +
-			// Operator (capture 2)
-			"*([*^$|!~]?=)" + whitespace +
-			// "Attribute values must be CSS identifiers [capture 5] or strings [capture 3 or capture 4]"
-			"*(?:'((?:\\\\.|[^\\\\'])*)'|\"((?:\\\\.|[^\\\\\"])*)\"|(" + identifier + "))|)" + whitespace +
-			"*\\]",
-
-		pseudos = ":(" + identifier + ")(?:\\((" +
-			// To reduce the number of selectors needing tokenize in the preFilter, prefer arguments:
-			// 1. quoted (capture 3; capture 4 or capture 5)
-			"('((?:\\\\.|[^\\\\'])*)'|\"((?:\\\\.|[^\\\\\"])*)\")|" +
-			// 2. simple (capture 6)
-			"((?:\\\\.|[^\\\\()[\\]]|" + attributes + ")*)|" +
-			// 3. anything else (capture 2)
-			".*" +
-			")\\)|)",
-
-		// Leading and non-escaped trailing whitespace, capturing some non-whitespace characters preceding the latter
-		rwhitespace = new RegExp( whitespace + "+", "g" ),
-		rtrim = new RegExp( "^" + whitespace + "+|((?:^|[^\\\\])(?:\\\\.)*)" + whitespace + "+$", "g" ),
-
-		rcomma = new RegExp( "^" + whitespace + "*," + whitespace + "*" ),
-		rcombinators = new RegExp( "^" + whitespace + "*([>+~]|" + whitespace + ")" + whitespace + "*" ),
-
-		rattributeQuotes = new RegExp( "=" + whitespace + "*([^\\]'\"]*?)" + whitespace + "*\\]", "g" ),
-
-		rpseudo = new RegExp( pseudos ),
-		ridentifier = new RegExp( "^" + identifier + "$" ),
-
-		matchExpr = {
-			"ID": new RegExp( "^#(" + identifier + ")" ),
-			"CLASS": new RegExp( "^\\.(" + identifier + ")" ),
-			"TAG": new RegExp( "^(" + identifier + "|[*])" ),
-			"ATTR": new RegExp( "^" + attributes ),
-			"PSEUDO": new RegExp( "^" + pseudos ),
-			"CHILD": new RegExp( "^:(only|first|last|nth|nth-last)-(child|of-type)(?:\\(" + whitespace +
-				"*(even|odd|(([+-]|)(\\d*)n|)" + whitespace + "*(?:([+-]|)" + whitespace +
-				"*(\\d+)|))" + whitespace + "*\\)|)", "i" ),
-			"bool": new RegExp( "^(?:" + booleans + ")$", "i" ),
-			// For use in libraries implementing .is()
-			// We use this for POS matching in `select`
-			"needsContext": new RegExp( "^" + whitespace + "*[>+~]|:(even|odd|eq|gt|lt|nth|first|last)(?:\\(" +
-				whitespace + "*((?:-\\d)?\\d*)" + whitespace + "*\\)|)(?=[^-]|$)", "i" )
-		},
-
-		rinputs = /^(?:input|select|textarea|button)$/i,
-		rheader = /^h\d$/i,
-
-		rnative = /^[^{]+\{\s*\[native \w/,
-
-		// Easily-parseable/retrievable ID or TAG or CLASS selectors
-		rquickExpr = /^(?:#([\w-]+)|(\w+)|\.([\w-]+))$/,
-
-		rsibling = /[+~]/,
-
-		// CSS escapes
-		// http://www.w3.org/TR/CSS21/syndata.html#escaped-characters
-		runescape = new RegExp( "\\\\([\\da-f]{1,6}" + whitespace + "?|(" + whitespace + ")|.)", "ig" ),
-		funescape = function( _, escaped, escapedWhitespace ) {
-			var high = "0x" + escaped - 0x10000;
-			// NaN means non-codepoint
-			// Support: Firefox<24
-			// Workaround erroneous numeric interpretation of +"0x"
-			return high !== high || escapedWhitespace ?
-				escaped :
-				high < 0 ?
-					// BMP codepoint
-					String.fromCharCode( high + 0x10000 ) :
-					// Supplemental Plane codepoint (surrogate pair)
-					String.fromCharCode( high >> 10 | 0xD800, high & 0x3FF | 0xDC00 );
-		},
-
-		// CSS string/identifier serialization
-		// https://drafts.csswg.org/cssom/#common-serializing-idioms
-		rcssescape = /([\0-\x1f\x7f]|^-?\d)|^-$|[^\0-\x1f\x7f-\uFFFF\w-]/g,
-		fcssescape = function( ch, asCodePoint ) {
-			if ( asCodePoint ) {
-
-				// U+0000 NULL becomes U+FFFD REPLACEMENT CHARACTER
-				if ( ch === "\0" ) {
-					return "\uFFFD";
-				}
-
-				// Control characters and (dependent upon position) numbers get escaped as code points
-				return ch.slice( 0, -1 ) + "\\" + ch.charCodeAt( ch.length - 1 ).toString( 16 ) + " ";
-			}
-
-			// Other potentially-special ASCII characters get backslash-escaped
-			return "\\" + ch;
-		},
-
-		// Used for iframes
-		// See setDocument()
-		// Removing the function wrapper causes a "Permission Denied"
-		// error in IE
-		unloadHandler = function() {
-			setDocument();
-		},
-
-		disabledAncestor = addCombinator(
-			function( elem ) {
-				return elem.disabled === true && ("form" in elem || "label" in elem);
-			},
-			{ dir: "parentNode", next: "legend" }
-		);
-
-	// Optimize for push.apply( _, NodeList )
-	try {
-		push.apply(
-			(arr = slice.call( preferredDoc.childNodes )),
-			preferredDoc.childNodes
-		);
-		// Support: Android<4.0
-		// Detect silently failing push.apply
-		arr[ preferredDoc.childNodes.length ].nodeType;
-	} catch ( e ) {
-		push = { apply: arr.length ?
-
-			// Leverage slice if possible
-			function( target, els ) {
-				push_native.apply( target, slice.call(els) );
-			} :
-
-			// Support: IE<9
-			// Otherwise append directly
-			function( target, els ) {
-				var j = target.length,
-					i = 0;
-				// Can't trust NodeList.length
-				while ( (target[j++] = els[i++]) ) {}
-				target.length = j - 1;
-			}
-		};
-	}
-
-	function Sizzle( selector, context, results, seed ) {
-		var m, i, elem, nid, match, groups, newSelector,
-			newContext = context && context.ownerDocument,
-
-			// nodeType defaults to 9, since context defaults to document
-			nodeType = context ? context.nodeType : 9;
-
-		results = results || [];
-
-		// Return early from calls with invalid selector or context
-		if ( typeof selector !== "string" || !selector ||
-			nodeType !== 1 && nodeType !== 9 && nodeType !== 11 ) {
-
-			return results;
-		}
-
-		// Try to shortcut find operations (as opposed to filters) in HTML documents
-		if ( !seed ) {
-
-			if ( ( context ? context.ownerDocument || context : preferredDoc ) !== document ) {
-				setDocument( context );
-			}
-			context = context || document;
-
-			if ( documentIsHTML ) {
-
-				// If the selector is sufficiently simple, try using a "get*By*" DOM method
-				// (excepting DocumentFragment context, where the methods don't exist)
-				if ( nodeType !== 11 && (match = rquickExpr.exec( selector )) ) {
-
-					// ID selector
-					if ( (m = match[1]) ) {
-
-						// Document context
-						if ( nodeType === 9 ) {
-							if ( (elem = context.getElementById( m )) ) {
-
-								// Support: IE, Opera, Webkit
-								// TODO: identify versions
-								// getElementById can match elements by name instead of ID
-								if ( elem.id === m ) {
-									results.push( elem );
-									return results;
-								}
-							} else {
-								return results;
-							}
-
-						// Element context
-						} else {
-
-							// Support: IE, Opera, Webkit
-							// TODO: identify versions
-							// getElementById can match elements by name instead of ID
-							if ( newContext && (elem = newContext.getElementById( m )) &&
-								contains( context, elem ) &&
-								elem.id === m ) {
-
-								results.push( elem );
-								return results;
-							}
-						}
-
-					// Type selector
-					} else if ( match[2] ) {
-						push.apply( results, context.getElementsByTagName( selector ) );
-						return results;
-
-					// Class selector
-					} else if ( (m = match[3]) && support.getElementsByClassName &&
-						context.getElementsByClassName ) {
-
-						push.apply( results, context.getElementsByClassName( m ) );
-						return results;
-					}
-				}
-
-				// Take advantage of querySelectorAll
-				if ( support.qsa &&
-					!compilerCache[ selector + " " ] &&
-					(!rbuggyQSA || !rbuggyQSA.test( selector )) ) {
-
-					if ( nodeType !== 1 ) {
-						newContext = context;
-						newSelector = selector;
-
-					// qSA looks outside Element context, which is not what we want
-					// Thanks to Andrew Dupont for this workaround technique
-					// Support: IE <=8
-					// Exclude object elements
-					} else if ( context.nodeName.toLowerCase() !== "object" ) {
-
-						// Capture the context ID, setting it first if necessary
-						if ( (nid = context.getAttribute( "id" )) ) {
-							nid = nid.replace( rcssescape, fcssescape );
-						} else {
-							context.setAttribute( "id", (nid = expando) );
-						}
-
-						// Prefix every selector in the list
-						groups = tokenize( selector );
-						i = groups.length;
-						while ( i-- ) {
-							groups[i] = "#" + nid + " " + toSelector( groups[i] );
-						}
-						newSelector = groups.join( "," );
-
-						// Expand context for sibling selectors
-						newContext = rsibling.test( selector ) && testContext( context.parentNode ) ||
-							context;
-					}
-
-					if ( newSelector ) {
-						try {
-							push.apply( results,
-								newContext.querySelectorAll( newSelector )
-							);
-							return results;
-						} catch ( qsaError ) {
-						} finally {
-							if ( nid === expando ) {
-								context.removeAttribute( "id" );
-							}
-						}
-					}
-				}
-			}
-		}
-
-		// All others
-		return select( selector.replace( rtrim, "$1" ), context, results, seed );
-	}
-
-	/**
-	 * Create key-value caches of limited size
-	 * @returns {function(string, object)} Returns the Object data after storing it on itself with
-	 *	property name the (space-suffixed) string and (if the cache is larger than Expr.cacheLength)
-	 *	deleting the oldest entry
-	 */
-	function createCache() {
-		var keys = [];
-
-		function cache( key, value ) {
-			// Use (key + " ") to avoid collision with native prototype properties (see Issue #157)
-			if ( keys.push( key + " " ) > Expr.cacheLength ) {
-				// Only keep the most recent entries
-				delete cache[ keys.shift() ];
-			}
-			return (cache[ key + " " ] = value);
-		}
-		return cache;
-	}
-
-	/**
-	 * Mark a function for special use by Sizzle
-	 * @param {Function} fn The function to mark
-	 */
-	function markFunction( fn ) {
-		fn[ expando ] = true;
-		return fn;
-	}
-
-	/**
-	 * Support testing using an element
-	 * @param {Function} fn Passed the created element and returns a boolean result
-	 */
-	function assert( fn ) {
-		var el = document.createElement("fieldset");
-
-		try {
-			return !!fn( el );
-		} catch (e) {
-			return false;
-		} finally {
-			// Remove from its parent by default
-			if ( el.parentNode ) {
-				el.parentNode.removeChild( el );
-			}
-			// release memory in IE
-			el = null;
-		}
-	}
-
-	/**
-	 * Adds the same handler for all of the specified attrs
-	 * @param {String} attrs Pipe-separated list of attributes
-	 * @param {Function} handler The method that will be applied
-	 */
-	function addHandle( attrs, handler ) {
-		var arr = attrs.split("|"),
-			i = arr.length;
-
-		while ( i-- ) {
-			Expr.attrHandle[ arr[i] ] = handler;
-		}
-	}
-
-	/**
-	 * Checks document order of two siblings
-	 * @param {Element} a
-	 * @param {Element} b
-	 * @returns {Number} Returns less than 0 if a precedes b, greater than 0 if a follows b
-	 */
-	function siblingCheck( a, b ) {
-		var cur = b && a,
-			diff = cur && a.nodeType === 1 && b.nodeType === 1 &&
-				a.sourceIndex - b.sourceIndex;
-
-		// Use IE sourceIndex if available on both nodes
-		if ( diff ) {
-			return diff;
-		}
-
-		// Check if b follows a
-		if ( cur ) {
-			while ( (cur = cur.nextSibling) ) {
-				if ( cur === b ) {
-					return -1;
-				}
-			}
-		}
-
-		return a ? 1 : -1;
-	}
-
-	/**
-	 * Returns a function to use in pseudos for input types
-	 * @param {String} type
-	 */
-	function createInputPseudo( type ) {
-		return function( elem ) {
-			var name = elem.nodeName.toLowerCase();
-			return name === "input" && elem.type === type;
-		};
-	}
-
-	/**
-	 * Returns a function to use in pseudos for buttons
-	 * @param {String} type
-	 */
-	function createButtonPseudo( type ) {
-		return function( elem ) {
-			var name = elem.nodeName.toLowerCase();
-			return (name === "input" || name === "button") && elem.type === type;
-		};
-	}
-
-	/**
-	 * Returns a function to use in pseudos for :enabled/:disabled
-	 * @param {Boolean} disabled true for :disabled; false for :enabled
-	 */
-	function createDisabledPseudo( disabled ) {
-
-		// Known :disabled false positives: fieldset[disabled] > legend:nth-of-type(n+2) :can-disable
-		return function( elem ) {
-
-			// Only certain elements can match :enabled or :disabled
-			// https://html.spec.whatwg.org/multipage/scripting.html#selector-enabled
-			// https://html.spec.whatwg.org/multipage/scripting.html#selector-disabled
-			if ( "form" in elem ) {
-
-				// Check for inherited disabledness on relevant non-disabled elements:
-				// * listed form-associated elements in a disabled fieldset
-				//   https://html.spec.whatwg.org/multipage/forms.html#category-listed
-				//   https://html.spec.whatwg.org/multipage/forms.html#concept-fe-disabled
-				// * option elements in a disabled optgroup
-				//   https://html.spec.whatwg.org/multipage/forms.html#concept-option-disabled
-				// All such elements have a "form" property.
-				if ( elem.parentNode && elem.disabled === false ) {
-
-					// Option elements defer to a parent optgroup if present
-					if ( "label" in elem ) {
-						if ( "label" in elem.parentNode ) {
-							return elem.parentNode.disabled === disabled;
-						} else {
-							return elem.disabled === disabled;
-						}
-					}
-
-					// Support: IE 6 - 11
-					// Use the isDisabled shortcut property to check for disabled fieldset ancestors
-					return elem.isDisabled === disabled ||
-
-						// Where there is no isDisabled, check manually
-						/* jshint -W018 */
-						elem.isDisabled !== !disabled &&
-							disabledAncestor( elem ) === disabled;
-				}
-
-				return elem.disabled === disabled;
-
-			// Try to winnow out elements that can't be disabled before trusting the disabled property.
-			// Some victims get caught in our net (label, legend, menu, track), but it shouldn't
-			// even exist on them, let alone have a boolean value.
-			} else if ( "label" in elem ) {
-				return elem.disabled === disabled;
-			}
-
-			// Remaining elements are neither :enabled nor :disabled
-			return false;
-		};
-	}
-
-	/**
-	 * Returns a function to use in pseudos for positionals
-	 * @param {Function} fn
-	 */
-	function createPositionalPseudo( fn ) {
-		return markFunction(function( argument ) {
-			argument = +argument;
-			return markFunction(function( seed, matches ) {
-				var j,
-					matchIndexes = fn( [], seed.length, argument ),
-					i = matchIndexes.length;
-
-				// Match elements found at the specified indexes
-				while ( i-- ) {
-					if ( seed[ (j = matchIndexes[i]) ] ) {
-						seed[j] = !(matches[j] = seed[j]);
-					}
-				}
-			});
-		});
-	}
-
-	/**
-	 * Checks a node for validity as a Sizzle context
-	 * @param {Element|Object=} context
-	 * @returns {Element|Object|Boolean} The input node if acceptable, otherwise a falsy value
-	 */
-	function testContext( context ) {
-		return context && typeof context.getElementsByTagName !== "undefined" && context;
-	}
-
-	// Expose support vars for convenience
-	support = Sizzle.support = {};
-
-	/**
-	 * Detects XML nodes
-	 * @param {Element|Object} elem An element or a document
-	 * @returns {Boolean} True iff elem is a non-HTML XML node
-	 */
-	isXML = Sizzle.isXML = function( elem ) {
-		// documentElement is verified for cases where it doesn't yet exist
-		// (such as loading iframes in IE - #4833)
-		var documentElement = elem && (elem.ownerDocument || elem).documentElement;
-		return documentElement ? documentElement.nodeName !== "HTML" : false;
-	};
-
-	/**
-	 * Sets document-related variables once based on the current document
-	 * @param {Element|Object} [doc] An element or document object to use to set the document
-	 * @returns {Object} Returns the current document
-	 */
-	setDocument = Sizzle.setDocument = function( node ) {
-		var hasCompare, subWindow,
-			doc = node ? node.ownerDocument || node : preferredDoc;
-
-		// Return early if doc is invalid or already selected
-		if ( doc === document || doc.nodeType !== 9 || !doc.documentElement ) {
-			return document;
-		}
-
-		// Update global variables
-		document = doc;
-		docElem = document.documentElement;
-		documentIsHTML = !isXML( document );
-
-		// Support: IE 9-11, Edge
-		// Accessing iframe documents after unload throws "permission denied" errors (jQuery #13936)
-		if ( preferredDoc !== document &&
-			(subWindow = document.defaultView) && subWindow.top !== subWindow ) {
-
-			// Support: IE 11, Edge
-			if ( subWindow.addEventListener ) {
-				subWindow.addEventListener( "unload", unloadHandler, false );
-
-			// Support: IE 9 - 10 only
-			} else if ( subWindow.attachEvent ) {
-				subWindow.attachEvent( "onunload", unloadHandler );
-			}
-		}
-
-		/* Attributes
-		---------------------------------------------------------------------- */
-
-		// Support: IE<8
-		// Verify that getAttribute really returns attributes and not properties
-		// (excepting IE8 booleans)
-		support.attributes = assert(function( el ) {
-			el.className = "i";
-			return !el.getAttribute("className");
-		});
-
-		/* getElement(s)By*
-		---------------------------------------------------------------------- */
-
-		// Check if getElementsByTagName("*") returns only elements
-		support.getElementsByTagName = assert(function( el ) {
-			el.appendChild( document.createComment("") );
-			return !el.getElementsByTagName("*").length;
-		});
-
-		// Support: IE<9
-		support.getElementsByClassName = rnative.test( document.getElementsByClassName );
-
-		// Support: IE<10
-		// Check if getElementById returns elements by name
-		// The broken getElementById methods don't pick up programmatically-set names,
-		// so use a roundabout getElementsByName test
-		support.getById = assert(function( el ) {
-			docElem.appendChild( el ).id = expando;
-			return !document.getElementsByName || !document.getElementsByName( expando ).length;
-		});
-
-		// ID filter and find
-		if ( support.getById ) {
-			Expr.filter["ID"] = function( id ) {
-				var attrId = id.replace( runescape, funescape );
-				return function( elem ) {
-					return elem.getAttribute("id") === attrId;
-				};
-			};
-			Expr.find["ID"] = function( id, context ) {
-				if ( typeof context.getElementById !== "undefined" && documentIsHTML ) {
-					var elem = context.getElementById( id );
-					return elem ? [ elem ] : [];
-				}
-			};
-		} else {
-			Expr.filter["ID"] =  function( id ) {
-				var attrId = id.replace( runescape, funescape );
-				return function( elem ) {
-					var node = typeof elem.getAttributeNode !== "undefined" &&
-						elem.getAttributeNode("id");
-					return node && node.value === attrId;
-				};
-			};
-
-			// Support: IE 6 - 7 only
-			// getElementById is not reliable as a find shortcut
-			Expr.find["ID"] = function( id, context ) {
-				if ( typeof context.getElementById !== "undefined" && documentIsHTML ) {
-					var node, i, elems,
-						elem = context.getElementById( id );
-
-					if ( elem ) {
-
-						// Verify the id attribute
-						node = elem.getAttributeNode("id");
-						if ( node && node.value === id ) {
-							return [ elem ];
-						}
-
-						// Fall back on getElementsByName
-						elems = context.getElementsByName( id );
-						i = 0;
-						while ( (elem = elems[i++]) ) {
-							node = elem.getAttributeNode("id");
-							if ( node && node.value === id ) {
-								return [ elem ];
-							}
-						}
-					}
-
-					return [];
-				}
-			};
-		}
-
-		// Tag
-		Expr.find["TAG"] = support.getElementsByTagName ?
-			function( tag, context ) {
-				if ( typeof context.getElementsByTagName !== "undefined" ) {
-					return context.getElementsByTagName( tag );
-
-				// DocumentFragment nodes don't have gEBTN
-				} else if ( support.qsa ) {
-					return context.querySelectorAll( tag );
-				}
-			} :
-
-			function( tag, context ) {
-				var elem,
-					tmp = [],
-					i = 0,
-					// By happy coincidence, a (broken) gEBTN appears on DocumentFragment nodes too
-					results = context.getElementsByTagName( tag );
-
-				// Filter out possible comments
-				if ( tag === "*" ) {
-					while ( (elem = results[i++]) ) {
-						if ( elem.nodeType === 1 ) {
-							tmp.push( elem );
-						}
-					}
-
-					return tmp;
-				}
-				return results;
-			};
-
-		// Class
-		Expr.find["CLASS"] = support.getElementsByClassName && function( className, context ) {
-			if ( typeof context.getElementsByClassName !== "undefined" && documentIsHTML ) {
-				return context.getElementsByClassName( className );
-			}
-		};
-
-		/* QSA/matchesSelector
-		---------------------------------------------------------------------- */
-
-		// QSA and matchesSelector support
-
-		// matchesSelector(:active) reports false when true (IE9/Opera 11.5)
-		rbuggyMatches = [];
-
-		// qSa(:focus) reports false when true (Chrome 21)
-		// We allow this because of a bug in IE8/9 that throws an error
-		// whenever `document.activeElement` is accessed on an iframe
-		// So, we allow :focus to pass through QSA all the time to avoid the IE error
-		// See https://bugs.jquery.com/ticket/13378
-		rbuggyQSA = [];
-
-		if ( (support.qsa = rnative.test( document.querySelectorAll )) ) {
-			// Build QSA regex
-			// Regex strategy adopted from Diego Perini
-			assert(function( el ) {
-				// Select is set to empty string on purpose
-				// This is to test IE's treatment of not explicitly
-				// setting a boolean content attribute,
-				// since its presence should be enough
-				// https://bugs.jquery.com/ticket/12359
-				docElem.appendChild( el ).innerHTML = "<a id='" + expando + "'></a>" +
-					"<select id='" + expando + "-\r\\' msallowcapture=''>" +
-					"<option selected=''></option></select>";
-
-				// Support: IE8, Opera 11-12.16
-				// Nothing should be selected when empty strings follow ^= or $= or *=
-				// The test attribute must be unknown in Opera but "safe" for WinRT
-				// https://msdn.microsoft.com/en-us/library/ie/hh465388.aspx#attribute_section
-				if ( el.querySelectorAll("[msallowcapture^='']").length ) {
-					rbuggyQSA.push( "[*^$]=" + whitespace + "*(?:''|\"\")" );
-				}
-
-				// Support: IE8
-				// Boolean attributes and "value" are not treated correctly
-				if ( !el.querySelectorAll("[selected]").length ) {
-					rbuggyQSA.push( "\\[" + whitespace + "*(?:value|" + booleans + ")" );
-				}
-
-				// Support: Chrome<29, Android<4.4, Safari<7.0+, iOS<7.0+, PhantomJS<1.9.8+
-				if ( !el.querySelectorAll( "[id~=" + expando + "-]" ).length ) {
-					rbuggyQSA.push("~=");
-				}
-
-				// Webkit/Opera - :checked should return selected option elements
-				// http://www.w3.org/TR/2011/REC-css3-selectors-20110929/#checked
-				// IE8 throws error here and will not see later tests
-				if ( !el.querySelectorAll(":checked").length ) {
-					rbuggyQSA.push(":checked");
-				}
-
-				// Support: Safari 8+, iOS 8+
-				// https://bugs.webkit.org/show_bug.cgi?id=136851
-				// In-page `selector#id sibling-combinator selector` fails
-				if ( !el.querySelectorAll( "a#" + expando + "+*" ).length ) {
-					rbuggyQSA.push(".#.+[+~]");
-				}
-			});
-
-			assert(function( el ) {
-				el.innerHTML = "<a href='' disabled='disabled'></a>" +
-					"<select disabled='disabled'><option/></select>";
-
-				// Support: Windows 8 Native Apps
-				// The type and name attributes are restricted during .innerHTML assignment
-				var input = document.createElement("input");
-				input.setAttribute( "type", "hidden" );
-				el.appendChild( input ).setAttribute( "name", "D" );
-
-				// Support: IE8
-				// Enforce case-sensitivity of name attribute
-				if ( el.querySelectorAll("[name=d]").length ) {
-					rbuggyQSA.push( "name" + whitespace + "*[*^$|!~]?=" );
-				}
-
-				// FF 3.5 - :enabled/:disabled and hidden elements (hidden elements are still enabled)
-				// IE8 throws error here and will not see later tests
-				if ( el.querySelectorAll(":enabled").length !== 2 ) {
-					rbuggyQSA.push( ":enabled", ":disabled" );
-				}
-
-				// Support: IE9-11+
-				// IE's :disabled selector does not pick up the children of disabled fieldsets
-				docElem.appendChild( el ).disabled = true;
-				if ( el.querySelectorAll(":disabled").length !== 2 ) {
-					rbuggyQSA.push( ":enabled", ":disabled" );
-				}
-
-				// Opera 10-11 does not throw on post-comma invalid pseudos
-				el.querySelectorAll("*,:x");
-				rbuggyQSA.push(",.*:");
-			});
-		}
-
-		if ( (support.matchesSelector = rnative.test( (matches = docElem.matches ||
-			docElem.webkitMatchesSelector ||
-			docElem.mozMatchesSelector ||
-			docElem.oMatchesSelector ||
-			docElem.msMatchesSelector) )) ) {
-
-			assert(function( el ) {
-				// Check to see if it's possible to do matchesSelector
-				// on a disconnected node (IE 9)
-				support.disconnectedMatch = matches.call( el, "*" );
-
-				// This should fail with an exception
-				// Gecko does not error, returns false instead
-				matches.call( el, "[s!='']:x" );
-				rbuggyMatches.push( "!=", pseudos );
-			});
-		}
-
-		rbuggyQSA = rbuggyQSA.length && new RegExp( rbuggyQSA.join("|") );
-		rbuggyMatches = rbuggyMatches.length && new RegExp( rbuggyMatches.join("|") );
-
-		/* Contains
-		---------------------------------------------------------------------- */
-		hasCompare = rnative.test( docElem.compareDocumentPosition );
-
-		// Element contains another
-		// Purposefully self-exclusive
-		// As in, an element does not contain itself
-		contains = hasCompare || rnative.test( docElem.contains ) ?
-			function( a, b ) {
-				var adown = a.nodeType === 9 ? a.documentElement : a,
-					bup = b && b.parentNode;
-				return a === bup || !!( bup && bup.nodeType === 1 && (
-					adown.contains ?
-						adown.contains( bup ) :
-						a.compareDocumentPosition && a.compareDocumentPosition( bup ) & 16
-				));
-			} :
-			function( a, b ) {
-				if ( b ) {
-					while ( (b = b.parentNode) ) {
-						if ( b === a ) {
-							return true;
-						}
-					}
-				}
-				return false;
-			};
-
-		/* Sorting
-		---------------------------------------------------------------------- */
-
-		// Document order sorting
-		sortOrder = hasCompare ?
-		function( a, b ) {
-
-			// Flag for duplicate removal
-			if ( a === b ) {
-				hasDuplicate = true;
-				return 0;
-			}
-
-			// Sort on method existence if only one input has compareDocumentPosition
-			var compare = !a.compareDocumentPosition - !b.compareDocumentPosition;
-			if ( compare ) {
-				return compare;
-			}
-
-			// Calculate position if both inputs belong to the same document
-			compare = ( a.ownerDocument || a ) === ( b.ownerDocument || b ) ?
-				a.compareDocumentPosition( b ) :
-
-				// Otherwise we know they are disconnected
-				1;
-
-			// Disconnected nodes
-			if ( compare & 1 ||
-				(!support.sortDetached && b.compareDocumentPosition( a ) === compare) ) {
-
-				// Choose the first element that is related to our preferred document
-				if ( a === document || a.ownerDocument === preferredDoc && contains(preferredDoc, a) ) {
-					return -1;
-				}
-				if ( b === document || b.ownerDocument === preferredDoc && contains(preferredDoc, b) ) {
-					return 1;
-				}
-
-				// Maintain original order
-				return sortInput ?
-					( indexOf( sortInput, a ) - indexOf( sortInput, b ) ) :
-					0;
-			}
-
-			return compare & 4 ? -1 : 1;
-		} :
-		function( a, b ) {
-			// Exit early if the nodes are identical
-			if ( a === b ) {
-				hasDuplicate = true;
-				return 0;
-			}
-
-			var cur,
-				i = 0,
-				aup = a.parentNode,
-				bup = b.parentNode,
-				ap = [ a ],
-				bp = [ b ];
-
-			// Parentless nodes are either documents or disconnected
-			if ( !aup || !bup ) {
-				return a === document ? -1 :
-					b === document ? 1 :
-					aup ? -1 :
-					bup ? 1 :
-					sortInput ?
-					( indexOf( sortInput, a ) - indexOf( sortInput, b ) ) :
-					0;
-
-			// If the nodes are siblings, we can do a quick check
-			} else if ( aup === bup ) {
-				return siblingCheck( a, b );
-			}
-
-			// Otherwise we need full lists of their ancestors for comparison
-			cur = a;
-			while ( (cur = cur.parentNode) ) {
-				ap.unshift( cur );
-			}
-			cur = b;
-			while ( (cur = cur.parentNode) ) {
-				bp.unshift( cur );
-			}
-
-			// Walk down the tree looking for a discrepancy
-			while ( ap[i] === bp[i] ) {
-				i++;
-			}
-
-			return i ?
-				// Do a sibling check if the nodes have a common ancestor
-				siblingCheck( ap[i], bp[i] ) :
-
-				// Otherwise nodes in our document sort first
-				ap[i] === preferredDoc ? -1 :
-				bp[i] === preferredDoc ? 1 :
-				0;
-		};
-
-		return document;
-	};
-
-	Sizzle.matches = function( expr, elements ) {
-		return Sizzle( expr, null, null, elements );
-	};
-
-	Sizzle.matchesSelector = function( elem, expr ) {
-		// Set document vars if needed
-		if ( ( elem.ownerDocument || elem ) !== document ) {
-			setDocument( elem );
-		}
-
-		// Make sure that attribute selectors are quoted
-		expr = expr.replace( rattributeQuotes, "='$1']" );
-
-		if ( support.matchesSelector && documentIsHTML &&
-			!compilerCache[ expr + " " ] &&
-			( !rbuggyMatches || !rbuggyMatches.test( expr ) ) &&
-			( !rbuggyQSA     || !rbuggyQSA.test( expr ) ) ) {
-
-			try {
-				var ret = matches.call( elem, expr );
-
-				// IE 9's matchesSelector returns false on disconnected nodes
-				if ( ret || support.disconnectedMatch ||
-						// As well, disconnected nodes are said to be in a document
-						// fragment in IE 9
-						elem.document && elem.document.nodeType !== 11 ) {
-					return ret;
-				}
-			} catch (e) {}
-		}
-
-		return Sizzle( expr, document, null, [ elem ] ).length > 0;
-	};
-
-	Sizzle.contains = function( context, elem ) {
-		// Set document vars if needed
-		if ( ( context.ownerDocument || context ) !== document ) {
-			setDocument( context );
-		}
-		return contains( context, elem );
-	};
-
-	Sizzle.attr = function( elem, name ) {
-		// Set document vars if needed
-		if ( ( elem.ownerDocument || elem ) !== document ) {
-			setDocument( elem );
-		}
-
-		var fn = Expr.attrHandle[ name.toLowerCase() ],
-			// Don't get fooled by Object.prototype properties (jQuery #13807)
-			val = fn && hasOwn.call( Expr.attrHandle, name.toLowerCase() ) ?
-				fn( elem, name, !documentIsHTML ) :
-				undefined;
-
-		return val !== undefined ?
-			val :
-			support.attributes || !documentIsHTML ?
-				elem.getAttribute( name ) :
-				(val = elem.getAttributeNode(name)) && val.specified ?
-					val.value :
-					null;
-	};
-
-	Sizzle.escape = function( sel ) {
-		return (sel + "").replace( rcssescape, fcssescape );
-	};
-
-	Sizzle.error = function( msg ) {
-		throw new Error( "Syntax error, unrecognized expression: " + msg );
-	};
-
-	/**
-	 * Document sorting and removing duplicates
-	 * @param {ArrayLike} results
-	 */
-	Sizzle.uniqueSort = function( results ) {
-		var elem,
-			duplicates = [],
-			j = 0,
-			i = 0;
-
-		// Unless we *know* we can detect duplicates, assume their presence
-		hasDuplicate = !support.detectDuplicates;
-		sortInput = !support.sortStable && results.slice( 0 );
-		results.sort( sortOrder );
-
-		if ( hasDuplicate ) {
-			while ( (elem = results[i++]) ) {
-				if ( elem === results[ i ] ) {
-					j = duplicates.push( i );
-				}
-			}
-			while ( j-- ) {
-				results.splice( duplicates[ j ], 1 );
-			}
-		}
-
-		// Clear input after sorting to release objects
-		// See https://github.com/jquery/sizzle/pull/225
-		sortInput = null;
-
-		return results;
-	};
-
-	/**
-	 * Utility function for retrieving the text value of an array of DOM nodes
-	 * @param {Array|Element} elem
-	 */
-	getText = Sizzle.getText = function( elem ) {
-		var node,
-			ret = "",
-			i = 0,
-			nodeType = elem.nodeType;
-
-		if ( !nodeType ) {
-			// If no nodeType, this is expected to be an array
-			while ( (node = elem[i++]) ) {
-				// Do not traverse comment nodes
-				ret += getText( node );
-			}
-		} else if ( nodeType === 1 || nodeType === 9 || nodeType === 11 ) {
-			// Use textContent for elements
-			// innerText usage removed for consistency of new lines (jQuery #11153)
-			if ( typeof elem.textContent === "string" ) {
-				return elem.textContent;
-			} else {
-				// Traverse its children
-				for ( elem = elem.firstChild; elem; elem = elem.nextSibling ) {
-					ret += getText( elem );
-				}
-			}
-		} else if ( nodeType === 3 || nodeType === 4 ) {
-			return elem.nodeValue;
-		}
-		// Do not include comment or processing instruction nodes
-
-		return ret;
-	};
-
-	Expr = Sizzle.selectors = {
-
-		// Can be adjusted by the user
-		cacheLength: 50,
-
-		createPseudo: markFunction,
-
-		match: matchExpr,
-
-		attrHandle: {},
-
-		find: {},
-
-		relative: {
-			">": { dir: "parentNode", first: true },
-			" ": { dir: "parentNode" },
-			"+": { dir: "previousSibling", first: true },
-			"~": { dir: "previousSibling" }
-		},
-
-		preFilter: {
-			"ATTR": function( match ) {
-				match[1] = match[1].replace( runescape, funescape );
-
-				// Move the given value to match[3] whether quoted or unquoted
-				match[3] = ( match[3] || match[4] || match[5] || "" ).replace( runescape, funescape );
-
-				if ( match[2] === "~=" ) {
-					match[3] = " " + match[3] + " ";
-				}
-
-				return match.slice( 0, 4 );
-			},
-
-			"CHILD": function( match ) {
-				/* matches from matchExpr["CHILD"]
-					1 type (only|nth|...)
-					2 what (child|of-type)
-					3 argument (even|odd|\d*|\d*n([+-]\d+)?|...)
-					4 xn-component of xn+y argument ([+-]?\d*n|)
-					5 sign of xn-component
-					6 x of xn-component
-					7 sign of y-component
-					8 y of y-component
-				*/
-				match[1] = match[1].toLowerCase();
-
-				if ( match[1].slice( 0, 3 ) === "nth" ) {
-					// nth-* requires argument
-					if ( !match[3] ) {
-						Sizzle.error( match[0] );
-					}
-
-					// numeric x and y parameters for Expr.filter.CHILD
-					// remember that false/true cast respectively to 0/1
-					match[4] = +( match[4] ? match[5] + (match[6] || 1) : 2 * ( match[3] === "even" || match[3] === "odd" ) );
-					match[5] = +( ( match[7] + match[8] ) || match[3] === "odd" );
-
-				// other types prohibit arguments
-				} else if ( match[3] ) {
-					Sizzle.error( match[0] );
-				}
-
-				return match;
-			},
-
-			"PSEUDO": function( match ) {
-				var excess,
-					unquoted = !match[6] && match[2];
-
-				if ( matchExpr["CHILD"].test( match[0] ) ) {
-					return null;
-				}
-
-				// Accept quoted arguments as-is
-				if ( match[3] ) {
-					match[2] = match[4] || match[5] || "";
-
-				// Strip excess characters from unquoted arguments
-				} else if ( unquoted && rpseudo.test( unquoted ) &&
-					// Get excess from tokenize (recursively)
-					(excess = tokenize( unquoted, true )) &&
-					// advance to the next closing parenthesis
-					(excess = unquoted.indexOf( ")", unquoted.length - excess ) - unquoted.length) ) {
-
-					// excess is a negative index
-					match[0] = match[0].slice( 0, excess );
-					match[2] = unquoted.slice( 0, excess );
-				}
-
-				// Return only captures needed by the pseudo filter method (type and argument)
-				return match.slice( 0, 3 );
-			}
-		},
-
-		filter: {
-
-			"TAG": function( nodeNameSelector ) {
-				var nodeName = nodeNameSelector.replace( runescape, funescape ).toLowerCase();
-				return nodeNameSelector === "*" ?
-					function() { return true; } :
-					function( elem ) {
-						return elem.nodeName && elem.nodeName.toLowerCase() === nodeName;
-					};
-			},
-
-			"CLASS": function( className ) {
-				var pattern = classCache[ className + " " ];
-
-				return pattern ||
-					(pattern = new RegExp( "(^|" + whitespace + ")" + className + "(" + whitespace + "|$)" )) &&
-					classCache( className, function( elem ) {
-						return pattern.test( typeof elem.className === "string" && elem.className || typeof elem.getAttribute !== "undefined" && elem.getAttribute("class") || "" );
-					});
-			},
-
-			"ATTR": function( name, operator, check ) {
-				return function( elem ) {
-					var result = Sizzle.attr( elem, name );
-
-					if ( result == null ) {
-						return operator === "!=";
-					}
-					if ( !operator ) {
-						return true;
-					}
-
-					result += "";
-
-					return operator === "=" ? result === check :
-						operator === "!=" ? result !== check :
-						operator === "^=" ? check && result.indexOf( check ) === 0 :
-						operator === "*=" ? check && result.indexOf( check ) > -1 :
-						operator === "$=" ? check && result.slice( -check.length ) === check :
-						operator === "~=" ? ( " " + result.replace( rwhitespace, " " ) + " " ).indexOf( check ) > -1 :
-						operator === "|=" ? result === check || result.slice( 0, check.length + 1 ) === check + "-" :
-						false;
-				};
-			},
-
-			"CHILD": function( type, what, argument, first, last ) {
-				var simple = type.slice( 0, 3 ) !== "nth",
-					forward = type.slice( -4 ) !== "last",
-					ofType = what === "of-type";
-
-				return first === 1 && last === 0 ?
-
-					// Shortcut for :nth-*(n)
-					function( elem ) {
-						return !!elem.parentNode;
-					} :
-
-					function( elem, context, xml ) {
-						var cache, uniqueCache, outerCache, node, nodeIndex, start,
-							dir = simple !== forward ? "nextSibling" : "previousSibling",
-							parent = elem.parentNode,
-							name = ofType && elem.nodeName.toLowerCase(),
-							useCache = !xml && !ofType,
-							diff = false;
-
-						if ( parent ) {
-
-							// :(first|last|only)-(child|of-type)
-							if ( simple ) {
-								while ( dir ) {
-									node = elem;
-									while ( (node = node[ dir ]) ) {
-										if ( ofType ?
-											node.nodeName.toLowerCase() === name :
-											node.nodeType === 1 ) {
-
-											return false;
-										}
-									}
-									// Reverse direction for :only-* (if we haven't yet done so)
-									start = dir = type === "only" && !start && "nextSibling";
-								}
-								return true;
-							}
-
-							start = [ forward ? parent.firstChild : parent.lastChild ];
-
-							// non-xml :nth-child(...) stores cache data on `parent`
-							if ( forward && useCache ) {
-
-								// Seek `elem` from a previously-cached index
-
-								// ...in a gzip-friendly way
-								node = parent;
-								outerCache = node[ expando ] || (node[ expando ] = {});
-
-								// Support: IE <9 only
-								// Defend against cloned attroperties (jQuery gh-1709)
-								uniqueCache = outerCache[ node.uniqueID ] ||
-									(outerCache[ node.uniqueID ] = {});
-
-								cache = uniqueCache[ type ] || [];
-								nodeIndex = cache[ 0 ] === dirruns && cache[ 1 ];
-								diff = nodeIndex && cache[ 2 ];
-								node = nodeIndex && parent.childNodes[ nodeIndex ];
-
-								while ( (node = ++nodeIndex && node && node[ dir ] ||
-
-									// Fallback to seeking `elem` from the start
-									(diff = nodeIndex = 0) || start.pop()) ) {
-
-									// When found, cache indexes on `parent` and break
-									if ( node.nodeType === 1 && ++diff && node === elem ) {
-										uniqueCache[ type ] = [ dirruns, nodeIndex, diff ];
-										break;
-									}
-								}
-
-							} else {
-								// Use previously-cached element index if available
-								if ( useCache ) {
-									// ...in a gzip-friendly way
-									node = elem;
-									outerCache = node[ expando ] || (node[ expando ] = {});
-
-									// Support: IE <9 only
-									// Defend against cloned attroperties (jQuery gh-1709)
-									uniqueCache = outerCache[ node.uniqueID ] ||
-										(outerCache[ node.uniqueID ] = {});
-
-									cache = uniqueCache[ type ] || [];
-									nodeIndex = cache[ 0 ] === dirruns && cache[ 1 ];
-									diff = nodeIndex;
-								}
-
-								// xml :nth-child(...)
-								// or :nth-last-child(...) or :nth(-last)?-of-type(...)
-								if ( diff === false ) {
-									// Use the same loop as above to seek `elem` from the start
-									while ( (node = ++nodeIndex && node && node[ dir ] ||
-										(diff = nodeIndex = 0) || start.pop()) ) {
-
-										if ( ( ofType ?
-											node.nodeName.toLowerCase() === name :
-											node.nodeType === 1 ) &&
-											++diff ) {
-
-											// Cache the index of each encountered element
-											if ( useCache ) {
-												outerCache = node[ expando ] || (node[ expando ] = {});
-
-												// Support: IE <9 only
-												// Defend against cloned attroperties (jQuery gh-1709)
-												uniqueCache = outerCache[ node.uniqueID ] ||
-													(outerCache[ node.uniqueID ] = {});
-
-												uniqueCache[ type ] = [ dirruns, diff ];
-											}
-
-											if ( node === elem ) {
-												break;
-											}
-										}
-									}
-								}
-							}
-
-							// Incorporate the offset, then check against cycle size
-							diff -= last;
-							return diff === first || ( diff % first === 0 && diff / first >= 0 );
-						}
-					};
-			},
-
-			"PSEUDO": function( pseudo, argument ) {
-				// pseudo-class names are case-insensitive
-				// http://www.w3.org/TR/selectors/#pseudo-classes
-				// Prioritize by case sensitivity in case custom pseudos are added with uppercase letters
-				// Remember that setFilters inherits from pseudos
-				var args,
-					fn = Expr.pseudos[ pseudo ] || Expr.setFilters[ pseudo.toLowerCase() ] ||
-						Sizzle.error( "unsupported pseudo: " + pseudo );
-
-				// The user may use createPseudo to indicate that
-				// arguments are needed to create the filter function
-				// just as Sizzle does
-				if ( fn[ expando ] ) {
-					return fn( argument );
-				}
-
-				// But maintain support for old signatures
-				if ( fn.length > 1 ) {
-					args = [ pseudo, pseudo, "", argument ];
-					return Expr.setFilters.hasOwnProperty( pseudo.toLowerCase() ) ?
-						markFunction(function( seed, matches ) {
-							var idx,
-								matched = fn( seed, argument ),
-								i = matched.length;
-							while ( i-- ) {
-								idx = indexOf( seed, matched[i] );
-								seed[ idx ] = !( matches[ idx ] = matched[i] );
-							}
-						}) :
-						function( elem ) {
-							return fn( elem, 0, args );
-						};
-				}
-
-				return fn;
-			}
-		},
-
-		pseudos: {
-			// Potentially complex pseudos
-			"not": markFunction(function( selector ) {
-				// Trim the selector passed to compile
-				// to avoid treating leading and trailing
-				// spaces as combinators
-				var input = [],
-					results = [],
-					matcher = compile( selector.replace( rtrim, "$1" ) );
-
-				return matcher[ expando ] ?
-					markFunction(function( seed, matches, context, xml ) {
-						var elem,
-							unmatched = matcher( seed, null, xml, [] ),
-							i = seed.length;
-
-						// Match elements unmatched by `matcher`
-						while ( i-- ) {
-							if ( (elem = unmatched[i]) ) {
-								seed[i] = !(matches[i] = elem);
-							}
-						}
-					}) :
-					function( elem, context, xml ) {
-						input[0] = elem;
-						matcher( input, null, xml, results );
-						// Don't keep the element (issue #299)
-						input[0] = null;
-						return !results.pop();
-					};
-			}),
-
-			"has": markFunction(function( selector ) {
-				return function( elem ) {
-					return Sizzle( selector, elem ).length > 0;
-				};
-			}),
-
-			"contains": markFunction(function( text ) {
-				text = text.replace( runescape, funescape );
-				return function( elem ) {
-					return ( elem.textContent || elem.innerText || getText( elem ) ).indexOf( text ) > -1;
-				};
-			}),
-
-			// "Whether an element is represented by a :lang() selector
-			// is based solely on the element's language value
-			// being equal to the identifier C,
-			// or beginning with the identifier C immediately followed by "-".
-			// The matching of C against the element's language value is performed case-insensitively.
-			// The identifier C does not have to be a valid language name."
-			// http://www.w3.org/TR/selectors/#lang-pseudo
-			"lang": markFunction( function( lang ) {
-				// lang value must be a valid identifier
-				if ( !ridentifier.test(lang || "") ) {
-					Sizzle.error( "unsupported lang: " + lang );
-				}
-				lang = lang.replace( runescape, funescape ).toLowerCase();
-				return function( elem ) {
-					var elemLang;
-					do {
-						if ( (elemLang = documentIsHTML ?
-							elem.lang :
-							elem.getAttribute("xml:lang") || elem.getAttribute("lang")) ) {
-
-							elemLang = elemLang.toLowerCase();
-							return elemLang === lang || elemLang.indexOf( lang + "-" ) === 0;
-						}
-					} while ( (elem = elem.parentNode) && elem.nodeType === 1 );
-					return false;
-				};
-			}),
-
-			// Miscellaneous
-			"target": function( elem ) {
-				var hash = window.location && window.location.hash;
-				return hash && hash.slice( 1 ) === elem.id;
-			},
-
-			"root": function( elem ) {
-				return elem === docElem;
-			},
-
-			"focus": function( elem ) {
-				return elem === document.activeElement && (!document.hasFocus || document.hasFocus()) && !!(elem.type || elem.href || ~elem.tabIndex);
-			},
-
-			// Boolean properties
-			"enabled": createDisabledPseudo( false ),
-			"disabled": createDisabledPseudo( true ),
-
-			"checked": function( elem ) {
-				// In CSS3, :checked should return both checked and selected elements
-				// http://www.w3.org/TR/2011/REC-css3-selectors-20110929/#checked
-				var nodeName = elem.nodeName.toLowerCase();
-				return (nodeName === "input" && !!elem.checked) || (nodeName === "option" && !!elem.selected);
-			},
-
-			"selected": function( elem ) {
-				// Accessing this property makes selected-by-default
-				// options in Safari work properly
-				if ( elem.parentNode ) {
-					elem.parentNode.selectedIndex;
-				}
-
-				return elem.selected === true;
-			},
-
-			// Contents
-			"empty": function( elem ) {
-				// http://www.w3.org/TR/selectors/#empty-pseudo
-				// :empty is negated by element (1) or content nodes (text: 3; cdata: 4; entity ref: 5),
-				//   but not by others (comment: 8; processing instruction: 7; etc.)
-				// nodeType < 6 works because attributes (2) do not appear as children
-				for ( elem = elem.firstChild; elem; elem = elem.nextSibling ) {
-					if ( elem.nodeType < 6 ) {
-						return false;
-					}
-				}
-				return true;
-			},
-
-			"parent": function( elem ) {
-				return !Expr.pseudos["empty"]( elem );
-			},
-
-			// Element/input types
-			"header": function( elem ) {
-				return rheader.test( elem.nodeName );
-			},
-
-			"input": function( elem ) {
-				return rinputs.test( elem.nodeName );
-			},
-
-			"button": function( elem ) {
-				var name = elem.nodeName.toLowerCase();
-				return name === "input" && elem.type === "button" || name === "button";
-			},
-
-			"text": function( elem ) {
-				var attr;
-				return elem.nodeName.toLowerCase() === "input" &&
-					elem.type === "text" &&
-
-					// Support: IE<8
-					// New HTML5 attribute values (e.g., "search") appear with elem.type === "text"
-					( (attr = elem.getAttribute("type")) == null || attr.toLowerCase() === "text" );
-			},
-
-			// Position-in-collection
-			"first": createPositionalPseudo(function() {
-				return [ 0 ];
-			}),
-
-			"last": createPositionalPseudo(function( matchIndexes, length ) {
-				return [ length - 1 ];
-			}),
-
-			"eq": createPositionalPseudo(function( matchIndexes, length, argument ) {
-				return [ argument < 0 ? argument + length : argument ];
-			}),
-
-			"even": createPositionalPseudo(function( matchIndexes, length ) {
-				var i = 0;
-				for ( ; i < length; i += 2 ) {
-					matchIndexes.push( i );
-				}
-				return matchIndexes;
-			}),
-
-			"odd": createPositionalPseudo(function( matchIndexes, length ) {
-				var i = 1;
-				for ( ; i < length; i += 2 ) {
-					matchIndexes.push( i );
-				}
-				return matchIndexes;
-			}),
-
-			"lt": createPositionalPseudo(function( matchIndexes, length, argument ) {
-				var i = argument < 0 ? argument + length : argument;
-				for ( ; --i >= 0; ) {
-					matchIndexes.push( i );
-				}
-				return matchIndexes;
-			}),
-
-			"gt": createPositionalPseudo(function( matchIndexes, length, argument ) {
-				var i = argument < 0 ? argument + length : argument;
-				for ( ; ++i < length; ) {
-					matchIndexes.push( i );
-				}
-				return matchIndexes;
-			})
-		}
-	};
-
-	Expr.pseudos["nth"] = Expr.pseudos["eq"];
-
-	// Add button/input type pseudos
-	for ( i in { radio: true, checkbox: true, file: true, password: true, image: true } ) {
-		Expr.pseudos[ i ] = createInputPseudo( i );
-	}
-	for ( i in { submit: true, reset: true } ) {
-		Expr.pseudos[ i ] = createButtonPseudo( i );
-	}
-
-	// Easy API for creating new setFilters
-	function setFilters() {}
-	setFilters.prototype = Expr.filters = Expr.pseudos;
-	Expr.setFilters = new setFilters();
-
-	tokenize = Sizzle.tokenize = function( selector, parseOnly ) {
-		var matched, match, tokens, type,
-			soFar, groups, preFilters,
-			cached = tokenCache[ selector + " " ];
-
-		if ( cached ) {
-			return parseOnly ? 0 : cached.slice( 0 );
-		}
-
-		soFar = selector;
-		groups = [];
-		preFilters = Expr.preFilter;
-
-		while ( soFar ) {
-
-			// Comma and first run
-			if ( !matched || (match = rcomma.exec( soFar )) ) {
-				if ( match ) {
-					// Don't consume trailing commas as valid
-					soFar = soFar.slice( match[0].length ) || soFar;
-				}
-				groups.push( (tokens = []) );
-			}
-
-			matched = false;
-
-			// Combinators
-			if ( (match = rcombinators.exec( soFar )) ) {
-				matched = match.shift();
-				tokens.push({
-					value: matched,
-					// Cast descendant combinators to space
-					type: match[0].replace( rtrim, " " )
-				});
-				soFar = soFar.slice( matched.length );
-			}
-
-			// Filters
-			for ( type in Expr.filter ) {
-				if ( (match = matchExpr[ type ].exec( soFar )) && (!preFilters[ type ] ||
-					(match = preFilters[ type ]( match ))) ) {
-					matched = match.shift();
-					tokens.push({
-						value: matched,
-						type: type,
-						matches: match
-					});
-					soFar = soFar.slice( matched.length );
-				}
-			}
-
-			if ( !matched ) {
-				break;
-			}
-		}
-
-		// Return the length of the invalid excess
-		// if we're just parsing
-		// Otherwise, throw an error or return tokens
-		return parseOnly ?
-			soFar.length :
-			soFar ?
-				Sizzle.error( selector ) :
-				// Cache the tokens
-				tokenCache( selector, groups ).slice( 0 );
-	};
-
-	function toSelector( tokens ) {
-		var i = 0,
-			len = tokens.length,
-			selector = "";
-		for ( ; i < len; i++ ) {
-			selector += tokens[i].value;
-		}
-		return selector;
-	}
-
-	function addCombinator( matcher, combinator, base ) {
-		var dir = combinator.dir,
-			skip = combinator.next,
-			key = skip || dir,
-			checkNonElements = base && key === "parentNode",
-			doneName = done++;
-
-		return combinator.first ?
-			// Check against closest ancestor/preceding element
-			function( elem, context, xml ) {
-				while ( (elem = elem[ dir ]) ) {
-					if ( elem.nodeType === 1 || checkNonElements ) {
-						return matcher( elem, context, xml );
-					}
-				}
-				return false;
-			} :
-
-			// Check against all ancestor/preceding elements
-			function( elem, context, xml ) {
-				var oldCache, uniqueCache, outerCache,
-					newCache = [ dirruns, doneName ];
-
-				// We can't set arbitrary data on XML nodes, so they don't benefit from combinator caching
-				if ( xml ) {
-					while ( (elem = elem[ dir ]) ) {
-						if ( elem.nodeType === 1 || checkNonElements ) {
-							if ( matcher( elem, context, xml ) ) {
-								return true;
-							}
-						}
-					}
-				} else {
-					while ( (elem = elem[ dir ]) ) {
-						if ( elem.nodeType === 1 || checkNonElements ) {
-							outerCache = elem[ expando ] || (elem[ expando ] = {});
-
-							// Support: IE <9 only
-							// Defend against cloned attroperties (jQuery gh-1709)
-							uniqueCache = outerCache[ elem.uniqueID ] || (outerCache[ elem.uniqueID ] = {});
-
-							if ( skip && skip === elem.nodeName.toLowerCase() ) {
-								elem = elem[ dir ] || elem;
-							} else if ( (oldCache = uniqueCache[ key ]) &&
-								oldCache[ 0 ] === dirruns && oldCache[ 1 ] === doneName ) {
-
-								// Assign to newCache so results back-propagate to previous elements
-								return (newCache[ 2 ] = oldCache[ 2 ]);
-							} else {
-								// Reuse newcache so results back-propagate to previous elements
-								uniqueCache[ key ] = newCache;
-
-								// A match means we're done; a fail means we have to keep checking
-								if ( (newCache[ 2 ] = matcher( elem, context, xml )) ) {
-									return true;
-								}
-							}
-						}
-					}
-				}
-				return false;
-			};
-	}
-
-	function elementMatcher( matchers ) {
-		return matchers.length > 1 ?
-			function( elem, context, xml ) {
-				var i = matchers.length;
-				while ( i-- ) {
-					if ( !matchers[i]( elem, context, xml ) ) {
-						return false;
-					}
-				}
-				return true;
-			} :
-			matchers[0];
-	}
-
-	function multipleContexts( selector, contexts, results ) {
-		var i = 0,
-			len = contexts.length;
-		for ( ; i < len; i++ ) {
-			Sizzle( selector, contexts[i], results );
-		}
-		return results;
-	}
-
-	function condense( unmatched, map, filter, context, xml ) {
-		var elem,
-			newUnmatched = [],
-			i = 0,
-			len = unmatched.length,
-			mapped = map != null;
-
-		for ( ; i < len; i++ ) {
-			if ( (elem = unmatched[i]) ) {
-				if ( !filter || filter( elem, context, xml ) ) {
-					newUnmatched.push( elem );
-					if ( mapped ) {
-						map.push( i );
-					}
-				}
-			}
-		}
-
-		return newUnmatched;
-	}
-
-	function setMatcher( preFilter, selector, matcher, postFilter, postFinder, postSelector ) {
-		if ( postFilter && !postFilter[ expando ] ) {
-			postFilter = setMatcher( postFilter );
-		}
-		if ( postFinder && !postFinder[ expando ] ) {
-			postFinder = setMatcher( postFinder, postSelector );
-		}
-		return markFunction(function( seed, results, context, xml ) {
-			var temp, i, elem,
-				preMap = [],
-				postMap = [],
-				preexisting = results.length,
-
-				// Get initial elements from seed or context
-				elems = seed || multipleContexts( selector || "*", context.nodeType ? [ context ] : context, [] ),
-
-				// Prefilter to get matcher input, preserving a map for seed-results synchronization
-				matcherIn = preFilter && ( seed || !selector ) ?
-					condense( elems, preMap, preFilter, context, xml ) :
-					elems,
-
-				matcherOut = matcher ?
-					// If we have a postFinder, or filtered seed, or non-seed postFilter or preexisting results,
-					postFinder || ( seed ? preFilter : preexisting || postFilter ) ?
-
-						// ...intermediate processing is necessary
-						[] :
-
-						// ...otherwise use results directly
-						results :
-					matcherIn;
-
-			// Find primary matches
-			if ( matcher ) {
-				matcher( matcherIn, matcherOut, context, xml );
-			}
-
-			// Apply postFilter
-			if ( postFilter ) {
-				temp = condense( matcherOut, postMap );
-				postFilter( temp, [], context, xml );
-
-				// Un-match failing elements by moving them back to matcherIn
-				i = temp.length;
-				while ( i-- ) {
-					if ( (elem = temp[i]) ) {
-						matcherOut[ postMap[i] ] = !(matcherIn[ postMap[i] ] = elem);
-					}
-				}
-			}
-
-			if ( seed ) {
-				if ( postFinder || preFilter ) {
-					if ( postFinder ) {
-						// Get the final matcherOut by condensing this intermediate into postFinder contexts
-						temp = [];
-						i = matcherOut.length;
-						while ( i-- ) {
-							if ( (elem = matcherOut[i]) ) {
-								// Restore matcherIn since elem is not yet a final match
-								temp.push( (matcherIn[i] = elem) );
-							}
-						}
-						postFinder( null, (matcherOut = []), temp, xml );
-					}
-
-					// Move matched elements from seed to results to keep them synchronized
-					i = matcherOut.length;
-					while ( i-- ) {
-						if ( (elem = matcherOut[i]) &&
-							(temp = postFinder ? indexOf( seed, elem ) : preMap[i]) > -1 ) {
-
-							seed[temp] = !(results[temp] = elem);
-						}
-					}
-				}
-
-			// Add elements to results, through postFinder if defined
-			} else {
-				matcherOut = condense(
-					matcherOut === results ?
-						matcherOut.splice( preexisting, matcherOut.length ) :
-						matcherOut
-				);
-				if ( postFinder ) {
-					postFinder( null, results, matcherOut, xml );
-				} else {
-					push.apply( results, matcherOut );
-				}
-			}
-		});
-	}
-
-	function matcherFromTokens( tokens ) {
-		var checkContext, matcher, j,
-			len = tokens.length,
-			leadingRelative = Expr.relative[ tokens[0].type ],
-			implicitRelative = leadingRelative || Expr.relative[" "],
-			i = leadingRelative ? 1 : 0,
-
-			// The foundational matcher ensures that elements are reachable from top-level context(s)
-			matchContext = addCombinator( function( elem ) {
-				return elem === checkContext;
-			}, implicitRelative, true ),
-			matchAnyContext = addCombinator( function( elem ) {
-				return indexOf( checkContext, elem ) > -1;
-			}, implicitRelative, true ),
-			matchers = [ function( elem, context, xml ) {
-				var ret = ( !leadingRelative && ( xml || context !== outermostContext ) ) || (
-					(checkContext = context).nodeType ?
-						matchContext( elem, context, xml ) :
-						matchAnyContext( elem, context, xml ) );
-				// Avoid hanging onto element (issue #299)
-				checkContext = null;
-				return ret;
-			} ];
-
-		for ( ; i < len; i++ ) {
-			if ( (matcher = Expr.relative[ tokens[i].type ]) ) {
-				matchers = [ addCombinator(elementMatcher( matchers ), matcher) ];
-			} else {
-				matcher = Expr.filter[ tokens[i].type ].apply( null, tokens[i].matches );
-
-				// Return special upon seeing a positional matcher
-				if ( matcher[ expando ] ) {
-					// Find the next relative operator (if any) for proper handling
-					j = ++i;
-					for ( ; j < len; j++ ) {
-						if ( Expr.relative[ tokens[j].type ] ) {
-							break;
-						}
-					}
-					return setMatcher(
-						i > 1 && elementMatcher( matchers ),
-						i > 1 && toSelector(
-							// If the preceding token was a descendant combinator, insert an implicit any-element `*`
-							tokens.slice( 0, i - 1 ).concat({ value: tokens[ i - 2 ].type === " " ? "*" : "" })
-						).replace( rtrim, "$1" ),
-						matcher,
-						i < j && matcherFromTokens( tokens.slice( i, j ) ),
-						j < len && matcherFromTokens( (tokens = tokens.slice( j )) ),
-						j < len && toSelector( tokens )
-					);
-				}
-				matchers.push( matcher );
-			}
-		}
-
-		return elementMatcher( matchers );
-	}
-
-	function matcherFromGroupMatchers( elementMatchers, setMatchers ) {
-		var bySet = setMatchers.length > 0,
-			byElement = elementMatchers.length > 0,
-			superMatcher = function( seed, context, xml, results, outermost ) {
-				var elem, j, matcher,
-					matchedCount = 0,
-					i = "0",
-					unmatched = seed && [],
-					setMatched = [],
-					contextBackup = outermostContext,
-					// We must always have either seed elements or outermost context
-					elems = seed || byElement && Expr.find["TAG"]( "*", outermost ),
-					// Use integer dirruns iff this is the outermost matcher
-					dirrunsUnique = (dirruns += contextBackup == null ? 1 : Math.random() || 0.1),
-					len = elems.length;
-
-				if ( outermost ) {
-					outermostContext = context === document || context || outermost;
-				}
-
-				// Add elements passing elementMatchers directly to results
-				// Support: IE<9, Safari
-				// Tolerate NodeList properties (IE: "length"; Safari: <number>) matching elements by id
-				for ( ; i !== len && (elem = elems[i]) != null; i++ ) {
-					if ( byElement && elem ) {
-						j = 0;
-						if ( !context && elem.ownerDocument !== document ) {
-							setDocument( elem );
-							xml = !documentIsHTML;
-						}
-						while ( (matcher = elementMatchers[j++]) ) {
-							if ( matcher( elem, context || document, xml) ) {
-								results.push( elem );
-								break;
-							}
-						}
-						if ( outermost ) {
-							dirruns = dirrunsUnique;
-						}
-					}
-
-					// Track unmatched elements for set filters
-					if ( bySet ) {
-						// They will have gone through all possible matchers
-						if ( (elem = !matcher && elem) ) {
-							matchedCount--;
-						}
-
-						// Lengthen the array for every element, matched or not
-						if ( seed ) {
-							unmatched.push( elem );
-						}
-					}
-				}
-
-				// `i` is now the count of elements visited above, and adding it to `matchedCount`
-				// makes the latter nonnegative.
-				matchedCount += i;
-
-				// Apply set filters to unmatched elements
-				// NOTE: This can be skipped if there are no unmatched elements (i.e., `matchedCount`
-				// equals `i`), unless we didn't visit _any_ elements in the above loop because we have
-				// no element matchers and no seed.
-				// Incrementing an initially-string "0" `i` allows `i` to remain a string only in that
-				// case, which will result in a "00" `matchedCount` that differs from `i` but is also
-				// numerically zero.
-				if ( bySet && i !== matchedCount ) {
-					j = 0;
-					while ( (matcher = setMatchers[j++]) ) {
-						matcher( unmatched, setMatched, context, xml );
-					}
-
-					if ( seed ) {
-						// Reintegrate element matches to eliminate the need for sorting
-						if ( matchedCount > 0 ) {
-							while ( i-- ) {
-								if ( !(unmatched[i] || setMatched[i]) ) {
-									setMatched[i] = pop.call( results );
-								}
-							}
-						}
-
-						// Discard index placeholder values to get only actual matches
-						setMatched = condense( setMatched );
-					}
-
-					// Add matches to results
-					push.apply( results, setMatched );
-
-					// Seedless set matches succeeding multiple successful matchers stipulate sorting
-					if ( outermost && !seed && setMatched.length > 0 &&
-						( matchedCount + setMatchers.length ) > 1 ) {
-
-						Sizzle.uniqueSort( results );
-					}
-				}
-
-				// Override manipulation of globals by nested matchers
-				if ( outermost ) {
-					dirruns = dirrunsUnique;
-					outermostContext = contextBackup;
-				}
-
-				return unmatched;
-			};
-
-		return bySet ?
-			markFunction( superMatcher ) :
-			superMatcher;
-	}
-
-	compile = Sizzle.compile = function( selector, match /* Internal Use Only */ ) {
-		var i,
-			setMatchers = [],
-			elementMatchers = [],
-			cached = compilerCache[ selector + " " ];
-
-		if ( !cached ) {
-			// Generate a function of recursive functions that can be used to check each element
-			if ( !match ) {
-				match = tokenize( selector );
-			}
-			i = match.length;
-			while ( i-- ) {
-				cached = matcherFromTokens( match[i] );
-				if ( cached[ expando ] ) {
-					setMatchers.push( cached );
-				} else {
-					elementMatchers.push( cached );
-				}
-			}
-
-			// Cache the compiled function
-			cached = compilerCache( selector, matcherFromGroupMatchers( elementMatchers, setMatchers ) );
-
-			// Save selector and tokenization
-			cached.selector = selector;
-		}
-		return cached;
-	};
-
-	/**
-	 * A low-level selection function that works with Sizzle's compiled
-	 *  selector functions
-	 * @param {String|Function} selector A selector or a pre-compiled
-	 *  selector function built with Sizzle.compile
-	 * @param {Element} context
-	 * @param {Array} [results]
-	 * @param {Array} [seed] A set of elements to match against
-	 */
-	select = Sizzle.select = function( selector, context, results, seed ) {
-		var i, tokens, token, type, find,
-			compiled = typeof selector === "function" && selector,
-			match = !seed && tokenize( (selector = compiled.selector || selector) );
-
-		results = results || [];
-
-		// Try to minimize operations if there is only one selector in the list and no seed
-		// (the latter of which guarantees us context)
-		if ( match.length === 1 ) {
-
-			// Reduce context if the leading compound selector is an ID
-			tokens = match[0] = match[0].slice( 0 );
-			if ( tokens.length > 2 && (token = tokens[0]).type === "ID" &&
-					context.nodeType === 9 && documentIsHTML && Expr.relative[ tokens[1].type ] ) {
-
-				context = ( Expr.find["ID"]( token.matches[0].replace(runescape, funescape), context ) || [] )[0];
-				if ( !context ) {
-					return results;
-
-				// Precompiled matchers will still verify ancestry, so step up a level
-				} else if ( compiled ) {
-					context = context.parentNode;
-				}
-
-				selector = selector.slice( tokens.shift().value.length );
-			}
-
-			// Fetch a seed set for right-to-left matching
-			i = matchExpr["needsContext"].test( selector ) ? 0 : tokens.length;
-			while ( i-- ) {
-				token = tokens[i];
-
-				// Abort if we hit a combinator
-				if ( Expr.relative[ (type = token.type) ] ) {
-					break;
-				}
-				if ( (find = Expr.find[ type ]) ) {
-					// Search, expanding context for leading sibling combinators
-					if ( (seed = find(
-						token.matches[0].replace( runescape, funescape ),
-						rsibling.test( tokens[0].type ) && testContext( context.parentNode ) || context
-					)) ) {
-
-						// If seed is empty or no tokens remain, we can return early
-						tokens.splice( i, 1 );
-						selector = seed.length && toSelector( tokens );
-						if ( !selector ) {
-							push.apply( results, seed );
-							return results;
-						}
-
-						break;
-					}
-				}
-			}
-		}
-
-		// Compile and execute a filtering function if one is not provided
-		// Provide `match` to avoid retokenization if we modified the selector above
-		( compiled || compile( selector, match ) )(
-			seed,
-			context,
-			!documentIsHTML,
-			results,
-			!context || rsibling.test( selector ) && testContext( context.parentNode ) || context
-		);
-		return results;
-	};
-
-	// One-time assignments
-
-	// Sort stability
-	support.sortStable = expando.split("").sort( sortOrder ).join("") === expando;
-
-	// Support: Chrome 14-35+
-	// Always assume duplicates if they aren't passed to the comparison function
-	support.detectDuplicates = !!hasDuplicate;
-
-	// Initialize against the default document
-	setDocument();
-
-	// Support: Webkit<537.32 - Safari 6.0.3/Chrome 25 (fixed in Chrome 27)
-	// Detached nodes confoundingly follow *each other*
-	support.sortDetached = assert(function( el ) {
-		// Should return 1, but returns 4 (following)
-		return el.compareDocumentPosition( document.createElement("fieldset") ) & 1;
-	});
-
-	// Support: IE<8
-	// Prevent attribute/property "interpolation"
-	// https://msdn.microsoft.com/en-us/library/ms536429%28VS.85%29.aspx
-	if ( !assert(function( el ) {
-		el.innerHTML = "<a href='#'></a>";
-		return el.firstChild.getAttribute("href") === "#" ;
-	}) ) {
-		addHandle( "type|href|height|width", function( elem, name, isXML ) {
-			if ( !isXML ) {
-				return elem.getAttribute( name, name.toLowerCase() === "type" ? 1 : 2 );
-			}
-		});
-	}
-
-	// Support: IE<9
-	// Use defaultValue in place of getAttribute("value")
-	if ( !support.attributes || !assert(function( el ) {
-		el.innerHTML = "<input/>";
-		el.firstChild.setAttribute( "value", "" );
-		return el.firstChild.getAttribute( "value" ) === "";
-	}) ) {
-		addHandle( "value", function( elem, name, isXML ) {
-			if ( !isXML && elem.nodeName.toLowerCase() === "input" ) {
-				return elem.defaultValue;
-			}
-		});
-	}
-
-	// Support: IE<9
-	// Use getAttributeNode to fetch booleans when getAttribute lies
-	if ( !assert(function( el ) {
-		return el.getAttribute("disabled") == null;
-	}) ) {
-		addHandle( booleans, function( elem, name, isXML ) {
-			var val;
-			if ( !isXML ) {
-				return elem[ name ] === true ? name.toLowerCase() :
-						(val = elem.getAttributeNode( name )) && val.specified ?
-						val.value :
-					null;
-			}
-		});
-	}
-
-	return Sizzle;
-
-	})( window );
-
-
-
-	jQuery.find = Sizzle;
-	jQuery.expr = Sizzle.selectors;
-
-	// Deprecated
-	jQuery.expr[ ":" ] = jQuery.expr.pseudos;
-	jQuery.uniqueSort = jQuery.unique = Sizzle.uniqueSort;
-	jQuery.text = Sizzle.getText;
-	jQuery.isXMLDoc = Sizzle.isXML;
-	jQuery.contains = Sizzle.contains;
-	jQuery.escapeSelector = Sizzle.escape;
-
-
-
-
-	var dir = function( elem, dir, until ) {
-		var matched = [],
-			truncate = until !== undefined;
-
-		while ( ( elem = elem[ dir ] ) && elem.nodeType !== 9 ) {
-			if ( elem.nodeType === 1 ) {
-				if ( truncate && jQuery( elem ).is( until ) ) {
-					break;
-				}
-				matched.push( elem );
-			}
-		}
-		return matched;
-	};
-
-
-	var siblings = function( n, elem ) {
-		var matched = [];
-
-		for ( ; n; n = n.nextSibling ) {
-			if ( n.nodeType === 1 && n !== elem ) {
-				matched.push( n );
-			}
-		}
-
-		return matched;
-	};
-
-
-	var rneedsContext = jQuery.expr.match.needsContext;
-
-	var rsingleTag = ( /^<([a-z][^\/\0>:\x20\t\r\n\f]*)[\x20\t\r\n\f]*\/?>(?:<\/\1>|)$/i );
-
-
-
-	var risSimple = /^.[^:#\[\.,]*$/;
-
-	// Implement the identical functionality for filter and not
-	function winnow( elements, qualifier, not ) {
-		if ( jQuery.isFunction( qualifier ) ) {
-			return jQuery.grep( elements, function( elem, i ) {
-				return !!qualifier.call( elem, i, elem ) !== not;
-			} );
-		}
-
-		// Single element
-		if ( qualifier.nodeType ) {
-			return jQuery.grep( elements, function( elem ) {
-				return ( elem === qualifier ) !== not;
-			} );
-		}
-
-		// Arraylike of elements (jQuery, arguments, Array)
-		if ( typeof qualifier !== "string" ) {
-			return jQuery.grep( elements, function( elem ) {
-				return ( indexOf.call( qualifier, elem ) > -1 ) !== not;
-			} );
-		}
-
-		// Simple selector that can be filtered directly, removing non-Elements
-		if ( risSimple.test( qualifier ) ) {
-			return jQuery.filter( qualifier, elements, not );
-		}
-
-		// Complex selector, compare the two sets, removing non-Elements
-		qualifier = jQuery.filter( qualifier, elements );
-		return jQuery.grep( elements, function( elem ) {
-			return ( indexOf.call( qualifier, elem ) > -1 ) !== not && elem.nodeType === 1;
-		} );
-	}
-
-	jQuery.filter = function( expr, elems, not ) {
-		var elem = elems[ 0 ];
-
-		if ( not ) {
-			expr = ":not(" + expr + ")";
-		}
-
-		if ( elems.length === 1 && elem.nodeType === 1 ) {
-			return jQuery.find.matchesSelector( elem, expr ) ? [ elem ] : [];
-		}
-
-		return jQuery.find.matches( expr, jQuery.grep( elems, function( elem ) {
-			return elem.nodeType === 1;
-		} ) );
-	};
-
-	jQuery.fn.extend( {
-		find: function( selector ) {
-			var i, ret,
-				len = this.length,
-				self = this;
-
-			if ( typeof selector !== "string" ) {
-				return this.pushStack( jQuery( selector ).filter( function() {
-					for ( i = 0; i < len; i++ ) {
-						if ( jQuery.contains( self[ i ], this ) ) {
-							return true;
-						}
-					}
-				} ) );
-			}
-
-			ret = this.pushStack( [] );
-
-			for ( i = 0; i < len; i++ ) {
-				jQuery.find( selector, self[ i ], ret );
-			}
-
-			return len > 1 ? jQuery.uniqueSort( ret ) : ret;
-		},
-		filter: function( selector ) {
-			return this.pushStack( winnow( this, selector || [], false ) );
-		},
-		not: function( selector ) {
-			return this.pushStack( winnow( this, selector || [], true ) );
-		},
-		is: function( selector ) {
-			return !!winnow(
-				this,
-
-				// If this is a positional/relative selector, check membership in the returned set
-				// so $("p:first").is("p:last") won't return true for a doc with two "p".
-				typeof selector === "string" && rneedsContext.test( selector ) ?
-					jQuery( selector ) :
-					selector || [],
-				false
-			).length;
-		}
-	} );
-
-
-	// Initialize a jQuery object
-
-
-	// A central reference to the root jQuery(document)
-	var rootjQuery,
-
-		// A simple way to check for HTML strings
-		// Prioritize #id over <tag> to avoid XSS via location.hash (#9521)
-		// Strict HTML recognition (#11290: must start with <)
-		// Shortcut simple #id case for speed
-		rquickExpr = /^(?:\s*(<[\w\W]+>)[^>]*|#([\w-]+))$/,
-
-		init = jQuery.fn.init = function( selector, context, root ) {
-			var match, elem;
-
-			// HANDLE: $(""), $(null), $(undefined), $(false)
-			if ( !selector ) {
-				return this;
-			}
-
-			// Method init() accepts an alternate rootjQuery
-			// so migrate can support jQuery.sub (gh-2101)
-			root = root || rootjQuery;
-
-			// Handle HTML strings
-			if ( typeof selector === "string" ) {
-				if ( selector[ 0 ] === "<" &&
-					selector[ selector.length - 1 ] === ">" &&
-					selector.length >= 3 ) {
-
-					// Assume that strings that start and end with <> are HTML and skip the regex check
-					match = [ null, selector, null ];
-
-				} else {
-					match = rquickExpr.exec( selector );
-				}
-
-				// Match html or make sure no context is specified for #id
-				if ( match && ( match[ 1 ] || !context ) ) {
-
-					// HANDLE: $(html) -> $(array)
-					if ( match[ 1 ] ) {
-						context = context instanceof jQuery ? context[ 0 ] : context;
-
-						// Option to run scripts is true for back-compat
-						// Intentionally let the error be thrown if parseHTML is not present
-						jQuery.merge( this, jQuery.parseHTML(
-							match[ 1 ],
-							context && context.nodeType ? context.ownerDocument || context : document,
-							true
-						) );
-
-						// HANDLE: $(html, props)
-						if ( rsingleTag.test( match[ 1 ] ) && jQuery.isPlainObject( context ) ) {
-							for ( match in context ) {
-
-								// Properties of context are called as methods if possible
-								if ( jQuery.isFunction( this[ match ] ) ) {
-									this[ match ]( context[ match ] );
-
-								// ...and otherwise set as attributes
-								} else {
-									this.attr( match, context[ match ] );
-								}
-							}
-						}
-
-						return this;
-
-					// HANDLE: $(#id)
-					} else {
-						elem = document.getElementById( match[ 2 ] );
-
-						if ( elem ) {
-
-							// Inject the element directly into the jQuery object
-							this[ 0 ] = elem;
-							this.length = 1;
-						}
-						return this;
-					}
-
-				// HANDLE: $(expr, $(...))
-				} else if ( !context || context.jquery ) {
-					return ( context || root ).find( selector );
-
-				// HANDLE: $(expr, context)
-				// (which is just equivalent to: $(context).find(expr)
-				} else {
-					return this.constructor( context ).find( selector );
-				}
-
-			// HANDLE: $(DOMElement)
-			} else if ( selector.nodeType ) {
-				this[ 0 ] = selector;
-				this.length = 1;
-				return this;
-
-			// HANDLE: $(function)
-			// Shortcut for document ready
-			} else if ( jQuery.isFunction( selector ) ) {
-				return root.ready !== undefined ?
-					root.ready( selector ) :
-
-					// Execute immediately if ready is not present
-					selector( jQuery );
-			}
-
-			return jQuery.makeArray( selector, this );
-		};
-
-	// Give the init function the jQuery prototype for later instantiation
-	init.prototype = jQuery.fn;
-
-	// Initialize central reference
-	rootjQuery = jQuery( document );
-
-
-	var rparentsprev = /^(?:parents|prev(?:Until|All))/,
-
-		// Methods guaranteed to produce a unique set when starting from a unique set
-		guaranteedUnique = {
-			children: true,
-			contents: true,
-			next: true,
-			prev: true
-		};
-
-	jQuery.fn.extend( {
-		has: function( target ) {
-			var targets = jQuery( target, this ),
-				l = targets.length;
-
-			return this.filter( function() {
-				var i = 0;
-				for ( ; i < l; i++ ) {
-					if ( jQuery.contains( this, targets[ i ] ) ) {
-						return true;
-					}
-				}
-			} );
-		},
-
-		closest: function( selectors, context ) {
-			var cur,
-				i = 0,
-				l = this.length,
-				matched = [],
-				targets = typeof selectors !== "string" && jQuery( selectors );
-
-			// Positional selectors never match, since there's no _selection_ context
-			if ( !rneedsContext.test( selectors ) ) {
-				for ( ; i < l; i++ ) {
-					for ( cur = this[ i ]; cur && cur !== context; cur = cur.parentNode ) {
-
-						// Always skip document fragments
-						if ( cur.nodeType < 11 && ( targets ?
-							targets.index( cur ) > -1 :
-
-							// Don't pass non-elements to Sizzle
-							cur.nodeType === 1 &&
-								jQuery.find.matchesSelector( cur, selectors ) ) ) {
-
-							matched.push( cur );
-							break;
-						}
-					}
-				}
-			}
-
-			return this.pushStack( matched.length > 1 ? jQuery.uniqueSort( matched ) : matched );
-		},
-
-		// Determine the position of an element within the set
-		index: function( elem ) {
-
-			// No argument, return index in parent
-			if ( !elem ) {
-				return ( this[ 0 ] && this[ 0 ].parentNode ) ? this.first().prevAll().length : -1;
-			}
-
-			// Index in selector
-			if ( typeof elem === "string" ) {
-				return indexOf.call( jQuery( elem ), this[ 0 ] );
-			}
-
-			// Locate the position of the desired element
-			return indexOf.call( this,
-
-				// If it receives a jQuery object, the first element is used
-				elem.jquery ? elem[ 0 ] : elem
-			);
-		},
-
-		add: function( selector, context ) {
-			return this.pushStack(
-				jQuery.uniqueSort(
-					jQuery.merge( this.get(), jQuery( selector, context ) )
-				)
-			);
-		},
-
-		addBack: function( selector ) {
-			return this.add( selector == null ?
-				this.prevObject : this.prevObject.filter( selector )
-			);
-		}
-	} );
-
-	function sibling( cur, dir ) {
-		while ( ( cur = cur[ dir ] ) && cur.nodeType !== 1 ) {}
-		return cur;
-	}
-
-	jQuery.each( {
-		parent: function( elem ) {
-			var parent = elem.parentNode;
-			return parent && parent.nodeType !== 11 ? parent : null;
-		},
-		parents: function( elem ) {
-			return dir( elem, "parentNode" );
-		},
-		parentsUntil: function( elem, i, until ) {
-			return dir( elem, "parentNode", until );
-		},
-		next: function( elem ) {
-			return sibling( elem, "nextSibling" );
-		},
-		prev: function( elem ) {
-			return sibling( elem, "previousSibling" );
-		},
-		nextAll: function( elem ) {
-			return dir( elem, "nextSibling" );
-		},
-		prevAll: function( elem ) {
-			return dir( elem, "previousSibling" );
-		},
-		nextUntil: function( elem, i, until ) {
-			return dir( elem, "nextSibling", until );
-		},
-		prevUntil: function( elem, i, until ) {
-			return dir( elem, "previousSibling", until );
-		},
-		siblings: function( elem ) {
-			return siblings( ( elem.parentNode || {} ).firstChild, elem );
-		},
-		children: function( elem ) {
-			return siblings( elem.firstChild );
-		},
-		contents: function( elem ) {
-			return elem.contentDocument || jQuery.merge( [], elem.childNodes );
-		}
-	}, function( name, fn ) {
-		jQuery.fn[ name ] = function( until, selector ) {
-			var matched = jQuery.map( this, fn, until );
-
-			if ( name.slice( -5 ) !== "Until" ) {
-				selector = until;
-			}
-
-			if ( selector && typeof selector === "string" ) {
-				matched = jQuery.filter( selector, matched );
-			}
-
-			if ( this.length > 1 ) {
-
-				// Remove duplicates
-				if ( !guaranteedUnique[ name ] ) {
-					jQuery.uniqueSort( matched );
-				}
-
-				// Reverse order for parents* and prev-derivatives
-				if ( rparentsprev.test( name ) ) {
-					matched.reverse();
-				}
-			}
-
-			return this.pushStack( matched );
-		};
-	} );
-	var rnothtmlwhite = ( /[^\x20\t\r\n\f]+/g );
-
-
-
-	// Convert String-formatted options into Object-formatted ones
-	function createOptions( options ) {
-		var object = {};
-		jQuery.each( options.match( rnothtmlwhite ) || [], function( _, flag ) {
-			object[ flag ] = true;
-		} );
-		return object;
-	}
-
-	/*
-	 * Create a callback list using the following parameters:
-	 *
-	 *	options: an optional list of space-separated options that will change how
-	 *			the callback list behaves or a more traditional option object
-	 *
-	 * By default a callback list will act like an event callback list and can be
-	 * "fired" multiple times.
-	 *
-	 * Possible options:
-	 *
-	 *	once:			will ensure the callback list can only be fired once (like a Deferred)
-	 *
-	 *	memory:			will keep track of previous values and will call any callback added
-	 *					after the list has been fired right away with the latest "memorized"
-	 *					values (like a Deferred)
-	 *
-	 *	unique:			will ensure a callback can only be added once (no duplicate in the list)
-	 *
-	 *	stopOnFalse:	interrupt callings when a callback returns false
-	 *
-	 */
-	jQuery.Callbacks = function( options ) {
-
-		// Convert options from String-formatted to Object-formatted if needed
-		// (we check in cache first)
-		options = typeof options === "string" ?
-			createOptions( options ) :
-			jQuery.extend( {}, options );
-
-		var // Flag to know if list is currently firing
-			firing,
-
-			// Last fire value for non-forgettable lists
-			memory,
-
-			// Flag to know if list was already fired
-			fired,
-
-			// Flag to prevent firing
-			locked,
-
-			// Actual callback list
-			list = [],
-
-			// Queue of execution data for repeatable lists
-			queue = [],
-
-			// Index of currently firing callback (modified by add/remove as needed)
-			firingIndex = -1,
-
-			// Fire callbacks
-			fire = function() {
-
-				// Enforce single-firing
-				locked = options.once;
-
-				// Execute callbacks for all pending executions,
-				// respecting firingIndex overrides and runtime changes
-				fired = firing = true;
-				for ( ; queue.length; firingIndex = -1 ) {
-					memory = queue.shift();
-					while ( ++firingIndex < list.length ) {
-
-						// Run callback and check for early termination
-						if ( list[ firingIndex ].apply( memory[ 0 ], memory[ 1 ] ) === false &&
-							options.stopOnFalse ) {
-
-							// Jump to end and forget the data so .add doesn't re-fire
-							firingIndex = list.length;
-							memory = false;
-						}
-					}
-				}
-
-				// Forget the data if we're done with it
-				if ( !options.memory ) {
-					memory = false;
-				}
-
-				firing = false;
-
-				// Clean up if we're done firing for good
-				if ( locked ) {
-
-					// Keep an empty list if we have data for future add calls
-					if ( memory ) {
-						list = [];
-
-					// Otherwise, this object is spent
-					} else {
-						list = "";
-					}
-				}
-			},
-
-			// Actual Callbacks object
-			self = {
-
-				// Add a callback or a collection of callbacks to the list
-				add: function() {
-					if ( list ) {
-
-						// If we have memory from a past run, we should fire after adding
-						if ( memory && !firing ) {
-							firingIndex = list.length - 1;
-							queue.push( memory );
-						}
-
-						( function add( args ) {
-							jQuery.each( args, function( _, arg ) {
-								if ( jQuery.isFunction( arg ) ) {
-									if ( !options.unique || !self.has( arg ) ) {
-										list.push( arg );
-									}
-								} else if ( arg && arg.length && jQuery.type( arg ) !== "string" ) {
-
-									// Inspect recursively
-									add( arg );
-								}
-							} );
-						} )( arguments );
-
-						if ( memory && !firing ) {
-							fire();
-						}
-					}
-					return this;
-				},
-
-				// Remove a callback from the list
-				remove: function() {
-					jQuery.each( arguments, function( _, arg ) {
-						var index;
-						while ( ( index = jQuery.inArray( arg, list, index ) ) > -1 ) {
-							list.splice( index, 1 );
-
-							// Handle firing indexes
-							if ( index <= firingIndex ) {
-								firingIndex--;
-							}
-						}
-					} );
-					return this;
-				},
-
-				// Check if a given callback is in the list.
-				// If no argument is given, return whether or not list has callbacks attached.
-				has: function( fn ) {
-					return fn ?
-						jQuery.inArray( fn, list ) > -1 :
-						list.length > 0;
-				},
-
-				// Remove all callbacks from the list
-				empty: function() {
-					if ( list ) {
-						list = [];
-					}
-					return this;
-				},
-
-				// Disable .fire and .add
-				// Abort any current/pending executions
-				// Clear all callbacks and values
-				disable: function() {
-					locked = queue = [];
-					list = memory = "";
-					return this;
-				},
-				disabled: function() {
-					return !list;
-				},
-
-				// Disable .fire
-				// Also disable .add unless we have memory (since it would have no effect)
-				// Abort any pending executions
-				lock: function() {
-					locked = queue = [];
-					if ( !memory && !firing ) {
-						list = memory = "";
-					}
-					return this;
-				},
-				locked: function() {
-					return !!locked;
-				},
-
-				// Call all callbacks with the given context and arguments
-				fireWith: function( context, args ) {
-					if ( !locked ) {
-						args = args || [];
-						args = [ context, args.slice ? args.slice() : args ];
-						queue.push( args );
-						if ( !firing ) {
-							fire();
-						}
-					}
-					return this;
-				},
-
-				// Call all the callbacks with the given arguments
-				fire: function() {
-					self.fireWith( this, arguments );
-					return this;
-				},
-
-				// To know if the callbacks have already been called at least once
-				fired: function() {
-					return !!fired;
-				}
-			};
-
-		return self;
-	};
-
-
-	function Identity( v ) {
-		return v;
-	}
-	function Thrower( ex ) {
-		throw ex;
-	}
-
-	function adoptValue( value, resolve, reject ) {
-		var method;
-
-		try {
-
-			// Check for promise aspect first to privilege synchronous behavior
-			if ( value && jQuery.isFunction( ( method = value.promise ) ) ) {
-				method.call( value ).done( resolve ).fail( reject );
-
-			// Other thenables
-			} else if ( value && jQuery.isFunction( ( method = value.then ) ) ) {
-				method.call( value, resolve, reject );
-
-			// Other non-thenables
-			} else {
-
-				// Support: Android 4.0 only
-				// Strict mode functions invoked without .call/.apply get global-object context
-				resolve.call( undefined, value );
-			}
-
-		// For Promises/A+, convert exceptions into rejections
-		// Since jQuery.when doesn't unwrap thenables, we can skip the extra checks appearing in
-		// Deferred#then to conditionally suppress rejection.
-		} catch ( value ) {
-
-			// Support: Android 4.0 only
-			// Strict mode functions invoked without .call/.apply get global-object context
-			reject.call( undefined, value );
-		}
-	}
-
-	jQuery.extend( {
-
-		Deferred: function( func ) {
-			var tuples = [
-
-					// action, add listener, callbacks,
-					// ... .then handlers, argument index, [final state]
-					[ "notify", "progress", jQuery.Callbacks( "memory" ),
-						jQuery.Callbacks( "memory" ), 2 ],
-					[ "resolve", "done", jQuery.Callbacks( "once memory" ),
-						jQuery.Callbacks( "once memory" ), 0, "resolved" ],
-					[ "reject", "fail", jQuery.Callbacks( "once memory" ),
-						jQuery.Callbacks( "once memory" ), 1, "rejected" ]
-				],
-				state = "pending",
-				promise = {
-					state: function() {
-						return state;
-					},
-					always: function() {
-						deferred.done( arguments ).fail( arguments );
-						return this;
-					},
-					"catch": function( fn ) {
-						return promise.then( null, fn );
-					},
-
-					// Keep pipe for back-compat
-					pipe: function( /* fnDone, fnFail, fnProgress */ ) {
-						var fns = arguments;
-
-						return jQuery.Deferred( function( newDefer ) {
-							jQuery.each( tuples, function( i, tuple ) {
-
-								// Map tuples (progress, done, fail) to arguments (done, fail, progress)
-								var fn = jQuery.isFunction( fns[ tuple[ 4 ] ] ) && fns[ tuple[ 4 ] ];
-
-								// deferred.progress(function() { bind to newDefer or newDefer.notify })
-								// deferred.done(function() { bind to newDefer or newDefer.resolve })
-								// deferred.fail(function() { bind to newDefer or newDefer.reject })
-								deferred[ tuple[ 1 ] ]( function() {
-									var returned = fn && fn.apply( this, arguments );
-									if ( returned && jQuery.isFunction( returned.promise ) ) {
-										returned.promise()
-											.progress( newDefer.notify )
-											.done( newDefer.resolve )
-											.fail( newDefer.reject );
-									} else {
-										newDefer[ tuple[ 0 ] + "With" ](
-											this,
-											fn ? [ returned ] : arguments
-										);
-									}
-								} );
-							} );
-							fns = null;
-						} ).promise();
-					},
-					then: function( onFulfilled, onRejected, onProgress ) {
-						var maxDepth = 0;
-						function resolve( depth, deferred, handler, special ) {
-							return function() {
-								var that = this,
-									args = arguments,
-									mightThrow = function() {
-										var returned, then;
-
-										// Support: Promises/A+ section 2.3.3.3.3
-										// https://promisesaplus.com/#point-59
-										// Ignore double-resolution attempts
-										if ( depth < maxDepth ) {
-											return;
-										}
-
-										returned = handler.apply( that, args );
-
-										// Support: Promises/A+ section 2.3.1
-										// https://promisesaplus.com/#point-48
-										if ( returned === deferred.promise() ) {
-											throw new TypeError( "Thenable self-resolution" );
-										}
-
-										// Support: Promises/A+ sections 2.3.3.1, 3.5
-										// https://promisesaplus.com/#point-54
-										// https://promisesaplus.com/#point-75
-										// Retrieve `then` only once
-										then = returned &&
-
-											// Support: Promises/A+ section 2.3.4
-											// https://promisesaplus.com/#point-64
-											// Only check objects and functions for thenability
-											( typeof returned === "object" ||
-												typeof returned === "function" ) &&
-											returned.then;
-
-										// Handle a returned thenable
-										if ( jQuery.isFunction( then ) ) {
-
-											// Special processors (notify) just wait for resolution
-											if ( special ) {
-												then.call(
-													returned,
-													resolve( maxDepth, deferred, Identity, special ),
-													resolve( maxDepth, deferred, Thrower, special )
-												);
-
-											// Normal processors (resolve) also hook into progress
-											} else {
-
-												// ...and disregard older resolution values
-												maxDepth++;
-
-												then.call(
-													returned,
-													resolve( maxDepth, deferred, Identity, special ),
-													resolve( maxDepth, deferred, Thrower, special ),
-													resolve( maxDepth, deferred, Identity,
-														deferred.notifyWith )
-												);
-											}
-
-										// Handle all other returned values
-										} else {
-
-											// Only substitute handlers pass on context
-											// and multiple values (non-spec behavior)
-											if ( handler !== Identity ) {
-												that = undefined;
-												args = [ returned ];
-											}
-
-											// Process the value(s)
-											// Default process is resolve
-											( special || deferred.resolveWith )( that, args );
-										}
-									},
-
-									// Only normal processors (resolve) catch and reject exceptions
-									process = special ?
-										mightThrow :
-										function() {
-											try {
-												mightThrow();
-											} catch ( e ) {
-
-												if ( jQuery.Deferred.exceptionHook ) {
-													jQuery.Deferred.exceptionHook( e,
-														process.stackTrace );
-												}
-
-												// Support: Promises/A+ section 2.3.3.3.4.1
-												// https://promisesaplus.com/#point-61
-												// Ignore post-resolution exceptions
-												if ( depth + 1 >= maxDepth ) {
-
-													// Only substitute handlers pass on context
-													// and multiple values (non-spec behavior)
-													if ( handler !== Thrower ) {
-														that = undefined;
-														args = [ e ];
-													}
-
-													deferred.rejectWith( that, args );
-												}
-											}
-										};
-
-								// Support: Promises/A+ section 2.3.3.3.1
-								// https://promisesaplus.com/#point-57
-								// Re-resolve promises immediately to dodge false rejection from
-								// subsequent errors
-								if ( depth ) {
-									process();
-								} else {
-
-									// Call an optional hook to record the stack, in case of exception
-									// since it's otherwise lost when execution goes async
-									if ( jQuery.Deferred.getStackHook ) {
-										process.stackTrace = jQuery.Deferred.getStackHook();
-									}
-									window.setTimeout( process );
-								}
-							};
-						}
-
-						return jQuery.Deferred( function( newDefer ) {
-
-							// progress_handlers.add( ... )
-							tuples[ 0 ][ 3 ].add(
-								resolve(
-									0,
-									newDefer,
-									jQuery.isFunction( onProgress ) ?
-										onProgress :
-										Identity,
-									newDefer.notifyWith
-								)
-							);
-
-							// fulfilled_handlers.add( ... )
-							tuples[ 1 ][ 3 ].add(
-								resolve(
-									0,
-									newDefer,
-									jQuery.isFunction( onFulfilled ) ?
-										onFulfilled :
-										Identity
-								)
-							);
-
-							// rejected_handlers.add( ... )
-							tuples[ 2 ][ 3 ].add(
-								resolve(
-									0,
-									newDefer,
-									jQuery.isFunction( onRejected ) ?
-										onRejected :
-										Thrower
-								)
-							);
-						} ).promise();
-					},
-
-					// Get a promise for this deferred
-					// If obj is provided, the promise aspect is added to the object
-					promise: function( obj ) {
-						return obj != null ? jQuery.extend( obj, promise ) : promise;
-					}
-				},
-				deferred = {};
-
-			// Add list-specific methods
-			jQuery.each( tuples, function( i, tuple ) {
-				var list = tuple[ 2 ],
-					stateString = tuple[ 5 ];
-
-				// promise.progress = list.add
-				// promise.done = list.add
-				// promise.fail = list.add
-				promise[ tuple[ 1 ] ] = list.add;
-
-				// Handle state
-				if ( stateString ) {
-					list.add(
-						function() {
-
-							// state = "resolved" (i.e., fulfilled)
-							// state = "rejected"
-							state = stateString;
-						},
-
-						// rejected_callbacks.disable
-						// fulfilled_callbacks.disable
-						tuples[ 3 - i ][ 2 ].disable,
-
-						// progress_callbacks.lock
-						tuples[ 0 ][ 2 ].lock
-					);
-				}
-
-				// progress_handlers.fire
-				// fulfilled_handlers.fire
-				// rejected_handlers.fire
-				list.add( tuple[ 3 ].fire );
-
-				// deferred.notify = function() { deferred.notifyWith(...) }
-				// deferred.resolve = function() { deferred.resolveWith(...) }
-				// deferred.reject = function() { deferred.rejectWith(...) }
-				deferred[ tuple[ 0 ] ] = function() {
-					deferred[ tuple[ 0 ] + "With" ]( this === deferred ? undefined : this, arguments );
-					return this;
-				};
-
-				// deferred.notifyWith = list.fireWith
-				// deferred.resolveWith = list.fireWith
-				// deferred.rejectWith = list.fireWith
-				deferred[ tuple[ 0 ] + "With" ] = list.fireWith;
-			} );
-
-			// Make the deferred a promise
-			promise.promise( deferred );
-
-			// Call given func if any
-			if ( func ) {
-				func.call( deferred, deferred );
-			}
-
-			// All done!
-			return deferred;
-		},
-
-		// Deferred helper
-		when: function( singleValue ) {
-			var
-
-				// count of uncompleted subordinates
-				remaining = arguments.length,
-
-				// count of unprocessed arguments
-				i = remaining,
-
-				// subordinate fulfillment data
-				resolveContexts = Array( i ),
-				resolveValues = slice.call( arguments ),
-
-				// the master Deferred
-				master = jQuery.Deferred(),
-
-				// subordinate callback factory
-				updateFunc = function( i ) {
-					return function( value ) {
-						resolveContexts[ i ] = this;
-						resolveValues[ i ] = arguments.length > 1 ? slice.call( arguments ) : value;
-						if ( !( --remaining ) ) {
-							master.resolveWith( resolveContexts, resolveValues );
-						}
-					};
-				};
-
-			// Single- and empty arguments are adopted like Promise.resolve
-			if ( remaining <= 1 ) {
-				adoptValue( singleValue, master.done( updateFunc( i ) ).resolve, master.reject );
-
-				// Use .then() to unwrap secondary thenables (cf. gh-3000)
-				if ( master.state() === "pending" ||
-					jQuery.isFunction( resolveValues[ i ] && resolveValues[ i ].then ) ) {
-
-					return master.then();
-				}
-			}
-
-			// Multiple arguments are aggregated like Promise.all array elements
-			while ( i-- ) {
-				adoptValue( resolveValues[ i ], updateFunc( i ), master.reject );
-			}
-
-			return master.promise();
-		}
-	} );
-
-
-	// These usually indicate a programmer mistake during development,
-	// warn about them ASAP rather than swallowing them by default.
-	var rerrorNames = /^(Eval|Internal|Range|Reference|Syntax|Type|URI)Error$/;
-
-	jQuery.Deferred.exceptionHook = function( error, stack ) {
-
-		// Support: IE 8 - 9 only
-		// Console exists when dev tools are open, which can happen at any time
-		if ( window.console && window.console.warn && error && rerrorNames.test( error.name ) ) {
-			window.console.warn( "jQuery.Deferred exception: " + error.message, error.stack, stack );
-		}
-	};
-
-
-
-
-	jQuery.readyException = function( error ) {
-		window.setTimeout( function() {
-			throw error;
-		} );
-	};
-
-
-
-
-	// The deferred used on DOM ready
-	var readyList = jQuery.Deferred();
-
-	jQuery.fn.ready = function( fn ) {
-
-		readyList
-			.then( fn )
-
-			// Wrap jQuery.readyException in a function so that the lookup
-			// happens at the time of error handling instead of callback
-			// registration.
-			.catch( function( error ) {
-				jQuery.readyException( error );
-			} );
-
-		return this;
-	};
-
-	jQuery.extend( {
-
-		// Is the DOM ready to be used? Set to true once it occurs.
-		isReady: false,
-
-		// A counter to track how many items to wait for before
-		// the ready event fires. See #6781
-		readyWait: 1,
-
-		// Hold (or release) the ready event
-		holdReady: function( hold ) {
-			if ( hold ) {
-				jQuery.readyWait++;
-			} else {
-				jQuery.ready( true );
-			}
-		},
-
-		// Handle when the DOM is ready
-		ready: function( wait ) {
-
-			// Abort if there are pending holds or we're already ready
-			if ( wait === true ? --jQuery.readyWait : jQuery.isReady ) {
-				return;
-			}
-
-			// Remember that the DOM is ready
-			jQuery.isReady = true;
-
-			// If a normal DOM Ready event fired, decrement, and wait if need be
-			if ( wait !== true && --jQuery.readyWait > 0 ) {
-				return;
-			}
-
-			// If there are functions bound, to execute
-			readyList.resolveWith( document, [ jQuery ] );
-		}
-	} );
-
-	jQuery.ready.then = readyList.then;
-
-	// The ready event handler and self cleanup method
-	function completed() {
-		document.removeEventListener( "DOMContentLoaded", completed );
-		window.removeEventListener( "load", completed );
-		jQuery.ready();
-	}
-
-	// Catch cases where $(document).ready() is called
-	// after the browser event has already occurred.
-	// Support: IE <=9 - 10 only
-	// Older IE sometimes signals "interactive" too soon
-	if ( document.readyState === "complete" ||
-		( document.readyState !== "loading" && !document.documentElement.doScroll ) ) {
-
-		// Handle it asynchronously to allow scripts the opportunity to delay ready
-		window.setTimeout( jQuery.ready );
-
-	} else {
-
-		// Use the handy event callback
-		document.addEventListener( "DOMContentLoaded", completed );
-
-		// A fallback to window.onload, that will always work
-		window.addEventListener( "load", completed );
-	}
-
-
-
-
-	// Multifunctional method to get and set values of a collection
-	// The value/s can optionally be executed if it's a function
-	var access = function( elems, fn, key, value, chainable, emptyGet, raw ) {
-		var i = 0,
-			len = elems.length,
-			bulk = key == null;
-
-		// Sets many values
-		if ( jQuery.type( key ) === "object" ) {
-			chainable = true;
-			for ( i in key ) {
-				access( elems, fn, i, key[ i ], true, emptyGet, raw );
-			}
-
-		// Sets one value
-		} else if ( value !== undefined ) {
-			chainable = true;
-
-			if ( !jQuery.isFunction( value ) ) {
-				raw = true;
-			}
-
-			if ( bulk ) {
-
-				// Bulk operations run against the entire set
-				if ( raw ) {
-					fn.call( elems, value );
-					fn = null;
-
-				// ...except when executing function values
-				} else {
-					bulk = fn;
-					fn = function( elem, key, value ) {
-						return bulk.call( jQuery( elem ), value );
-					};
-				}
-			}
-
-			if ( fn ) {
-				for ( ; i < len; i++ ) {
-					fn(
-						elems[ i ], key, raw ?
-						value :
-						value.call( elems[ i ], i, fn( elems[ i ], key ) )
-					);
-				}
-			}
-		}
-
-		if ( chainable ) {
-			return elems;
-		}
-
-		// Gets
-		if ( bulk ) {
-			return fn.call( elems );
-		}
-
-		return len ? fn( elems[ 0 ], key ) : emptyGet;
-	};
-	var acceptData = function( owner ) {
-
-		// Accepts only:
-		//  - Node
-		//    - Node.ELEMENT_NODE
-		//    - Node.DOCUMENT_NODE
-		//  - Object
-		//    - Any
-		return owner.nodeType === 1 || owner.nodeType === 9 || !( +owner.nodeType );
-	};
-
-
-
-
-	function Data() {
-		this.expando = jQuery.expando + Data.uid++;
-	}
-
-	Data.uid = 1;
-
-	Data.prototype = {
-
-		cache: function( owner ) {
-
-			// Check if the owner object already has a cache
-			var value = owner[ this.expando ];
-
-			// If not, create one
-			if ( !value ) {
-				value = {};
-
-				// We can accept data for non-element nodes in modern browsers,
-				// but we should not, see #8335.
-				// Always return an empty object.
-				if ( acceptData( owner ) ) {
-
-					// If it is a node unlikely to be stringify-ed or looped over
-					// use plain assignment
-					if ( owner.nodeType ) {
-						owner[ this.expando ] = value;
-
-					// Otherwise secure it in a non-enumerable property
-					// configurable must be true to allow the property to be
-					// deleted when data is removed
-					} else {
-						Object.defineProperty( owner, this.expando, {
-							value: value,
-							configurable: true
-						} );
-					}
-				}
-			}
-
-			return value;
-		},
-		set: function( owner, data, value ) {
-			var prop,
-				cache = this.cache( owner );
-
-			// Handle: [ owner, key, value ] args
-			// Always use camelCase key (gh-2257)
-			if ( typeof data === "string" ) {
-				cache[ jQuery.camelCase( data ) ] = value;
-
-			// Handle: [ owner, { properties } ] args
-			} else {
-
-				// Copy the properties one-by-one to the cache object
-				for ( prop in data ) {
-					cache[ jQuery.camelCase( prop ) ] = data[ prop ];
-				}
-			}
-			return cache;
-		},
-		get: function( owner, key ) {
-			return key === undefined ?
-				this.cache( owner ) :
-
-				// Always use camelCase key (gh-2257)
-				owner[ this.expando ] && owner[ this.expando ][ jQuery.camelCase( key ) ];
-		},
-		access: function( owner, key, value ) {
-
-			// In cases where either:
-			//
-			//   1. No key was specified
-			//   2. A string key was specified, but no value provided
-			//
-			// Take the "read" path and allow the get method to determine
-			// which value to return, respectively either:
-			//
-			//   1. The entire cache object
-			//   2. The data stored at the key
-			//
-			if ( key === undefined ||
-					( ( key && typeof key === "string" ) && value === undefined ) ) {
-
-				return this.get( owner, key );
-			}
-
-			// When the key is not a string, or both a key and value
-			// are specified, set or extend (existing objects) with either:
-			//
-			//   1. An object of properties
-			//   2. A key and value
-			//
-			this.set( owner, key, value );
-
-			// Since the "set" path can have two possible entry points
-			// return the expected data based on which path was taken[*]
-			return value !== undefined ? value : key;
-		},
-		remove: function( owner, key ) {
-			var i,
-				cache = owner[ this.expando ];
-
-			if ( cache === undefined ) {
-				return;
-			}
-
-			if ( key !== undefined ) {
-
-				// Support array or space separated string of keys
-				if ( jQuery.isArray( key ) ) {
-
-					// If key is an array of keys...
-					// We always set camelCase keys, so remove that.
-					key = key.map( jQuery.camelCase );
-				} else {
-					key = jQuery.camelCase( key );
-
-					// If a key with the spaces exists, use it.
-					// Otherwise, create an array by matching non-whitespace
-					key = key in cache ?
-						[ key ] :
-						( key.match( rnothtmlwhite ) || [] );
-				}
-
-				i = key.length;
-
-				while ( i-- ) {
-					delete cache[ key[ i ] ];
-				}
-			}
-
-			// Remove the expando if there's no more data
-			if ( key === undefined || jQuery.isEmptyObject( cache ) ) {
-
-				// Support: Chrome <=35 - 45
-				// Webkit & Blink performance suffers when deleting properties
-				// from DOM nodes, so set to undefined instead
-				// https://bugs.chromium.org/p/chromium/issues/detail?id=378607 (bug restricted)
-				if ( owner.nodeType ) {
-					owner[ this.expando ] = undefined;
-				} else {
-					delete owner[ this.expando ];
-				}
-			}
-		},
-		hasData: function( owner ) {
-			var cache = owner[ this.expando ];
-			return cache !== undefined && !jQuery.isEmptyObject( cache );
-		}
-	};
-	var dataPriv = new Data();
-
-	var dataUser = new Data();
-
-
-
-	//	Implementation Summary
-	//
-	//	1. Enforce API surface and semantic compatibility with 1.9.x branch
-	//	2. Improve the module's maintainability by reducing the storage
-	//		paths to a single mechanism.
-	//	3. Use the same single mechanism to support "private" and "user" data.
-	//	4. _Never_ expose "private" data to user code (TODO: Drop _data, _removeData)
-	//	5. Avoid exposing implementation details on user objects (eg. expando properties)
-	//	6. Provide a clear path for implementation upgrade to WeakMap in 2014
-
-	var rbrace = /^(?:\{[\w\W]*\}|\[[\w\W]*\])$/,
-		rmultiDash = /[A-Z]/g;
-
-	function getData( data ) {
-		if ( data === "true" ) {
-			return true;
-		}
-
-		if ( data === "false" ) {
-			return false;
-		}
-
-		if ( data === "null" ) {
-			return null;
-		}
-
-		// Only convert to a number if it doesn't change the string
-		if ( data === +data + "" ) {
-			return +data;
-		}
-
-		if ( rbrace.test( data ) ) {
-			return JSON.parse( data );
-		}
-
-		return data;
-	}
-
-	function dataAttr( elem, key, data ) {
-		var name;
-
-		// If nothing was found internally, try to fetch any
-		// data from the HTML5 data-* attribute
-		if ( data === undefined && elem.nodeType === 1 ) {
-			name = "data-" + key.replace( rmultiDash, "-$&" ).toLowerCase();
-			data = elem.getAttribute( name );
-
-			if ( typeof data === "string" ) {
-				try {
-					data = getData( data );
-				} catch ( e ) {}
-
-				// Make sure we set the data so it isn't changed later
-				dataUser.set( elem, key, data );
-			} else {
-				data = undefined;
-			}
-		}
-		return data;
-	}
-
-	jQuery.extend( {
-		hasData: function( elem ) {
-			return dataUser.hasData( elem ) || dataPriv.hasData( elem );
-		},
-
-		data: function( elem, name, data ) {
-			return dataUser.access( elem, name, data );
-		},
-
-		removeData: function( elem, name ) {
-			dataUser.remove( elem, name );
-		},
-
-		// TODO: Now that all calls to _data and _removeData have been replaced
-		// with direct calls to dataPriv methods, these can be deprecated.
-		_data: function( elem, name, data ) {
-			return dataPriv.access( elem, name, data );
-		},
-
-		_removeData: function( elem, name ) {
-			dataPriv.remove( elem, name );
-		}
-	} );
-
-	jQuery.fn.extend( {
-		data: function( key, value ) {
-			var i, name, data,
-				elem = this[ 0 ],
-				attrs = elem && elem.attributes;
-
-			// Gets all values
-			if ( key === undefined ) {
-				if ( this.length ) {
-					data = dataUser.get( elem );
-
-					if ( elem.nodeType === 1 && !dataPriv.get( elem, "hasDataAttrs" ) ) {
-						i = attrs.length;
-						while ( i-- ) {
-
-							// Support: IE 11 only
-							// The attrs elements can be null (#14894)
-							if ( attrs[ i ] ) {
-								name = attrs[ i ].name;
-								if ( name.indexOf( "data-" ) === 0 ) {
-									name = jQuery.camelCase( name.slice( 5 ) );
-									dataAttr( elem, name, data[ name ] );
-								}
-							}
-						}
-						dataPriv.set( elem, "hasDataAttrs", true );
-					}
-				}
-
-				return data;
-			}
-
-			// Sets multiple values
-			if ( typeof key === "object" ) {
-				return this.each( function() {
-					dataUser.set( this, key );
-				} );
-			}
-
-			return access( this, function( value ) {
-				var data;
-
-				// The calling jQuery object (element matches) is not empty
-				// (and therefore has an element appears at this[ 0 ]) and the
-				// `value` parameter was not undefined. An empty jQuery object
-				// will result in `undefined` for elem = this[ 0 ] which will
-				// throw an exception if an attempt to read a data cache is made.
-				if ( elem && value === undefined ) {
-
-					// Attempt to get data from the cache
-					// The key will always be camelCased in Data
-					data = dataUser.get( elem, key );
-					if ( data !== undefined ) {
-						return data;
-					}
-
-					// Attempt to "discover" the data in
-					// HTML5 custom data-* attrs
-					data = dataAttr( elem, key );
-					if ( data !== undefined ) {
-						return data;
-					}
-
-					// We tried really hard, but the data doesn't exist.
-					return;
-				}
-
-				// Set the data...
-				this.each( function() {
-
-					// We always store the camelCased key
-					dataUser.set( this, key, value );
-				} );
-			}, null, value, arguments.length > 1, null, true );
-		},
-
-		removeData: function( key ) {
-			return this.each( function() {
-				dataUser.remove( this, key );
-			} );
-		}
-	} );
-
-
-	jQuery.extend( {
-		queue: function( elem, type, data ) {
-			var queue;
-
-			if ( elem ) {
-				type = ( type || "fx" ) + "queue";
-				queue = dataPriv.get( elem, type );
-
-				// Speed up dequeue by getting out quickly if this is just a lookup
-				if ( data ) {
-					if ( !queue || jQuery.isArray( data ) ) {
-						queue = dataPriv.access( elem, type, jQuery.makeArray( data ) );
-					} else {
-						queue.push( data );
-					}
-				}
-				return queue || [];
-			}
-		},
-
-		dequeue: function( elem, type ) {
-			type = type || "fx";
-
-			var queue = jQuery.queue( elem, type ),
-				startLength = queue.length,
-				fn = queue.shift(),
-				hooks = jQuery._queueHooks( elem, type ),
-				next = function() {
-					jQuery.dequeue( elem, type );
-				};
-
-			// If the fx queue is dequeued, always remove the progress sentinel
-			if ( fn === "inprogress" ) {
-				fn = queue.shift();
-				startLength--;
-			}
-
-			if ( fn ) {
-
-				// Add a progress sentinel to prevent the fx queue from being
-				// automatically dequeued
-				if ( type === "fx" ) {
-					queue.unshift( "inprogress" );
-				}
-
-				// Clear up the last queue stop function
-				delete hooks.stop;
-				fn.call( elem, next, hooks );
-			}
-
-			if ( !startLength && hooks ) {
-				hooks.empty.fire();
-			}
-		},
-
-		// Not public - generate a queueHooks object, or return the current one
-		_queueHooks: function( elem, type ) {
-			var key = type + "queueHooks";
-			return dataPriv.get( elem, key ) || dataPriv.access( elem, key, {
-				empty: jQuery.Callbacks( "once memory" ).add( function() {
-					dataPriv.remove( elem, [ type + "queue", key ] );
-				} )
-			} );
-		}
-	} );
-
-	jQuery.fn.extend( {
-		queue: function( type, data ) {
-			var setter = 2;
-
-			if ( typeof type !== "string" ) {
-				data = type;
-				type = "fx";
-				setter--;
-			}
-
-			if ( arguments.length < setter ) {
-				return jQuery.queue( this[ 0 ], type );
-			}
-
-			return data === undefined ?
-				this :
-				this.each( function() {
-					var queue = jQuery.queue( this, type, data );
-
-					// Ensure a hooks for this queue
-					jQuery._queueHooks( this, type );
-
-					if ( type === "fx" && queue[ 0 ] !== "inprogress" ) {
-						jQuery.dequeue( this, type );
-					}
-				} );
-		},
-		dequeue: function( type ) {
-			return this.each( function() {
-				jQuery.dequeue( this, type );
-			} );
-		},
-		clearQueue: function( type ) {
-			return this.queue( type || "fx", [] );
-		},
-
-		// Get a promise resolved when queues of a certain type
-		// are emptied (fx is the type by default)
-		promise: function( type, obj ) {
-			var tmp,
-				count = 1,
-				defer = jQuery.Deferred(),
-				elements = this,
-				i = this.length,
-				resolve = function() {
-					if ( !( --count ) ) {
-						defer.resolveWith( elements, [ elements ] );
-					}
-				};
-
-			if ( typeof type !== "string" ) {
-				obj = type;
-				type = undefined;
-			}
-			type = type || "fx";
-
-			while ( i-- ) {
-				tmp = dataPriv.get( elements[ i ], type + "queueHooks" );
-				if ( tmp && tmp.empty ) {
-					count++;
-					tmp.empty.add( resolve );
-				}
-			}
-			resolve();
-			return defer.promise( obj );
-		}
-	} );
-	var pnum = ( /[+-]?(?:\d*\.|)\d+(?:[eE][+-]?\d+|)/ ).source;
-
-	var rcssNum = new RegExp( "^(?:([+-])=|)(" + pnum + ")([a-z%]*)$", "i" );
-
-
-	var cssExpand = [ "Top", "Right", "Bottom", "Left" ];
-
-	var isHiddenWithinTree = function( elem, el ) {
-
-			// isHiddenWithinTree might be called from jQuery#filter function;
-			// in that case, element will be second argument
-			elem = el || elem;
-
-			// Inline style trumps all
-			return elem.style.display === "none" ||
-				elem.style.display === "" &&
-
-				// Otherwise, check computed style
-				// Support: Firefox <=43 - 45
-				// Disconnected elements can have computed display: none, so first confirm that elem is
-				// in the document.
-				jQuery.contains( elem.ownerDocument, elem ) &&
-
-				jQuery.css( elem, "display" ) === "none";
-		};
-
-	var swap = function( elem, options, callback, args ) {
-		var ret, name,
-			old = {};
-
-		// Remember the old values, and insert the new ones
-		for ( name in options ) {
-			old[ name ] = elem.style[ name ];
-			elem.style[ name ] = options[ name ];
-		}
-
-		ret = callback.apply( elem, args || [] );
-
-		// Revert the old values
-		for ( name in options ) {
-			elem.style[ name ] = old[ name ];
-		}
-
-		return ret;
-	};
-
-
-
-
-	function adjustCSS( elem, prop, valueParts, tween ) {
-		var adjusted,
-			scale = 1,
-			maxIterations = 20,
-			currentValue = tween ?
-				function() {
-					return tween.cur();
-				} :
-				function() {
-					return jQuery.css( elem, prop, "" );
-				},
-			initial = currentValue(),
-			unit = valueParts && valueParts[ 3 ] || ( jQuery.cssNumber[ prop ] ? "" : "px" ),
-
-			// Starting value computation is required for potential unit mismatches
-			initialInUnit = ( jQuery.cssNumber[ prop ] || unit !== "px" && +initial ) &&
-				rcssNum.exec( jQuery.css( elem, prop ) );
-
-		if ( initialInUnit && initialInUnit[ 3 ] !== unit ) {
-
-			// Trust units reported by jQuery.css
-			unit = unit || initialInUnit[ 3 ];
-
-			// Make sure we update the tween properties later on
-			valueParts = valueParts || [];
-
-			// Iteratively approximate from a nonzero starting point
-			initialInUnit = +initial || 1;
-
-			do {
-
-				// If previous iteration zeroed out, double until we get *something*.
-				// Use string for doubling so we don't accidentally see scale as unchanged below
-				scale = scale || ".5";
-
-				// Adjust and apply
-				initialInUnit = initialInUnit / scale;
-				jQuery.style( elem, prop, initialInUnit + unit );
-
-			// Update scale, tolerating zero or NaN from tween.cur()
-			// Break the loop if scale is unchanged or perfect, or if we've just had enough.
-			} while (
-				scale !== ( scale = currentValue() / initial ) && scale !== 1 && --maxIterations
-			);
-		}
-
-		if ( valueParts ) {
-			initialInUnit = +initialInUnit || +initial || 0;
-
-			// Apply relative offset (+=/-=) if specified
-			adjusted = valueParts[ 1 ] ?
-				initialInUnit + ( valueParts[ 1 ] + 1 ) * valueParts[ 2 ] :
-				+valueParts[ 2 ];
-			if ( tween ) {
-				tween.unit = unit;
-				tween.start = initialInUnit;
-				tween.end = adjusted;
-			}
-		}
-		return adjusted;
-	}
-
-
-	var defaultDisplayMap = {};
-
-	function getDefaultDisplay( elem ) {
-		var temp,
-			doc = elem.ownerDocument,
-			nodeName = elem.nodeName,
-			display = defaultDisplayMap[ nodeName ];
-
-		if ( display ) {
-			return display;
-		}
-
-		temp = doc.body.appendChild( doc.createElement( nodeName ) );
-		display = jQuery.css( temp, "display" );
-
-		temp.parentNode.removeChild( temp );
-
-		if ( display === "none" ) {
-			display = "block";
-		}
-		defaultDisplayMap[ nodeName ] = display;
-
-		return display;
-	}
-
-	function showHide( elements, show ) {
-		var display, elem,
-			values = [],
-			index = 0,
-			length = elements.length;
-
-		// Determine new display value for elements that need to change
-		for ( ; index < length; index++ ) {
-			elem = elements[ index ];
-			if ( !elem.style ) {
-				continue;
-			}
-
-			display = elem.style.display;
-			if ( show ) {
-
-				// Since we force visibility upon cascade-hidden elements, an immediate (and slow)
-				// check is required in this first loop unless we have a nonempty display value (either
-				// inline or about-to-be-restored)
-				if ( display === "none" ) {
-					values[ index ] = dataPriv.get( elem, "display" ) || null;
-					if ( !values[ index ] ) {
-						elem.style.display = "";
-					}
-				}
-				if ( elem.style.display === "" && isHiddenWithinTree( elem ) ) {
-					values[ index ] = getDefaultDisplay( elem );
-				}
-			} else {
-				if ( display !== "none" ) {
-					values[ index ] = "none";
-
-					// Remember what we're overwriting
-					dataPriv.set( elem, "display", display );
-				}
-			}
-		}
-
-		// Set the display of the elements in a second loop to avoid constant reflow
-		for ( index = 0; index < length; index++ ) {
-			if ( values[ index ] != null ) {
-				elements[ index ].style.display = values[ index ];
-			}
-		}
-
-		return elements;
-	}
-
-	jQuery.fn.extend( {
-		show: function() {
-			return showHide( this, true );
-		},
-		hide: function() {
-			return showHide( this );
-		},
-		toggle: function( state ) {
-			if ( typeof state === "boolean" ) {
-				return state ? this.show() : this.hide();
-			}
-
-			return this.each( function() {
-				if ( isHiddenWithinTree( this ) ) {
-					jQuery( this ).show();
-				} else {
-					jQuery( this ).hide();
-				}
-			} );
-		}
-	} );
-	var rcheckableType = ( /^(?:checkbox|radio)$/i );
-
-	var rtagName = ( /<([a-z][^\/\0>\x20\t\r\n\f]+)/i );
-
-	var rscriptType = ( /^$|\/(?:java|ecma)script/i );
-
-
-
-	// We have to close these tags to support XHTML (#13200)
-	var wrapMap = {
-
-		// Support: IE <=9 only
-		option: [ 1, "<select multiple='multiple'>", "</select>" ],
-
-		// XHTML parsers do not magically insert elements in the
-		// same way that tag soup parsers do. So we cannot shorten
-		// this by omitting <tbody> or other required elements.
-		thead: [ 1, "<table>", "</table>" ],
-		col: [ 2, "<table><colgroup>", "</colgroup></table>" ],
-		tr: [ 2, "<table><tbody>", "</tbody></table>" ],
-		td: [ 3, "<table><tbody><tr>", "</tr></tbody></table>" ],
-
-		_default: [ 0, "", "" ]
-	};
-
-	// Support: IE <=9 only
-	wrapMap.optgroup = wrapMap.option;
-
-	wrapMap.tbody = wrapMap.tfoot = wrapMap.colgroup = wrapMap.caption = wrapMap.thead;
-	wrapMap.th = wrapMap.td;
-
-
-	function getAll( context, tag ) {
-
-		// Support: IE <=9 - 11 only
-		// Use typeof to avoid zero-argument method invocation on host objects (#15151)
-		var ret;
-
-		if ( typeof context.getElementsByTagName !== "undefined" ) {
-			ret = context.getElementsByTagName( tag || "*" );
-
-		} else if ( typeof context.querySelectorAll !== "undefined" ) {
-			ret = context.querySelectorAll( tag || "*" );
-
-		} else {
-			ret = [];
-		}
-
-		if ( tag === undefined || tag && jQuery.nodeName( context, tag ) ) {
-			return jQuery.merge( [ context ], ret );
-		}
-
-		return ret;
-	}
-
-
-	// Mark scripts as having already been evaluated
-	function setGlobalEval( elems, refElements ) {
-		var i = 0,
-			l = elems.length;
-
-		for ( ; i < l; i++ ) {
-			dataPriv.set(
-				elems[ i ],
-				"globalEval",
-				!refElements || dataPriv.get( refElements[ i ], "globalEval" )
-			);
-		}
-	}
-
-
-	var rhtml = /<|&#?\w+;/;
-
-	function buildFragment( elems, context, scripts, selection, ignored ) {
-		var elem, tmp, tag, wrap, contains, j,
-			fragment = context.createDocumentFragment(),
-			nodes = [],
-			i = 0,
-			l = elems.length;
-
-		for ( ; i < l; i++ ) {
-			elem = elems[ i ];
-
-			if ( elem || elem === 0 ) {
-
-				// Add nodes directly
-				if ( jQuery.type( elem ) === "object" ) {
-
-					// Support: Android <=4.0 only, PhantomJS 1 only
-					// push.apply(_, arraylike) throws on ancient WebKit
-					jQuery.merge( nodes, elem.nodeType ? [ elem ] : elem );
-
-				// Convert non-html into a text node
-				} else if ( !rhtml.test( elem ) ) {
-					nodes.push( context.createTextNode( elem ) );
-
-				// Convert html into DOM nodes
-				} else {
-					tmp = tmp || fragment.appendChild( context.createElement( "div" ) );
-
-					// Deserialize a standard representation
-					tag = ( rtagName.exec( elem ) || [ "", "" ] )[ 1 ].toLowerCase();
-					wrap = wrapMap[ tag ] || wrapMap._default;
-					tmp.innerHTML = wrap[ 1 ] + jQuery.htmlPrefilter( elem ) + wrap[ 2 ];
-
-					// Descend through wrappers to the right content
-					j = wrap[ 0 ];
-					while ( j-- ) {
-						tmp = tmp.lastChild;
-					}
-
-					// Support: Android <=4.0 only, PhantomJS 1 only
-					// push.apply(_, arraylike) throws on ancient WebKit
-					jQuery.merge( nodes, tmp.childNodes );
-
-					// Remember the top-level container
-					tmp = fragment.firstChild;
-
-					// Ensure the created nodes are orphaned (#12392)
-					tmp.textContent = "";
-				}
-			}
-		}
-
-		// Remove wrapper from fragment
-		fragment.textContent = "";
-
-		i = 0;
-		while ( ( elem = nodes[ i++ ] ) ) {
-
-			// Skip elements already in the context collection (trac-4087)
-			if ( selection && jQuery.inArray( elem, selection ) > -1 ) {
-				if ( ignored ) {
-					ignored.push( elem );
-				}
-				continue;
-			}
-
-			contains = jQuery.contains( elem.ownerDocument, elem );
-
-			// Append to fragment
-			tmp = getAll( fragment.appendChild( elem ), "script" );
-
-			// Preserve script evaluation history
-			if ( contains ) {
-				setGlobalEval( tmp );
-			}
-
-			// Capture executables
-			if ( scripts ) {
-				j = 0;
-				while ( ( elem = tmp[ j++ ] ) ) {
-					if ( rscriptType.test( elem.type || "" ) ) {
-						scripts.push( elem );
-					}
-				}
-			}
-		}
-
-		return fragment;
-	}
-
-
-	( function() {
-		var fragment = document.createDocumentFragment(),
-			div = fragment.appendChild( document.createElement( "div" ) ),
-			input = document.createElement( "input" );
-
-		// Support: Android 4.0 - 4.3 only
-		// Check state lost if the name is set (#11217)
-		// Support: Windows Web Apps (WWA)
-		// `name` and `type` must use .setAttribute for WWA (#14901)
-		input.setAttribute( "type", "radio" );
-		input.setAttribute( "checked", "checked" );
-		input.setAttribute( "name", "t" );
-
-		div.appendChild( input );
-
-		// Support: Android <=4.1 only
-		// Older WebKit doesn't clone checked state correctly in fragments
-		support.checkClone = div.cloneNode( true ).cloneNode( true ).lastChild.checked;
-
-		// Support: IE <=11 only
-		// Make sure textarea (and checkbox) defaultValue is properly cloned
-		div.innerHTML = "<textarea>x</textarea>";
-		support.noCloneChecked = !!div.cloneNode( true ).lastChild.defaultValue;
-	} )();
-	var documentElement = document.documentElement;
-
-
-
-	var
-		rkeyEvent = /^key/,
-		rmouseEvent = /^(?:mouse|pointer|contextmenu|drag|drop)|click/,
-		rtypenamespace = /^([^.]*)(?:\.(.+)|)/;
-
-	function returnTrue() {
-		return true;
-	}
-
-	function returnFalse() {
-		return false;
-	}
-
-	// Support: IE <=9 only
-	// See #13393 for more info
-	function safeActiveElement() {
-		try {
-			return document.activeElement;
-		} catch ( err ) { }
-	}
-
-	function on( elem, types, selector, data, fn, one ) {
-		var origFn, type;
-
-		// Types can be a map of types/handlers
-		if ( typeof types === "object" ) {
-
-			// ( types-Object, selector, data )
-			if ( typeof selector !== "string" ) {
-
-				// ( types-Object, data )
-				data = data || selector;
-				selector = undefined;
-			}
-			for ( type in types ) {
-				on( elem, type, selector, data, types[ type ], one );
-			}
-			return elem;
-		}
-
-		if ( data == null && fn == null ) {
-
-			// ( types, fn )
-			fn = selector;
-			data = selector = undefined;
-		} else if ( fn == null ) {
-			if ( typeof selector === "string" ) {
-
-				// ( types, selector, fn )
-				fn = data;
-				data = undefined;
-			} else {
-
-				// ( types, data, fn )
-				fn = data;
-				data = selector;
-				selector = undefined;
-			}
-		}
-		if ( fn === false ) {
-			fn = returnFalse;
-		} else if ( !fn ) {
-			return elem;
-		}
-
-		if ( one === 1 ) {
-			origFn = fn;
-			fn = function( event ) {
-
-				// Can use an empty set, since event contains the info
-				jQuery().off( event );
-				return origFn.apply( this, arguments );
-			};
-
-			// Use same guid so caller can remove using origFn
-			fn.guid = origFn.guid || ( origFn.guid = jQuery.guid++ );
-		}
-		return elem.each( function() {
-			jQuery.event.add( this, types, fn, data, selector );
-		} );
-	}
-
-	/*
-	 * Helper functions for managing events -- not part of the public interface.
-	 * Props to Dean Edwards' addEvent library for many of the ideas.
-	 */
-	jQuery.event = {
-
-		global: {},
-
-		add: function( elem, types, handler, data, selector ) {
-
-			var handleObjIn, eventHandle, tmp,
-				events, t, handleObj,
-				special, handlers, type, namespaces, origType,
-				elemData = dataPriv.get( elem );
-
-			// Don't attach events to noData or text/comment nodes (but allow plain objects)
-			if ( !elemData ) {
-				return;
-			}
-
-			// Caller can pass in an object of custom data in lieu of the handler
-			if ( handler.handler ) {
-				handleObjIn = handler;
-				handler = handleObjIn.handler;
-				selector = handleObjIn.selector;
-			}
-
-			// Ensure that invalid selectors throw exceptions at attach time
-			// Evaluate against documentElement in case elem is a non-element node (e.g., document)
-			if ( selector ) {
-				jQuery.find.matchesSelector( documentElement, selector );
-			}
-
-			// Make sure that the handler has a unique ID, used to find/remove it later
-			if ( !handler.guid ) {
-				handler.guid = jQuery.guid++;
-			}
-
-			// Init the element's event structure and main handler, if this is the first
-			if ( !( events = elemData.events ) ) {
-				events = elemData.events = {};
-			}
-			if ( !( eventHandle = elemData.handle ) ) {
-				eventHandle = elemData.handle = function( e ) {
-
-					// Discard the second event of a jQuery.event.trigger() and
-					// when an event is called after a page has unloaded
-					return typeof jQuery !== "undefined" && jQuery.event.triggered !== e.type ?
-						jQuery.event.dispatch.apply( elem, arguments ) : undefined;
-				};
-			}
-
-			// Handle multiple events separated by a space
-			types = ( types || "" ).match( rnothtmlwhite ) || [ "" ];
-			t = types.length;
-			while ( t-- ) {
-				tmp = rtypenamespace.exec( types[ t ] ) || [];
-				type = origType = tmp[ 1 ];
-				namespaces = ( tmp[ 2 ] || "" ).split( "." ).sort();
-
-				// There *must* be a type, no attaching namespace-only handlers
-				if ( !type ) {
-					continue;
-				}
-
-				// If event changes its type, use the special event handlers for the changed type
-				special = jQuery.event.special[ type ] || {};
-
-				// If selector defined, determine special event api type, otherwise given type
-				type = ( selector ? special.delegateType : special.bindType ) || type;
-
-				// Update special based on newly reset type
-				special = jQuery.event.special[ type ] || {};
-
-				// handleObj is passed to all event handlers
-				handleObj = jQuery.extend( {
-					type: type,
-					origType: origType,
-					data: data,
-					handler: handler,
-					guid: handler.guid,
-					selector: selector,
-					needsContext: selector && jQuery.expr.match.needsContext.test( selector ),
-					namespace: namespaces.join( "." )
-				}, handleObjIn );
-
-				// Init the event handler queue if we're the first
-				if ( !( handlers = events[ type ] ) ) {
-					handlers = events[ type ] = [];
-					handlers.delegateCount = 0;
-
-					// Only use addEventListener if the special events handler returns false
-					if ( !special.setup ||
-						special.setup.call( elem, data, namespaces, eventHandle ) === false ) {
-
-						if ( elem.addEventListener ) {
-							elem.addEventListener( type, eventHandle );
-						}
-					}
-				}
-
-				if ( special.add ) {
-					special.add.call( elem, handleObj );
-
-					if ( !handleObj.handler.guid ) {
-						handleObj.handler.guid = handler.guid;
-					}
-				}
-
-				// Add to the element's handler list, delegates in front
-				if ( selector ) {
-					handlers.splice( handlers.delegateCount++, 0, handleObj );
-				} else {
-					handlers.push( handleObj );
-				}
-
-				// Keep track of which events have ever been used, for event optimization
-				jQuery.event.global[ type ] = true;
-			}
-
-		},
-
-		// Detach an event or set of events from an element
-		remove: function( elem, types, handler, selector, mappedTypes ) {
-
-			var j, origCount, tmp,
-				events, t, handleObj,
-				special, handlers, type, namespaces, origType,
-				elemData = dataPriv.hasData( elem ) && dataPriv.get( elem );
-
-			if ( !elemData || !( events = elemData.events ) ) {
-				return;
-			}
-
-			// Once for each type.namespace in types; type may be omitted
-			types = ( types || "" ).match( rnothtmlwhite ) || [ "" ];
-			t = types.length;
-			while ( t-- ) {
-				tmp = rtypenamespace.exec( types[ t ] ) || [];
-				type = origType = tmp[ 1 ];
-				namespaces = ( tmp[ 2 ] || "" ).split( "." ).sort();
-
-				// Unbind all events (on this namespace, if provided) for the element
-				if ( !type ) {
-					for ( type in events ) {
-						jQuery.event.remove( elem, type + types[ t ], handler, selector, true );
-					}
-					continue;
-				}
-
-				special = jQuery.event.special[ type ] || {};
-				type = ( selector ? special.delegateType : special.bindType ) || type;
-				handlers = events[ type ] || [];
-				tmp = tmp[ 2 ] &&
-					new RegExp( "(^|\\.)" + namespaces.join( "\\.(?:.*\\.|)" ) + "(\\.|$)" );
-
-				// Remove matching events
-				origCount = j = handlers.length;
-				while ( j-- ) {
-					handleObj = handlers[ j ];
-
-					if ( ( mappedTypes || origType === handleObj.origType ) &&
-						( !handler || handler.guid === handleObj.guid ) &&
-						( !tmp || tmp.test( handleObj.namespace ) ) &&
-						( !selector || selector === handleObj.selector ||
-							selector === "**" && handleObj.selector ) ) {
-						handlers.splice( j, 1 );
-
-						if ( handleObj.selector ) {
-							handlers.delegateCount--;
-						}
-						if ( special.remove ) {
-							special.remove.call( elem, handleObj );
-						}
-					}
-				}
-
-				// Remove generic event handler if we removed something and no more handlers exist
-				// (avoids potential for endless recursion during removal of special event handlers)
-				if ( origCount && !handlers.length ) {
-					if ( !special.teardown ||
-						special.teardown.call( elem, namespaces, elemData.handle ) === false ) {
-
-						jQuery.removeEvent( elem, type, elemData.handle );
-					}
-
-					delete events[ type ];
-				}
-			}
-
-			// Remove data and the expando if it's no longer used
-			if ( jQuery.isEmptyObject( events ) ) {
-				dataPriv.remove( elem, "handle events" );
-			}
-		},
-
-		dispatch: function( nativeEvent ) {
-
-			// Make a writable jQuery.Event from the native event object
-			var event = jQuery.event.fix( nativeEvent );
-
-			var i, j, ret, matched, handleObj, handlerQueue,
-				args = new Array( arguments.length ),
-				handlers = ( dataPriv.get( this, "events" ) || {} )[ event.type ] || [],
-				special = jQuery.event.special[ event.type ] || {};
-
-			// Use the fix-ed jQuery.Event rather than the (read-only) native event
-			args[ 0 ] = event;
-
-			for ( i = 1; i < arguments.length; i++ ) {
-				args[ i ] = arguments[ i ];
-			}
-
-			event.delegateTarget = this;
-
-			// Call the preDispatch hook for the mapped type, and let it bail if desired
-			if ( special.preDispatch && special.preDispatch.call( this, event ) === false ) {
-				return;
-			}
-
-			// Determine handlers
-			handlerQueue = jQuery.event.handlers.call( this, event, handlers );
-
-			// Run delegates first; they may want to stop propagation beneath us
-			i = 0;
-			while ( ( matched = handlerQueue[ i++ ] ) && !event.isPropagationStopped() ) {
-				event.currentTarget = matched.elem;
-
-				j = 0;
-				while ( ( handleObj = matched.handlers[ j++ ] ) &&
-					!event.isImmediatePropagationStopped() ) {
-
-					// Triggered event must either 1) have no namespace, or 2) have namespace(s)
-					// a subset or equal to those in the bound event (both can have no namespace).
-					if ( !event.rnamespace || event.rnamespace.test( handleObj.namespace ) ) {
-
-						event.handleObj = handleObj;
-						event.data = handleObj.data;
-
-						ret = ( ( jQuery.event.special[ handleObj.origType ] || {} ).handle ||
-							handleObj.handler ).apply( matched.elem, args );
-
-						if ( ret !== undefined ) {
-							if ( ( event.result = ret ) === false ) {
-								event.preventDefault();
-								event.stopPropagation();
-							}
-						}
-					}
-				}
-			}
-
-			// Call the postDispatch hook for the mapped type
-			if ( special.postDispatch ) {
-				special.postDispatch.call( this, event );
-			}
-
-			return event.result;
-		},
-
-		handlers: function( event, handlers ) {
-			var i, handleObj, sel, matchedHandlers, matchedSelectors,
-				handlerQueue = [],
-				delegateCount = handlers.delegateCount,
-				cur = event.target;
-
-			// Find delegate handlers
-			if ( delegateCount &&
-
-				// Support: IE <=9
-				// Black-hole SVG <use> instance trees (trac-13180)
-				cur.nodeType &&
-
-				// Support: Firefox <=42
-				// Suppress spec-violating clicks indicating a non-primary pointer button (trac-3861)
-				// https://www.w3.org/TR/DOM-Level-3-Events/#event-type-click
-				// Support: IE 11 only
-				// ...but not arrow key "clicks" of radio inputs, which can have `button` -1 (gh-2343)
-				!( event.type === "click" && event.button >= 1 ) ) {
-
-				for ( ; cur !== this; cur = cur.parentNode || this ) {
-
-					// Don't check non-elements (#13208)
-					// Don't process clicks on disabled elements (#6911, #8165, #11382, #11764)
-					if ( cur.nodeType === 1 && !( event.type === "click" && cur.disabled === true ) ) {
-						matchedHandlers = [];
-						matchedSelectors = {};
-						for ( i = 0; i < delegateCount; i++ ) {
-							handleObj = handlers[ i ];
-
-							// Don't conflict with Object.prototype properties (#13203)
-							sel = handleObj.selector + " ";
-
-							if ( matchedSelectors[ sel ] === undefined ) {
-								matchedSelectors[ sel ] = handleObj.needsContext ?
-									jQuery( sel, this ).index( cur ) > -1 :
-									jQuery.find( sel, this, null, [ cur ] ).length;
-							}
-							if ( matchedSelectors[ sel ] ) {
-								matchedHandlers.push( handleObj );
-							}
-						}
-						if ( matchedHandlers.length ) {
-							handlerQueue.push( { elem: cur, handlers: matchedHandlers } );
-						}
-					}
-				}
-			}
-
-			// Add the remaining (directly-bound) handlers
-			cur = this;
-			if ( delegateCount < handlers.length ) {
-				handlerQueue.push( { elem: cur, handlers: handlers.slice( delegateCount ) } );
-			}
-
-			return handlerQueue;
-		},
-
-		addProp: function( name, hook ) {
-			Object.defineProperty( jQuery.Event.prototype, name, {
-				enumerable: true,
-				configurable: true,
-
-				get: jQuery.isFunction( hook ) ?
-					function() {
-						if ( this.originalEvent ) {
-								return hook( this.originalEvent );
-						}
-					} :
-					function() {
-						if ( this.originalEvent ) {
-								return this.originalEvent[ name ];
-						}
-					},
-
-				set: function( value ) {
-					Object.defineProperty( this, name, {
-						enumerable: true,
-						configurable: true,
-						writable: true,
-						value: value
-					} );
-				}
-			} );
-		},
-
-		fix: function( originalEvent ) {
-			return originalEvent[ jQuery.expando ] ?
-				originalEvent :
-				new jQuery.Event( originalEvent );
-		},
-
-		special: {
-			load: {
-
-				// Prevent triggered image.load events from bubbling to window.load
-				noBubble: true
-			},
-			focus: {
-
-				// Fire native event if possible so blur/focus sequence is correct
-				trigger: function() {
-					if ( this !== safeActiveElement() && this.focus ) {
-						this.focus();
-						return false;
-					}
-				},
-				delegateType: "focusin"
-			},
-			blur: {
-				trigger: function() {
-					if ( this === safeActiveElement() && this.blur ) {
-						this.blur();
-						return false;
-					}
-				},
-				delegateType: "focusout"
-			},
-			click: {
-
-				// For checkbox, fire native event so checked state will be right
-				trigger: function() {
-					if ( this.type === "checkbox" && this.click && jQuery.nodeName( this, "input" ) ) {
-						this.click();
-						return false;
-					}
-				},
-
-				// For cross-browser consistency, don't fire native .click() on links
-				_default: function( event ) {
-					return jQuery.nodeName( event.target, "a" );
-				}
-			},
-
-			beforeunload: {
-				postDispatch: function( event ) {
-
-					// Support: Firefox 20+
-					// Firefox doesn't alert if the returnValue field is not set.
-					if ( event.result !== undefined && event.originalEvent ) {
-						event.originalEvent.returnValue = event.result;
-					}
-				}
-			}
-		}
-	};
-
-	jQuery.removeEvent = function( elem, type, handle ) {
-
-		// This "if" is needed for plain objects
-		if ( elem.removeEventListener ) {
-			elem.removeEventListener( type, handle );
-		}
-	};
-
-	jQuery.Event = function( src, props ) {
-
-		// Allow instantiation without the 'new' keyword
-		if ( !( this instanceof jQuery.Event ) ) {
-			return new jQuery.Event( src, props );
-		}
-
-		// Event object
-		if ( src && src.type ) {
-			this.originalEvent = src;
-			this.type = src.type;
-
-			// Events bubbling up the document may have been marked as prevented
-			// by a handler lower down the tree; reflect the correct value.
-			this.isDefaultPrevented = src.defaultPrevented ||
-					src.defaultPrevented === undefined &&
-
-					// Support: Android <=2.3 only
-					src.returnValue === false ?
-				returnTrue :
-				returnFalse;
-
-			// Create target properties
-			// Support: Safari <=6 - 7 only
-			// Target should not be a text node (#504, #13143)
-			this.target = ( src.target && src.target.nodeType === 3 ) ?
-				src.target.parentNode :
-				src.target;
-
-			this.currentTarget = src.currentTarget;
-			this.relatedTarget = src.relatedTarget;
-
-		// Event type
-		} else {
-			this.type = src;
-		}
-
-		// Put explicitly provided properties onto the event object
-		if ( props ) {
-			jQuery.extend( this, props );
-		}
-
-		// Create a timestamp if incoming event doesn't have one
-		this.timeStamp = src && src.timeStamp || jQuery.now();
-
-		// Mark it as fixed
-		this[ jQuery.expando ] = true;
-	};
-
-	// jQuery.Event is based on DOM3 Events as specified by the ECMAScript Language Binding
-	// https://www.w3.org/TR/2003/WD-DOM-Level-3-Events-20030331/ecma-script-binding.html
-	jQuery.Event.prototype = {
-		constructor: jQuery.Event,
-		isDefaultPrevented: returnFalse,
-		isPropagationStopped: returnFalse,
-		isImmediatePropagationStopped: returnFalse,
-		isSimulated: false,
-
-		preventDefault: function() {
-			var e = this.originalEvent;
-
-			this.isDefaultPrevented = returnTrue;
-
-			if ( e && !this.isSimulated ) {
-				e.preventDefault();
-			}
-		},
-		stopPropagation: function() {
-			var e = this.originalEvent;
-
-			this.isPropagationStopped = returnTrue;
-
-			if ( e && !this.isSimulated ) {
-				e.stopPropagation();
-			}
-		},
-		stopImmediatePropagation: function() {
-			var e = this.originalEvent;
-
-			this.isImmediatePropagationStopped = returnTrue;
-
-			if ( e && !this.isSimulated ) {
-				e.stopImmediatePropagation();
-			}
-
-			this.stopPropagation();
-		}
-	};
-
-	// Includes all common event props including KeyEvent and MouseEvent specific props
-	jQuery.each( {
-		altKey: true,
-		bubbles: true,
-		cancelable: true,
-		changedTouches: true,
-		ctrlKey: true,
-		detail: true,
-		eventPhase: true,
-		metaKey: true,
-		pageX: true,
-		pageY: true,
-		shiftKey: true,
-		view: true,
-		"char": true,
-		charCode: true,
-		key: true,
-		keyCode: true,
-		button: true,
-		buttons: true,
-		clientX: true,
-		clientY: true,
-		offsetX: true,
-		offsetY: true,
-		pointerId: true,
-		pointerType: true,
-		screenX: true,
-		screenY: true,
-		targetTouches: true,
-		toElement: true,
-		touches: true,
-
-		which: function( event ) {
-			var button = event.button;
-
-			// Add which for key events
-			if ( event.which == null && rkeyEvent.test( event.type ) ) {
-				return event.charCode != null ? event.charCode : event.keyCode;
-			}
-
-			// Add which for click: 1 === left; 2 === middle; 3 === right
-			if ( !event.which && button !== undefined && rmouseEvent.test( event.type ) ) {
-				if ( button & 1 ) {
-					return 1;
-				}
-
-				if ( button & 2 ) {
-					return 3;
-				}
-
-				if ( button & 4 ) {
-					return 2;
-				}
-
-				return 0;
-			}
-
-			return event.which;
-		}
-	}, jQuery.event.addProp );
-
-	// Create mouseenter/leave events using mouseover/out and event-time checks
-	// so that event delegation works in jQuery.
-	// Do the same for pointerenter/pointerleave and pointerover/pointerout
-	//
-	// Support: Safari 7 only
-	// Safari sends mouseenter too often; see:
-	// https://bugs.chromium.org/p/chromium/issues/detail?id=470258
-	// for the description of the bug (it existed in older Chrome versions as well).
-	jQuery.each( {
-		mouseenter: "mouseover",
-		mouseleave: "mouseout",
-		pointerenter: "pointerover",
-		pointerleave: "pointerout"
-	}, function( orig, fix ) {
-		jQuery.event.special[ orig ] = {
-			delegateType: fix,
-			bindType: fix,
-
-			handle: function( event ) {
-				var ret,
-					target = this,
-					related = event.relatedTarget,
-					handleObj = event.handleObj;
-
-				// For mouseenter/leave call the handler if related is outside the target.
-				// NB: No relatedTarget if the mouse left/entered the browser window
-				if ( !related || ( related !== target && !jQuery.contains( target, related ) ) ) {
-					event.type = handleObj.origType;
-					ret = handleObj.handler.apply( this, arguments );
-					event.type = fix;
-				}
-				return ret;
-			}
-		};
-	} );
-
-	jQuery.fn.extend( {
-
-		on: function( types, selector, data, fn ) {
-			return on( this, types, selector, data, fn );
-		},
-		one: function( types, selector, data, fn ) {
-			return on( this, types, selector, data, fn, 1 );
-		},
-		off: function( types, selector, fn ) {
-			var handleObj, type;
-			if ( types && types.preventDefault && types.handleObj ) {
-
-				// ( event )  dispatched jQuery.Event
-				handleObj = types.handleObj;
-				jQuery( types.delegateTarget ).off(
-					handleObj.namespace ?
-						handleObj.origType + "." + handleObj.namespace :
-						handleObj.origType,
-					handleObj.selector,
-					handleObj.handler
-				);
-				return this;
-			}
-			if ( typeof types === "object" ) {
-
-				// ( types-object [, selector] )
-				for ( type in types ) {
-					this.off( type, selector, types[ type ] );
-				}
-				return this;
-			}
-			if ( selector === false || typeof selector === "function" ) {
-
-				// ( types [, fn] )
-				fn = selector;
-				selector = undefined;
-			}
-			if ( fn === false ) {
-				fn = returnFalse;
-			}
-			return this.each( function() {
-				jQuery.event.remove( this, types, fn, selector );
-			} );
-		}
-	} );
-
-
-	var
-
-		/* eslint-disable max-len */
-
-		// See https://github.com/eslint/eslint/issues/3229
-		rxhtmlTag = /<(?!area|br|col|embed|hr|img|input|link|meta|param)(([a-z][^\/\0>\x20\t\r\n\f]*)[^>]*)\/>/gi,
-
-		/* eslint-enable */
-
-		// Support: IE <=10 - 11, Edge 12 - 13
-		// In IE/Edge using regex groups here causes severe slowdowns.
-		// See https://connect.microsoft.com/IE/feedback/details/1736512/
-		rnoInnerhtml = /<script|<style|<link/i,
-
-		// checked="checked" or checked
-		rchecked = /checked\s*(?:[^=]|=\s*.checked.)/i,
-		rscriptTypeMasked = /^true\/(.*)/,
-		rcleanScript = /^\s*<!(?:\[CDATA\[|--)|(?:\]\]|--)>\s*$/g;
-
-	function manipulationTarget( elem, content ) {
-		if ( jQuery.nodeName( elem, "table" ) &&
-			jQuery.nodeName( content.nodeType !== 11 ? content : content.firstChild, "tr" ) ) {
-
-			return elem.getElementsByTagName( "tbody" )[ 0 ] || elem;
-		}
-
-		return elem;
-	}
-
-	// Replace/restore the type attribute of script elements for safe DOM manipulation
-	function disableScript( elem ) {
-		elem.type = ( elem.getAttribute( "type" ) !== null ) + "/" + elem.type;
-		return elem;
-	}
-	function restoreScript( elem ) {
-		var match = rscriptTypeMasked.exec( elem.type );
-
-		if ( match ) {
-			elem.type = match[ 1 ];
-		} else {
-			elem.removeAttribute( "type" );
-		}
-
-		return elem;
-	}
-
-	function cloneCopyEvent( src, dest ) {
-		var i, l, type, pdataOld, pdataCur, udataOld, udataCur, events;
-
-		if ( dest.nodeType !== 1 ) {
-			return;
-		}
-
-		// 1. Copy private data: events, handlers, etc.
-		if ( dataPriv.hasData( src ) ) {
-			pdataOld = dataPriv.access( src );
-			pdataCur = dataPriv.set( dest, pdataOld );
-			events = pdataOld.events;
-
-			if ( events ) {
-				delete pdataCur.handle;
-				pdataCur.events = {};
-
-				for ( type in events ) {
-					for ( i = 0, l = events[ type ].length; i < l; i++ ) {
-						jQuery.event.add( dest, type, events[ type ][ i ] );
-					}
-				}
-			}
-		}
-
-		// 2. Copy user data
-		if ( dataUser.hasData( src ) ) {
-			udataOld = dataUser.access( src );
-			udataCur = jQuery.extend( {}, udataOld );
-
-			dataUser.set( dest, udataCur );
-		}
-	}
-
-	// Fix IE bugs, see support tests
-	function fixInput( src, dest ) {
-		var nodeName = dest.nodeName.toLowerCase();
-
-		// Fails to persist the checked state of a cloned checkbox or radio button.
-		if ( nodeName === "input" && rcheckableType.test( src.type ) ) {
-			dest.checked = src.checked;
-
-		// Fails to return the selected option to the default selected state when cloning options
-		} else if ( nodeName === "input" || nodeName === "textarea" ) {
-			dest.defaultValue = src.defaultValue;
-		}
-	}
-
-	function domManip( collection, args, callback, ignored ) {
-
-		// Flatten any nested arrays
-		args = concat.apply( [], args );
-
-		var fragment, first, scripts, hasScripts, node, doc,
-			i = 0,
-			l = collection.length,
-			iNoClone = l - 1,
-			value = args[ 0 ],
-			isFunction = jQuery.isFunction( value );
-
-		// We can't cloneNode fragments that contain checked, in WebKit
-		if ( isFunction ||
-				( l > 1 && typeof value === "string" &&
-					!support.checkClone && rchecked.test( value ) ) ) {
-			return collection.each( function( index ) {
-				var self = collection.eq( index );
-				if ( isFunction ) {
-					args[ 0 ] = value.call( this, index, self.html() );
-				}
-				domManip( self, args, callback, ignored );
-			} );
-		}
-
-		if ( l ) {
-			fragment = buildFragment( args, collection[ 0 ].ownerDocument, false, collection, ignored );
-			first = fragment.firstChild;
-
-			if ( fragment.childNodes.length === 1 ) {
-				fragment = first;
-			}
-
-			// Require either new content or an interest in ignored elements to invoke the callback
-			if ( first || ignored ) {
-				scripts = jQuery.map( getAll( fragment, "script" ), disableScript );
-				hasScripts = scripts.length;
-
-				// Use the original fragment for the last item
-				// instead of the first because it can end up
-				// being emptied incorrectly in certain situations (#8070).
-				for ( ; i < l; i++ ) {
-					node = fragment;
-
-					if ( i !== iNoClone ) {
-						node = jQuery.clone( node, true, true );
-
-						// Keep references to cloned scripts for later restoration
-						if ( hasScripts ) {
-
-							// Support: Android <=4.0 only, PhantomJS 1 only
-							// push.apply(_, arraylike) throws on ancient WebKit
-							jQuery.merge( scripts, getAll( node, "script" ) );
-						}
-					}
-
-					callback.call( collection[ i ], node, i );
-				}
-
-				if ( hasScripts ) {
-					doc = scripts[ scripts.length - 1 ].ownerDocument;
-
-					// Reenable scripts
-					jQuery.map( scripts, restoreScript );
-
-					// Evaluate executable scripts on first document insertion
-					for ( i = 0; i < hasScripts; i++ ) {
-						node = scripts[ i ];
-						if ( rscriptType.test( node.type || "" ) &&
-							!dataPriv.access( node, "globalEval" ) &&
-							jQuery.contains( doc, node ) ) {
-
-							if ( node.src ) {
-
-								// Optional AJAX dependency, but won't run scripts if not present
-								if ( jQuery._evalUrl ) {
-									jQuery._evalUrl( node.src );
-								}
-							} else {
-								DOMEval( node.textContent.replace( rcleanScript, "" ), doc );
-							}
-						}
-					}
-				}
-			}
-		}
-
-		return collection;
-	}
-
-	function remove( elem, selector, keepData ) {
-		var node,
-			nodes = selector ? jQuery.filter( selector, elem ) : elem,
-			i = 0;
-
-		for ( ; ( node = nodes[ i ] ) != null; i++ ) {
-			if ( !keepData && node.nodeType === 1 ) {
-				jQuery.cleanData( getAll( node ) );
-			}
-
-			if ( node.parentNode ) {
-				if ( keepData && jQuery.contains( node.ownerDocument, node ) ) {
-					setGlobalEval( getAll( node, "script" ) );
-				}
-				node.parentNode.removeChild( node );
-			}
-		}
-
-		return elem;
-	}
-
-	jQuery.extend( {
-		htmlPrefilter: function( html ) {
-			return html.replace( rxhtmlTag, "<$1></$2>" );
-		},
-
-		clone: function( elem, dataAndEvents, deepDataAndEvents ) {
-			var i, l, srcElements, destElements,
-				clone = elem.cloneNode( true ),
-				inPage = jQuery.contains( elem.ownerDocument, elem );
-
-			// Fix IE cloning issues
-			if ( !support.noCloneChecked && ( elem.nodeType === 1 || elem.nodeType === 11 ) &&
-					!jQuery.isXMLDoc( elem ) ) {
-
-				// We eschew Sizzle here for performance reasons: https://jsperf.com/getall-vs-sizzle/2
-				destElements = getAll( clone );
-				srcElements = getAll( elem );
-
-				for ( i = 0, l = srcElements.length; i < l; i++ ) {
-					fixInput( srcElements[ i ], destElements[ i ] );
-				}
-			}
-
-			// Copy the events from the original to the clone
-			if ( dataAndEvents ) {
-				if ( deepDataAndEvents ) {
-					srcElements = srcElements || getAll( elem );
-					destElements = destElements || getAll( clone );
-
-					for ( i = 0, l = srcElements.length; i < l; i++ ) {
-						cloneCopyEvent( srcElements[ i ], destElements[ i ] );
-					}
-				} else {
-					cloneCopyEvent( elem, clone );
-				}
-			}
-
-			// Preserve script evaluation history
-			destElements = getAll( clone, "script" );
-			if ( destElements.length > 0 ) {
-				setGlobalEval( destElements, !inPage && getAll( elem, "script" ) );
-			}
-
-			// Return the cloned set
-			return clone;
-		},
-
-		cleanData: function( elems ) {
-			var data, elem, type,
-				special = jQuery.event.special,
-				i = 0;
-
-			for ( ; ( elem = elems[ i ] ) !== undefined; i++ ) {
-				if ( acceptData( elem ) ) {
-					if ( ( data = elem[ dataPriv.expando ] ) ) {
-						if ( data.events ) {
-							for ( type in data.events ) {
-								if ( special[ type ] ) {
-									jQuery.event.remove( elem, type );
-
-								// This is a shortcut to avoid jQuery.event.remove's overhead
-								} else {
-									jQuery.removeEvent( elem, type, data.handle );
-								}
-							}
-						}
-
-						// Support: Chrome <=35 - 45+
-						// Assign undefined instead of using delete, see Data#remove
-						elem[ dataPriv.expando ] = undefined;
-					}
-					if ( elem[ dataUser.expando ] ) {
-
-						// Support: Chrome <=35 - 45+
-						// Assign undefined instead of using delete, see Data#remove
-						elem[ dataUser.expando ] = undefined;
-					}
-				}
-			}
-		}
-	} );
-
-	jQuery.fn.extend( {
-		detach: function( selector ) {
-			return remove( this, selector, true );
-		},
-
-		remove: function( selector ) {
-			return remove( this, selector );
-		},
-
-		text: function( value ) {
-			return access( this, function( value ) {
-				return value === undefined ?
-					jQuery.text( this ) :
-					this.empty().each( function() {
-						if ( this.nodeType === 1 || this.nodeType === 11 || this.nodeType === 9 ) {
-							this.textContent = value;
-						}
-					} );
-			}, null, value, arguments.length );
-		},
-
-		append: function() {
-			return domManip( this, arguments, function( elem ) {
-				if ( this.nodeType === 1 || this.nodeType === 11 || this.nodeType === 9 ) {
-					var target = manipulationTarget( this, elem );
-					target.appendChild( elem );
-				}
-			} );
-		},
-
-		prepend: function() {
-			return domManip( this, arguments, function( elem ) {
-				if ( this.nodeType === 1 || this.nodeType === 11 || this.nodeType === 9 ) {
-					var target = manipulationTarget( this, elem );
-					target.insertBefore( elem, target.firstChild );
-				}
-			} );
-		},
-
-		before: function() {
-			return domManip( this, arguments, function( elem ) {
-				if ( this.parentNode ) {
-					this.parentNode.insertBefore( elem, this );
-				}
-			} );
-		},
-
-		after: function() {
-			return domManip( this, arguments, function( elem ) {
-				if ( this.parentNode ) {
-					this.parentNode.insertBefore( elem, this.nextSibling );
-				}
-			} );
-		},
-
-		empty: function() {
-			var elem,
-				i = 0;
-
-			for ( ; ( elem = this[ i ] ) != null; i++ ) {
-				if ( elem.nodeType === 1 ) {
-
-					// Prevent memory leaks
-					jQuery.cleanData( getAll( elem, false ) );
-
-					// Remove any remaining nodes
-					elem.textContent = "";
-				}
-			}
-
-			return this;
-		},
-
-		clone: function( dataAndEvents, deepDataAndEvents ) {
-			dataAndEvents = dataAndEvents == null ? false : dataAndEvents;
-			deepDataAndEvents = deepDataAndEvents == null ? dataAndEvents : deepDataAndEvents;
-
-			return this.map( function() {
-				return jQuery.clone( this, dataAndEvents, deepDataAndEvents );
-			} );
-		},
-
-		html: function( value ) {
-			return access( this, function( value ) {
-				var elem = this[ 0 ] || {},
-					i = 0,
-					l = this.length;
-
-				if ( value === undefined && elem.nodeType === 1 ) {
-					return elem.innerHTML;
-				}
-
-				// See if we can take a shortcut and just use innerHTML
-				if ( typeof value === "string" && !rnoInnerhtml.test( value ) &&
-					!wrapMap[ ( rtagName.exec( value ) || [ "", "" ] )[ 1 ].toLowerCase() ] ) {
-
-					value = jQuery.htmlPrefilter( value );
-
-					try {
-						for ( ; i < l; i++ ) {
-							elem = this[ i ] || {};
-
-							// Remove element nodes and prevent memory leaks
-							if ( elem.nodeType === 1 ) {
-								jQuery.cleanData( getAll( elem, false ) );
-								elem.innerHTML = value;
-							}
-						}
-
-						elem = 0;
-
-					// If using innerHTML throws an exception, use the fallback method
-					} catch ( e ) {}
-				}
-
-				if ( elem ) {
-					this.empty().append( value );
-				}
-			}, null, value, arguments.length );
-		},
-
-		replaceWith: function() {
-			var ignored = [];
-
-			// Make the changes, replacing each non-ignored context element with the new content
-			return domManip( this, arguments, function( elem ) {
-				var parent = this.parentNode;
-
-				if ( jQuery.inArray( this, ignored ) < 0 ) {
-					jQuery.cleanData( getAll( this ) );
-					if ( parent ) {
-						parent.replaceChild( elem, this );
-					}
-				}
-
-			// Force callback invocation
-			}, ignored );
-		}
-	} );
-
-	jQuery.each( {
-		appendTo: "append",
-		prependTo: "prepend",
-		insertBefore: "before",
-		insertAfter: "after",
-		replaceAll: "replaceWith"
-	}, function( name, original ) {
-		jQuery.fn[ name ] = function( selector ) {
-			var elems,
-				ret = [],
-				insert = jQuery( selector ),
-				last = insert.length - 1,
-				i = 0;
-
-			for ( ; i <= last; i++ ) {
-				elems = i === last ? this : this.clone( true );
-				jQuery( insert[ i ] )[ original ]( elems );
-
-				// Support: Android <=4.0 only, PhantomJS 1 only
-				// .get() because push.apply(_, arraylike) throws on ancient WebKit
-				push.apply( ret, elems.get() );
-			}
-
-			return this.pushStack( ret );
-		};
-	} );
-	var rmargin = ( /^margin/ );
-
-	var rnumnonpx = new RegExp( "^(" + pnum + ")(?!px)[a-z%]+$", "i" );
-
-	var getStyles = function( elem ) {
-
-			// Support: IE <=11 only, Firefox <=30 (#15098, #14150)
-			// IE throws on elements created in popups
-			// FF meanwhile throws on frame elements through "defaultView.getComputedStyle"
-			var view = elem.ownerDocument.defaultView;
-
-			if ( !view || !view.opener ) {
-				view = window;
-			}
-
-			return view.getComputedStyle( elem );
-		};
-
-
-
-	( function() {
-
-		// Executing both pixelPosition & boxSizingReliable tests require only one layout
-		// so they're executed at the same time to save the second computation.
-		function computeStyleTests() {
-
-			// This is a singleton, we need to execute it only once
-			if ( !div ) {
-				return;
-			}
-
-			div.style.cssText =
-				"box-sizing:border-box;" +
-				"position:relative;display:block;" +
-				"margin:auto;border:1px;padding:1px;" +
-				"top:1%;width:50%";
-			div.innerHTML = "";
-			documentElement.appendChild( container );
-
-			var divStyle = window.getComputedStyle( div );
-			pixelPositionVal = divStyle.top !== "1%";
-
-			// Support: Android 4.0 - 4.3 only, Firefox <=3 - 44
-			reliableMarginLeftVal = divStyle.marginLeft === "2px";
-			boxSizingReliableVal = divStyle.width === "4px";
-
-			// Support: Android 4.0 - 4.3 only
-			// Some styles come back with percentage values, even though they shouldn't
-			div.style.marginRight = "50%";
-			pixelMarginRightVal = divStyle.marginRight === "4px";
-
-			documentElement.removeChild( container );
-
-			// Nullify the div so it wouldn't be stored in the memory and
-			// it will also be a sign that checks already performed
-			div = null;
-		}
-
-		var pixelPositionVal, boxSizingReliableVal, pixelMarginRightVal, reliableMarginLeftVal,
-			container = document.createElement( "div" ),
-			div = document.createElement( "div" );
-
-		// Finish early in limited (non-browser) environments
-		if ( !div.style ) {
-			return;
-		}
-
-		// Support: IE <=9 - 11 only
-		// Style of cloned element affects source element cloned (#8908)
-		div.style.backgroundClip = "content-box";
-		div.cloneNode( true ).style.backgroundClip = "";
-		support.clearCloneStyle = div.style.backgroundClip === "content-box";
-
-		container.style.cssText = "border:0;width:8px;height:0;top:0;left:-9999px;" +
-			"padding:0;margin-top:1px;position:absolute";
-		container.appendChild( div );
-
-		jQuery.extend( support, {
-			pixelPosition: function() {
-				computeStyleTests();
-				return pixelPositionVal;
-			},
-			boxSizingReliable: function() {
-				computeStyleTests();
-				return boxSizingReliableVal;
-			},
-			pixelMarginRight: function() {
-				computeStyleTests();
-				return pixelMarginRightVal;
-			},
-			reliableMarginLeft: function() {
-				computeStyleTests();
-				return reliableMarginLeftVal;
-			}
-		} );
-	} )();
-
-
-	function curCSS( elem, name, computed ) {
-		var width, minWidth, maxWidth, ret,
-			style = elem.style;
-
-		computed = computed || getStyles( elem );
-
-		// Support: IE <=9 only
-		// getPropertyValue is only needed for .css('filter') (#12537)
-		if ( computed ) {
-			ret = computed.getPropertyValue( name ) || computed[ name ];
-
-			if ( ret === "" && !jQuery.contains( elem.ownerDocument, elem ) ) {
-				ret = jQuery.style( elem, name );
-			}
-
-			// A tribute to the "awesome hack by Dean Edwards"
-			// Android Browser returns percentage for some values,
-			// but width seems to be reliably pixels.
-			// This is against the CSSOM draft spec:
-			// https://drafts.csswg.org/cssom/#resolved-values
-			if ( !support.pixelMarginRight() && rnumnonpx.test( ret ) && rmargin.test( name ) ) {
-
-				// Remember the original values
-				width = style.width;
-				minWidth = style.minWidth;
-				maxWidth = style.maxWidth;
-
-				// Put in the new values to get a computed value out
-				style.minWidth = style.maxWidth = style.width = ret;
-				ret = computed.width;
-
-				// Revert the changed values
-				style.width = width;
-				style.minWidth = minWidth;
-				style.maxWidth = maxWidth;
-			}
-		}
-
-		return ret !== undefined ?
-
-			// Support: IE <=9 - 11 only
-			// IE returns zIndex value as an integer.
-			ret + "" :
-			ret;
-	}
-
-
-	function addGetHookIf( conditionFn, hookFn ) {
-
-		// Define the hook, we'll check on the first run if it's really needed.
-		return {
-			get: function() {
-				if ( conditionFn() ) {
-
-					// Hook not needed (or it's not possible to use it due
-					// to missing dependency), remove it.
-					delete this.get;
-					return;
-				}
-
-				// Hook needed; redefine it so that the support test is not executed again.
-				return ( this.get = hookFn ).apply( this, arguments );
-			}
-		};
-	}
-
-
-	var
-
-		// Swappable if display is none or starts with table
-		// except "table", "table-cell", or "table-caption"
-		// See here for display values: https://developer.mozilla.org/en-US/docs/CSS/display
-		rdisplayswap = /^(none|table(?!-c[ea]).+)/,
-		cssShow = { position: "absolute", visibility: "hidden", display: "block" },
-		cssNormalTransform = {
-			letterSpacing: "0",
-			fontWeight: "400"
-		},
-
-		cssPrefixes = [ "Webkit", "Moz", "ms" ],
-		emptyStyle = document.createElement( "div" ).style;
-
-	// Return a css property mapped to a potentially vendor prefixed property
-	function vendorPropName( name ) {
-
-		// Shortcut for names that are not vendor prefixed
-		if ( name in emptyStyle ) {
-			return name;
-		}
-
-		// Check for vendor prefixed names
-		var capName = name[ 0 ].toUpperCase() + name.slice( 1 ),
-			i = cssPrefixes.length;
-
-		while ( i-- ) {
-			name = cssPrefixes[ i ] + capName;
-			if ( name in emptyStyle ) {
-				return name;
-			}
-		}
-	}
-
-	function setPositiveNumber( elem, value, subtract ) {
-
-		// Any relative (+/-) values have already been
-		// normalized at this point
-		var matches = rcssNum.exec( value );
-		return matches ?
-
-			// Guard against undefined "subtract", e.g., when used as in cssHooks
-			Math.max( 0, matches[ 2 ] - ( subtract || 0 ) ) + ( matches[ 3 ] || "px" ) :
-			value;
-	}
-
-	function augmentWidthOrHeight( elem, name, extra, isBorderBox, styles ) {
-		var i,
-			val = 0;
-
-		// If we already have the right measurement, avoid augmentation
-		if ( extra === ( isBorderBox ? "border" : "content" ) ) {
-			i = 4;
-
-		// Otherwise initialize for horizontal or vertical properties
-		} else {
-			i = name === "width" ? 1 : 0;
-		}
-
-		for ( ; i < 4; i += 2 ) {
-
-			// Both box models exclude margin, so add it if we want it
-			if ( extra === "margin" ) {
-				val += jQuery.css( elem, extra + cssExpand[ i ], true, styles );
-			}
-
-			if ( isBorderBox ) {
-
-				// border-box includes padding, so remove it if we want content
-				if ( extra === "content" ) {
-					val -= jQuery.css( elem, "padding" + cssExpand[ i ], true, styles );
-				}
-
-				// At this point, extra isn't border nor margin, so remove border
-				if ( extra !== "margin" ) {
-					val -= jQuery.css( elem, "border" + cssExpand[ i ] + "Width", true, styles );
-				}
-			} else {
-
-				// At this point, extra isn't content, so add padding
-				val += jQuery.css( elem, "padding" + cssExpand[ i ], true, styles );
-
-				// At this point, extra isn't content nor padding, so add border
-				if ( extra !== "padding" ) {
-					val += jQuery.css( elem, "border" + cssExpand[ i ] + "Width", true, styles );
-				}
-			}
-		}
-
-		return val;
-	}
-
-	function getWidthOrHeight( elem, name, extra ) {
-
-		// Start with offset property, which is equivalent to the border-box value
-		var val,
-			valueIsBorderBox = true,
-			styles = getStyles( elem ),
-			isBorderBox = jQuery.css( elem, "boxSizing", false, styles ) === "border-box";
-
-		// Support: IE <=11 only
-		// Running getBoundingClientRect on a disconnected node
-		// in IE throws an error.
-		if ( elem.getClientRects().length ) {
-			val = elem.getBoundingClientRect()[ name ];
-		}
-
-		// Some non-html elements return undefined for offsetWidth, so check for null/undefined
-		// svg - https://bugzilla.mozilla.org/show_bug.cgi?id=649285
-		// MathML - https://bugzilla.mozilla.org/show_bug.cgi?id=491668
-		if ( val <= 0 || val == null ) {
-
-			// Fall back to computed then uncomputed css if necessary
-			val = curCSS( elem, name, styles );
-			if ( val < 0 || val == null ) {
-				val = elem.style[ name ];
-			}
-
-			// Computed unit is not pixels. Stop here and return.
-			if ( rnumnonpx.test( val ) ) {
-				return val;
-			}
-
-			// Check for style in case a browser which returns unreliable values
-			// for getComputedStyle silently falls back to the reliable elem.style
-			valueIsBorderBox = isBorderBox &&
-				( support.boxSizingReliable() || val === elem.style[ name ] );
-
-			// Normalize "", auto, and prepare for extra
-			val = parseFloat( val ) || 0;
-		}
-
-		// Use the active box-sizing model to add/subtract irrelevant styles
-		return ( val +
-			augmentWidthOrHeight(
-				elem,
-				name,
-				extra || ( isBorderBox ? "border" : "content" ),
-				valueIsBorderBox,
-				styles
-			)
-		) + "px";
-	}
-
-	jQuery.extend( {
-
-		// Add in style property hooks for overriding the default
-		// behavior of getting and setting a style property
-		cssHooks: {
-			opacity: {
-				get: function( elem, computed ) {
-					if ( computed ) {
-
-						// We should always get a number back from opacity
-						var ret = curCSS( elem, "opacity" );
-						return ret === "" ? "1" : ret;
-					}
-				}
-			}
-		},
-
-		// Don't automatically add "px" to these possibly-unitless properties
-		cssNumber: {
-			"animationIterationCount": true,
-			"columnCount": true,
-			"fillOpacity": true,
-			"flexGrow": true,
-			"flexShrink": true,
-			"fontWeight": true,
-			"lineHeight": true,
-			"opacity": true,
-			"order": true,
-			"orphans": true,
-			"widows": true,
-			"zIndex": true,
-			"zoom": true
-		},
-
-		// Add in properties whose names you wish to fix before
-		// setting or getting the value
-		cssProps: {
-			"float": "cssFloat"
-		},
-
-		// Get and set the style property on a DOM Node
-		style: function( elem, name, value, extra ) {
-
-			// Don't set styles on text and comment nodes
-			if ( !elem || elem.nodeType === 3 || elem.nodeType === 8 || !elem.style ) {
-				return;
-			}
-
-			// Make sure that we're working with the right name
-			var ret, type, hooks,
-				origName = jQuery.camelCase( name ),
-				style = elem.style;
-
-			name = jQuery.cssProps[ origName ] ||
-				( jQuery.cssProps[ origName ] = vendorPropName( origName ) || origName );
-
-			// Gets hook for the prefixed version, then unprefixed version
-			hooks = jQuery.cssHooks[ name ] || jQuery.cssHooks[ origName ];
-
-			// Check if we're setting a value
-			if ( value !== undefined ) {
-				type = typeof value;
-
-				// Convert "+=" or "-=" to relative numbers (#7345)
-				if ( type === "string" && ( ret = rcssNum.exec( value ) ) && ret[ 1 ] ) {
-					value = adjustCSS( elem, name, ret );
-
-					// Fixes bug #9237
-					type = "number";
-				}
-
-				// Make sure that null and NaN values aren't set (#7116)
-				if ( value == null || value !== value ) {
-					return;
-				}
-
-				// If a number was passed in, add the unit (except for certain CSS properties)
-				if ( type === "number" ) {
-					value += ret && ret[ 3 ] || ( jQuery.cssNumber[ origName ] ? "" : "px" );
-				}
-
-				// background-* props affect original clone's values
-				if ( !support.clearCloneStyle && value === "" && name.indexOf( "background" ) === 0 ) {
-					style[ name ] = "inherit";
-				}
-
-				// If a hook was provided, use that value, otherwise just set the specified value
-				if ( !hooks || !( "set" in hooks ) ||
-					( value = hooks.set( elem, value, extra ) ) !== undefined ) {
-
-					style[ name ] = value;
-				}
-
-			} else {
-
-				// If a hook was provided get the non-computed value from there
-				if ( hooks && "get" in hooks &&
-					( ret = hooks.get( elem, false, extra ) ) !== undefined ) {
-
-					return ret;
-				}
-
-				// Otherwise just get the value from the style object
-				return style[ name ];
-			}
-		},
-
-		css: function( elem, name, extra, styles ) {
-			var val, num, hooks,
-				origName = jQuery.camelCase( name );
-
-			// Make sure that we're working with the right name
-			name = jQuery.cssProps[ origName ] ||
-				( jQuery.cssProps[ origName ] = vendorPropName( origName ) || origName );
-
-			// Try prefixed name followed by the unprefixed name
-			hooks = jQuery.cssHooks[ name ] || jQuery.cssHooks[ origName ];
-
-			// If a hook was provided get the computed value from there
-			if ( hooks && "get" in hooks ) {
-				val = hooks.get( elem, true, extra );
-			}
-
-			// Otherwise, if a way to get the computed value exists, use that
-			if ( val === undefined ) {
-				val = curCSS( elem, name, styles );
-			}
-
-			// Convert "normal" to computed value
-			if ( val === "normal" && name in cssNormalTransform ) {
-				val = cssNormalTransform[ name ];
-			}
-
-			// Make numeric if forced or a qualifier was provided and val looks numeric
-			if ( extra === "" || extra ) {
-				num = parseFloat( val );
-				return extra === true || isFinite( num ) ? num || 0 : val;
-			}
-			return val;
-		}
-	} );
-
-	jQuery.each( [ "height", "width" ], function( i, name ) {
-		jQuery.cssHooks[ name ] = {
-			get: function( elem, computed, extra ) {
-				if ( computed ) {
-
-					// Certain elements can have dimension info if we invisibly show them
-					// but it must have a current display style that would benefit
-					return rdisplayswap.test( jQuery.css( elem, "display" ) ) &&
-
-						// Support: Safari 8+
-						// Table columns in Safari have non-zero offsetWidth & zero
-						// getBoundingClientRect().width unless display is changed.
-						// Support: IE <=11 only
-						// Running getBoundingClientRect on a disconnected node
-						// in IE throws an error.
-						( !elem.getClientRects().length || !elem.getBoundingClientRect().width ) ?
-							swap( elem, cssShow, function() {
-								return getWidthOrHeight( elem, name, extra );
-							} ) :
-							getWidthOrHeight( elem, name, extra );
-				}
-			},
-
-			set: function( elem, value, extra ) {
-				var matches,
-					styles = extra && getStyles( elem ),
-					subtract = extra && augmentWidthOrHeight(
-						elem,
-						name,
-						extra,
-						jQuery.css( elem, "boxSizing", false, styles ) === "border-box",
-						styles
-					);
-
-				// Convert to pixels if value adjustment is needed
-				if ( subtract && ( matches = rcssNum.exec( value ) ) &&
-					( matches[ 3 ] || "px" ) !== "px" ) {
-
-					elem.style[ name ] = value;
-					value = jQuery.css( elem, name );
-				}
-
-				return setPositiveNumber( elem, value, subtract );
-			}
-		};
-	} );
-
-	jQuery.cssHooks.marginLeft = addGetHookIf( support.reliableMarginLeft,
-		function( elem, computed ) {
-			if ( computed ) {
-				return ( parseFloat( curCSS( elem, "marginLeft" ) ) ||
-					elem.getBoundingClientRect().left -
-						swap( elem, { marginLeft: 0 }, function() {
-							return elem.getBoundingClientRect().left;
-						} )
-					) + "px";
-			}
-		}
-	);
-
-	// These hooks are used by animate to expand properties
-	jQuery.each( {
-		margin: "",
-		padding: "",
-		border: "Width"
-	}, function( prefix, suffix ) {
-		jQuery.cssHooks[ prefix + suffix ] = {
-			expand: function( value ) {
-				var i = 0,
-					expanded = {},
-
-					// Assumes a single number if not a string
-					parts = typeof value === "string" ? value.split( " " ) : [ value ];
-
-				for ( ; i < 4; i++ ) {
-					expanded[ prefix + cssExpand[ i ] + suffix ] =
-						parts[ i ] || parts[ i - 2 ] || parts[ 0 ];
-				}
-
-				return expanded;
-			}
-		};
-
-		if ( !rmargin.test( prefix ) ) {
-			jQuery.cssHooks[ prefix + suffix ].set = setPositiveNumber;
-		}
-	} );
-
-	jQuery.fn.extend( {
-		css: function( name, value ) {
-			return access( this, function( elem, name, value ) {
-				var styles, len,
-					map = {},
-					i = 0;
-
-				if ( jQuery.isArray( name ) ) {
-					styles = getStyles( elem );
-					len = name.length;
-
-					for ( ; i < len; i++ ) {
-						map[ name[ i ] ] = jQuery.css( elem, name[ i ], false, styles );
-					}
-
-					return map;
-				}
-
-				return value !== undefined ?
-					jQuery.style( elem, name, value ) :
-					jQuery.css( elem, name );
-			}, name, value, arguments.length > 1 );
-		}
-	} );
-
-
-	function Tween( elem, options, prop, end, easing ) {
-		return new Tween.prototype.init( elem, options, prop, end, easing );
-	}
-	jQuery.Tween = Tween;
-
-	Tween.prototype = {
-		constructor: Tween,
-		init: function( elem, options, prop, end, easing, unit ) {
-			this.elem = elem;
-			this.prop = prop;
-			this.easing = easing || jQuery.easing._default;
-			this.options = options;
-			this.start = this.now = this.cur();
-			this.end = end;
-			this.unit = unit || ( jQuery.cssNumber[ prop ] ? "" : "px" );
-		},
-		cur: function() {
-			var hooks = Tween.propHooks[ this.prop ];
-
-			return hooks && hooks.get ?
-				hooks.get( this ) :
-				Tween.propHooks._default.get( this );
-		},
-		run: function( percent ) {
-			var eased,
-				hooks = Tween.propHooks[ this.prop ];
-
-			if ( this.options.duration ) {
-				this.pos = eased = jQuery.easing[ this.easing ](
-					percent, this.options.duration * percent, 0, 1, this.options.duration
-				);
-			} else {
-				this.pos = eased = percent;
-			}
-			this.now = ( this.end - this.start ) * eased + this.start;
-
-			if ( this.options.step ) {
-				this.options.step.call( this.elem, this.now, this );
-			}
-
-			if ( hooks && hooks.set ) {
-				hooks.set( this );
-			} else {
-				Tween.propHooks._default.set( this );
-			}
-			return this;
-		}
-	};
-
-	Tween.prototype.init.prototype = Tween.prototype;
-
-	Tween.propHooks = {
-		_default: {
-			get: function( tween ) {
-				var result;
-
-				// Use a property on the element directly when it is not a DOM element,
-				// or when there is no matching style property that exists.
-				if ( tween.elem.nodeType !== 1 ||
-					tween.elem[ tween.prop ] != null && tween.elem.style[ tween.prop ] == null ) {
-					return tween.elem[ tween.prop ];
-				}
-
-				// Passing an empty string as a 3rd parameter to .css will automatically
-				// attempt a parseFloat and fallback to a string if the parse fails.
-				// Simple values such as "10px" are parsed to Float;
-				// complex values such as "rotate(1rad)" are returned as-is.
-				result = jQuery.css( tween.elem, tween.prop, "" );
-
-				// Empty strings, null, undefined and "auto" are converted to 0.
-				return !result || result === "auto" ? 0 : result;
-			},
-			set: function( tween ) {
-
-				// Use step hook for back compat.
-				// Use cssHook if its there.
-				// Use .style if available and use plain properties where available.
-				if ( jQuery.fx.step[ tween.prop ] ) {
-					jQuery.fx.step[ tween.prop ]( tween );
-				} else if ( tween.elem.nodeType === 1 &&
-					( tween.elem.style[ jQuery.cssProps[ tween.prop ] ] != null ||
-						jQuery.cssHooks[ tween.prop ] ) ) {
-					jQuery.style( tween.elem, tween.prop, tween.now + tween.unit );
-				} else {
-					tween.elem[ tween.prop ] = tween.now;
-				}
-			}
-		}
-	};
-
-	// Support: IE <=9 only
-	// Panic based approach to setting things on disconnected nodes
-	Tween.propHooks.scrollTop = Tween.propHooks.scrollLeft = {
-		set: function( tween ) {
-			if ( tween.elem.nodeType && tween.elem.parentNode ) {
-				tween.elem[ tween.prop ] = tween.now;
-			}
-		}
-	};
-
-	jQuery.easing = {
-		linear: function( p ) {
-			return p;
-		},
-		swing: function( p ) {
-			return 0.5 - Math.cos( p * Math.PI ) / 2;
-		},
-		_default: "swing"
-	};
-
-	jQuery.fx = Tween.prototype.init;
-
-	// Back compat <1.8 extension point
-	jQuery.fx.step = {};
-
-
-
-
-	var
-		fxNow, timerId,
-		rfxtypes = /^(?:toggle|show|hide)$/,
-		rrun = /queueHooks$/;
-
-	function raf() {
-		if ( timerId ) {
-			window.requestAnimationFrame( raf );
-			jQuery.fx.tick();
-		}
-	}
-
-	// Animations created synchronously will run synchronously
-	function createFxNow() {
-		window.setTimeout( function() {
-			fxNow = undefined;
-		} );
-		return ( fxNow = jQuery.now() );
-	}
-
-	// Generate parameters to create a standard animation
-	function genFx( type, includeWidth ) {
-		var which,
-			i = 0,
-			attrs = { height: type };
-
-		// If we include width, step value is 1 to do all cssExpand values,
-		// otherwise step value is 2 to skip over Left and Right
-		includeWidth = includeWidth ? 1 : 0;
-		for ( ; i < 4; i += 2 - includeWidth ) {
-			which = cssExpand[ i ];
-			attrs[ "margin" + which ] = attrs[ "padding" + which ] = type;
-		}
-
-		if ( includeWidth ) {
-			attrs.opacity = attrs.width = type;
-		}
-
-		return attrs;
-	}
-
-	function createTween( value, prop, animation ) {
-		var tween,
-			collection = ( Animation.tweeners[ prop ] || [] ).concat( Animation.tweeners[ "*" ] ),
-			index = 0,
-			length = collection.length;
-		for ( ; index < length; index++ ) {
-			if ( ( tween = collection[ index ].call( animation, prop, value ) ) ) {
-
-				// We're done with this property
-				return tween;
-			}
-		}
-	}
-
-	function defaultPrefilter( elem, props, opts ) {
-		var prop, value, toggle, hooks, oldfire, propTween, restoreDisplay, display,
-			isBox = "width" in props || "height" in props,
-			anim = this,
-			orig = {},
-			style = elem.style,
-			hidden = elem.nodeType && isHiddenWithinTree( elem ),
-			dataShow = dataPriv.get( elem, "fxshow" );
-
-		// Queue-skipping animations hijack the fx hooks
-		if ( !opts.queue ) {
-			hooks = jQuery._queueHooks( elem, "fx" );
-			if ( hooks.unqueued == null ) {
-				hooks.unqueued = 0;
-				oldfire = hooks.empty.fire;
-				hooks.empty.fire = function() {
-					if ( !hooks.unqueued ) {
-						oldfire();
-					}
-				};
-			}
-			hooks.unqueued++;
-
-			anim.always( function() {
-
-				// Ensure the complete handler is called before this completes
-				anim.always( function() {
-					hooks.unqueued--;
-					if ( !jQuery.queue( elem, "fx" ).length ) {
-						hooks.empty.fire();
-					}
-				} );
-			} );
-		}
-
-		// Detect show/hide animations
-		for ( prop in props ) {
-			value = props[ prop ];
-			if ( rfxtypes.test( value ) ) {
-				delete props[ prop ];
-				toggle = toggle || value === "toggle";
-				if ( value === ( hidden ? "hide" : "show" ) ) {
-
-					// Pretend to be hidden if this is a "show" and
-					// there is still data from a stopped show/hide
-					if ( value === "show" && dataShow && dataShow[ prop ] !== undefined ) {
-						hidden = true;
-
-					// Ignore all other no-op show/hide data
-					} else {
-						continue;
-					}
-				}
-				orig[ prop ] = dataShow && dataShow[ prop ] || jQuery.style( elem, prop );
-			}
-		}
-
-		// Bail out if this is a no-op like .hide().hide()
-		propTween = !jQuery.isEmptyObject( props );
-		if ( !propTween && jQuery.isEmptyObject( orig ) ) {
-			return;
-		}
-
-		// Restrict "overflow" and "display" styles during box animations
-		if ( isBox && elem.nodeType === 1 ) {
-
-			// Support: IE <=9 - 11, Edge 12 - 13
-			// Record all 3 overflow attributes because IE does not infer the shorthand
-			// from identically-valued overflowX and overflowY
-			opts.overflow = [ style.overflow, style.overflowX, style.overflowY ];
-
-			// Identify a display type, preferring old show/hide data over the CSS cascade
-			restoreDisplay = dataShow && dataShow.display;
-			if ( restoreDisplay == null ) {
-				restoreDisplay = dataPriv.get( elem, "display" );
-			}
-			display = jQuery.css( elem, "display" );
-			if ( display === "none" ) {
-				if ( restoreDisplay ) {
-					display = restoreDisplay;
-				} else {
-
-					// Get nonempty value(s) by temporarily forcing visibility
-					showHide( [ elem ], true );
-					restoreDisplay = elem.style.display || restoreDisplay;
-					display = jQuery.css( elem, "display" );
-					showHide( [ elem ] );
-				}
-			}
-
-			// Animate inline elements as inline-block
-			if ( display === "inline" || display === "inline-block" && restoreDisplay != null ) {
-				if ( jQuery.css( elem, "float" ) === "none" ) {
-
-					// Restore the original display value at the end of pure show/hide animations
-					if ( !propTween ) {
-						anim.done( function() {
-							style.display = restoreDisplay;
-						} );
-						if ( restoreDisplay == null ) {
-							display = style.display;
-							restoreDisplay = display === "none" ? "" : display;
-						}
-					}
-					style.display = "inline-block";
-				}
-			}
-		}
-
-		if ( opts.overflow ) {
-			style.overflow = "hidden";
-			anim.always( function() {
-				style.overflow = opts.overflow[ 0 ];
-				style.overflowX = opts.overflow[ 1 ];
-				style.overflowY = opts.overflow[ 2 ];
-			} );
-		}
-
-		// Implement show/hide animations
-		propTween = false;
-		for ( prop in orig ) {
-
-			// General show/hide setup for this element animation
-			if ( !propTween ) {
-				if ( dataShow ) {
-					if ( "hidden" in dataShow ) {
-						hidden = dataShow.hidden;
-					}
-				} else {
-					dataShow = dataPriv.access( elem, "fxshow", { display: restoreDisplay } );
-				}
-
-				// Store hidden/visible for toggle so `.stop().toggle()` "reverses"
-				if ( toggle ) {
-					dataShow.hidden = !hidden;
-				}
-
-				// Show elements before animating them
-				if ( hidden ) {
-					showHide( [ elem ], true );
-				}
-
-				/* eslint-disable no-loop-func */
-
-				anim.done( function() {
-
-				/* eslint-enable no-loop-func */
-
-					// The final step of a "hide" animation is actually hiding the element
-					if ( !hidden ) {
-						showHide( [ elem ] );
-					}
-					dataPriv.remove( elem, "fxshow" );
-					for ( prop in orig ) {
-						jQuery.style( elem, prop, orig[ prop ] );
-					}
-				} );
-			}
-
-			// Per-property setup
-			propTween = createTween( hidden ? dataShow[ prop ] : 0, prop, anim );
-			if ( !( prop in dataShow ) ) {
-				dataShow[ prop ] = propTween.start;
-				if ( hidden ) {
-					propTween.end = propTween.start;
-					propTween.start = 0;
-				}
-			}
-		}
-	}
-
-	function propFilter( props, specialEasing ) {
-		var index, name, easing, value, hooks;
-
-		// camelCase, specialEasing and expand cssHook pass
-		for ( index in props ) {
-			name = jQuery.camelCase( index );
-			easing = specialEasing[ name ];
-			value = props[ index ];
-			if ( jQuery.isArray( value ) ) {
-				easing = value[ 1 ];
-				value = props[ index ] = value[ 0 ];
-			}
-
-			if ( index !== name ) {
-				props[ name ] = value;
-				delete props[ index ];
-			}
-
-			hooks = jQuery.cssHooks[ name ];
-			if ( hooks && "expand" in hooks ) {
-				value = hooks.expand( value );
-				delete props[ name ];
-
-				// Not quite $.extend, this won't overwrite existing keys.
-				// Reusing 'index' because we have the correct "name"
-				for ( index in value ) {
-					if ( !( index in props ) ) {
-						props[ index ] = value[ index ];
-						specialEasing[ index ] = easing;
-					}
-				}
-			} else {
-				specialEasing[ name ] = easing;
-			}
-		}
-	}
-
-	function Animation( elem, properties, options ) {
-		var result,
-			stopped,
-			index = 0,
-			length = Animation.prefilters.length,
-			deferred = jQuery.Deferred().always( function() {
-
-				// Don't match elem in the :animated selector
-				delete tick.elem;
-			} ),
-			tick = function() {
-				if ( stopped ) {
-					return false;
-				}
-				var currentTime = fxNow || createFxNow(),
-					remaining = Math.max( 0, animation.startTime + animation.duration - currentTime ),
-
-					// Support: Android 2.3 only
-					// Archaic crash bug won't allow us to use `1 - ( 0.5 || 0 )` (#12497)
-					temp = remaining / animation.duration || 0,
-					percent = 1 - temp,
-					index = 0,
-					length = animation.tweens.length;
-
-				for ( ; index < length; index++ ) {
-					animation.tweens[ index ].run( percent );
-				}
-
-				deferred.notifyWith( elem, [ animation, percent, remaining ] );
-
-				if ( percent < 1 && length ) {
-					return remaining;
-				} else {
-					deferred.resolveWith( elem, [ animation ] );
-					return false;
-				}
-			},
-			animation = deferred.promise( {
-				elem: elem,
-				props: jQuery.extend( {}, properties ),
-				opts: jQuery.extend( true, {
-					specialEasing: {},
-					easing: jQuery.easing._default
-				}, options ),
-				originalProperties: properties,
-				originalOptions: options,
-				startTime: fxNow || createFxNow(),
-				duration: options.duration,
-				tweens: [],
-				createTween: function( prop, end ) {
-					var tween = jQuery.Tween( elem, animation.opts, prop, end,
-							animation.opts.specialEasing[ prop ] || animation.opts.easing );
-					animation.tweens.push( tween );
-					return tween;
-				},
-				stop: function( gotoEnd ) {
-					var index = 0,
-
-						// If we are going to the end, we want to run all the tweens
-						// otherwise we skip this part
-						length = gotoEnd ? animation.tweens.length : 0;
-					if ( stopped ) {
-						return this;
-					}
-					stopped = true;
-					for ( ; index < length; index++ ) {
-						animation.tweens[ index ].run( 1 );
-					}
-
-					// Resolve when we played the last frame; otherwise, reject
-					if ( gotoEnd ) {
-						deferred.notifyWith( elem, [ animation, 1, 0 ] );
-						deferred.resolveWith( elem, [ animation, gotoEnd ] );
-					} else {
-						deferred.rejectWith( elem, [ animation, gotoEnd ] );
-					}
-					return this;
-				}
-			} ),
-			props = animation.props;
-
-		propFilter( props, animation.opts.specialEasing );
-
-		for ( ; index < length; index++ ) {
-			result = Animation.prefilters[ index ].call( animation, elem, props, animation.opts );
-			if ( result ) {
-				if ( jQuery.isFunction( result.stop ) ) {
-					jQuery._queueHooks( animation.elem, animation.opts.queue ).stop =
-						jQuery.proxy( result.stop, result );
-				}
-				return result;
-			}
-		}
-
-		jQuery.map( props, createTween, animation );
-
-		if ( jQuery.isFunction( animation.opts.start ) ) {
-			animation.opts.start.call( elem, animation );
-		}
-
-		jQuery.fx.timer(
-			jQuery.extend( tick, {
-				elem: elem,
-				anim: animation,
-				queue: animation.opts.queue
-			} )
-		);
-
-		// attach callbacks from options
-		return animation.progress( animation.opts.progress )
-			.done( animation.opts.done, animation.opts.complete )
-			.fail( animation.opts.fail )
-			.always( animation.opts.always );
-	}
-
-	jQuery.Animation = jQuery.extend( Animation, {
-
-		tweeners: {
-			"*": [ function( prop, value ) {
-				var tween = this.createTween( prop, value );
-				adjustCSS( tween.elem, prop, rcssNum.exec( value ), tween );
-				return tween;
-			} ]
-		},
-
-		tweener: function( props, callback ) {
-			if ( jQuery.isFunction( props ) ) {
-				callback = props;
-				props = [ "*" ];
-			} else {
-				props = props.match( rnothtmlwhite );
-			}
-
-			var prop,
-				index = 0,
-				length = props.length;
-
-			for ( ; index < length; index++ ) {
-				prop = props[ index ];
-				Animation.tweeners[ prop ] = Animation.tweeners[ prop ] || [];
-				Animation.tweeners[ prop ].unshift( callback );
-			}
-		},
-
-		prefilters: [ defaultPrefilter ],
-
-		prefilter: function( callback, prepend ) {
-			if ( prepend ) {
-				Animation.prefilters.unshift( callback );
-			} else {
-				Animation.prefilters.push( callback );
-			}
-		}
-	} );
-
-	jQuery.speed = function( speed, easing, fn ) {
-		var opt = speed && typeof speed === "object" ? jQuery.extend( {}, speed ) : {
-			complete: fn || !fn && easing ||
-				jQuery.isFunction( speed ) && speed,
-			duration: speed,
-			easing: fn && easing || easing && !jQuery.isFunction( easing ) && easing
-		};
-
-		// Go to the end state if fx are off or if document is hidden
-		if ( jQuery.fx.off || document.hidden ) {
-			opt.duration = 0;
-
-		} else {
-			if ( typeof opt.duration !== "number" ) {
-				if ( opt.duration in jQuery.fx.speeds ) {
-					opt.duration = jQuery.fx.speeds[ opt.duration ];
-
-				} else {
-					opt.duration = jQuery.fx.speeds._default;
-				}
-			}
-		}
-
-		// Normalize opt.queue - true/undefined/null -> "fx"
-		if ( opt.queue == null || opt.queue === true ) {
-			opt.queue = "fx";
-		}
-
-		// Queueing
-		opt.old = opt.complete;
-
-		opt.complete = function() {
-			if ( jQuery.isFunction( opt.old ) ) {
-				opt.old.call( this );
-			}
-
-			if ( opt.queue ) {
-				jQuery.dequeue( this, opt.queue );
-			}
-		};
-
-		return opt;
-	};
-
-	jQuery.fn.extend( {
-		fadeTo: function( speed, to, easing, callback ) {
-
-			// Show any hidden elements after setting opacity to 0
-			return this.filter( isHiddenWithinTree ).css( "opacity", 0 ).show()
-
-				// Animate to the value specified
-				.end().animate( { opacity: to }, speed, easing, callback );
-		},
-		animate: function( prop, speed, easing, callback ) {
-			var empty = jQuery.isEmptyObject( prop ),
-				optall = jQuery.speed( speed, easing, callback ),
-				doAnimation = function() {
-
-					// Operate on a copy of prop so per-property easing won't be lost
-					var anim = Animation( this, jQuery.extend( {}, prop ), optall );
-
-					// Empty animations, or finishing resolves immediately
-					if ( empty || dataPriv.get( this, "finish" ) ) {
-						anim.stop( true );
-					}
-				};
-				doAnimation.finish = doAnimation;
-
-			return empty || optall.queue === false ?
-				this.each( doAnimation ) :
-				this.queue( optall.queue, doAnimation );
-		},
-		stop: function( type, clearQueue, gotoEnd ) {
-			var stopQueue = function( hooks ) {
-				var stop = hooks.stop;
-				delete hooks.stop;
-				stop( gotoEnd );
-			};
-
-			if ( typeof type !== "string" ) {
-				gotoEnd = clearQueue;
-				clearQueue = type;
-				type = undefined;
-			}
-			if ( clearQueue && type !== false ) {
-				this.queue( type || "fx", [] );
-			}
-
-			return this.each( function() {
-				var dequeue = true,
-					index = type != null && type + "queueHooks",
-					timers = jQuery.timers,
-					data = dataPriv.get( this );
-
-				if ( index ) {
-					if ( data[ index ] && data[ index ].stop ) {
-						stopQueue( data[ index ] );
-					}
-				} else {
-					for ( index in data ) {
-						if ( data[ index ] && data[ index ].stop && rrun.test( index ) ) {
-							stopQueue( data[ index ] );
-						}
-					}
-				}
-
-				for ( index = timers.length; index--; ) {
-					if ( timers[ index ].elem === this &&
-						( type == null || timers[ index ].queue === type ) ) {
-
-						timers[ index ].anim.stop( gotoEnd );
-						dequeue = false;
-						timers.splice( index, 1 );
-					}
-				}
-
-				// Start the next in the queue if the last step wasn't forced.
-				// Timers currently will call their complete callbacks, which
-				// will dequeue but only if they were gotoEnd.
-				if ( dequeue || !gotoEnd ) {
-					jQuery.dequeue( this, type );
-				}
-			} );
-		},
-		finish: function( type ) {
-			if ( type !== false ) {
-				type = type || "fx";
-			}
-			return this.each( function() {
-				var index,
-					data = dataPriv.get( this ),
-					queue = data[ type + "queue" ],
-					hooks = data[ type + "queueHooks" ],
-					timers = jQuery.timers,
-					length = queue ? queue.length : 0;
-
-				// Enable finishing flag on private data
-				data.finish = true;
-
-				// Empty the queue first
-				jQuery.queue( this, type, [] );
-
-				if ( hooks && hooks.stop ) {
-					hooks.stop.call( this, true );
-				}
-
-				// Look for any active animations, and finish them
-				for ( index = timers.length; index--; ) {
-					if ( timers[ index ].elem === this && timers[ index ].queue === type ) {
-						timers[ index ].anim.stop( true );
-						timers.splice( index, 1 );
-					}
-				}
-
-				// Look for any animations in the old queue and finish them
-				for ( index = 0; index < length; index++ ) {
-					if ( queue[ index ] && queue[ index ].finish ) {
-						queue[ index ].finish.call( this );
-					}
-				}
-
-				// Turn off finishing flag
-				delete data.finish;
-			} );
-		}
-	} );
-
-	jQuery.each( [ "toggle", "show", "hide" ], function( i, name ) {
-		var cssFn = jQuery.fn[ name ];
-		jQuery.fn[ name ] = function( speed, easing, callback ) {
-			return speed == null || typeof speed === "boolean" ?
-				cssFn.apply( this, arguments ) :
-				this.animate( genFx( name, true ), speed, easing, callback );
-		};
-	} );
-
-	// Generate shortcuts for custom animations
-	jQuery.each( {
-		slideDown: genFx( "show" ),
-		slideUp: genFx( "hide" ),
-		slideToggle: genFx( "toggle" ),
-		fadeIn: { opacity: "show" },
-		fadeOut: { opacity: "hide" },
-		fadeToggle: { opacity: "toggle" }
-	}, function( name, props ) {
-		jQuery.fn[ name ] = function( speed, easing, callback ) {
-			return this.animate( props, speed, easing, callback );
-		};
-	} );
-
-	jQuery.timers = [];
-	jQuery.fx.tick = function() {
-		var timer,
-			i = 0,
-			timers = jQuery.timers;
-
-		fxNow = jQuery.now();
-
-		for ( ; i < timers.length; i++ ) {
-			timer = timers[ i ];
-
-			// Checks the timer has not already been removed
-			if ( !timer() && timers[ i ] === timer ) {
-				timers.splice( i--, 1 );
-			}
-		}
-
-		if ( !timers.length ) {
-			jQuery.fx.stop();
-		}
-		fxNow = undefined;
-	};
-
-	jQuery.fx.timer = function( timer ) {
-		jQuery.timers.push( timer );
-		if ( timer() ) {
-			jQuery.fx.start();
-		} else {
-			jQuery.timers.pop();
-		}
-	};
-
-	jQuery.fx.interval = 13;
-	jQuery.fx.start = function() {
-		if ( !timerId ) {
-			timerId = window.requestAnimationFrame ?
-				window.requestAnimationFrame( raf ) :
-				window.setInterval( jQuery.fx.tick, jQuery.fx.interval );
-		}
-	};
-
-	jQuery.fx.stop = function() {
-		if ( window.cancelAnimationFrame ) {
-			window.cancelAnimationFrame( timerId );
-		} else {
-			window.clearInterval( timerId );
-		}
-
-		timerId = null;
-	};
-
-	jQuery.fx.speeds = {
-		slow: 600,
-		fast: 200,
-
-		// Default speed
-		_default: 400
-	};
-
-
-	// Based off of the plugin by Clint Helfers, with permission.
-	// https://web.archive.org/web/20100324014747/http://blindsignals.com/index.php/2009/07/jquery-delay/
-	jQuery.fn.delay = function( time, type ) {
-		time = jQuery.fx ? jQuery.fx.speeds[ time ] || time : time;
-		type = type || "fx";
-
-		return this.queue( type, function( next, hooks ) {
-			var timeout = window.setTimeout( next, time );
-			hooks.stop = function() {
-				window.clearTimeout( timeout );
-			};
-		} );
-	};
-
-
-	( function() {
-		var input = document.createElement( "input" ),
-			select = document.createElement( "select" ),
-			opt = select.appendChild( document.createElement( "option" ) );
-
-		input.type = "checkbox";
-
-		// Support: Android <=4.3 only
-		// Default value for a checkbox should be "on"
-		support.checkOn = input.value !== "";
-
-		// Support: IE <=11 only
-		// Must access selectedIndex to make default options select
-		support.optSelected = opt.selected;
-
-		// Support: IE <=11 only
-		// An input loses its value after becoming a radio
-		input = document.createElement( "input" );
-		input.value = "t";
-		input.type = "radio";
-		support.radioValue = input.value === "t";
-	} )();
-
-
-	var boolHook,
-		attrHandle = jQuery.expr.attrHandle;
-
-	jQuery.fn.extend( {
-		attr: function( name, value ) {
-			return access( this, jQuery.attr, name, value, arguments.length > 1 );
-		},
-
-		removeAttr: function( name ) {
-			return this.each( function() {
-				jQuery.removeAttr( this, name );
-			} );
-		}
-	} );
-
-	jQuery.extend( {
-		attr: function( elem, name, value ) {
-			var ret, hooks,
-				nType = elem.nodeType;
-
-			// Don't get/set attributes on text, comment and attribute nodes
-			if ( nType === 3 || nType === 8 || nType === 2 ) {
-				return;
-			}
-
-			// Fallback to prop when attributes are not supported
-			if ( typeof elem.getAttribute === "undefined" ) {
-				return jQuery.prop( elem, name, value );
-			}
-
-			// Attribute hooks are determined by the lowercase version
-			// Grab necessary hook if one is defined
-			if ( nType !== 1 || !jQuery.isXMLDoc( elem ) ) {
-				hooks = jQuery.attrHooks[ name.toLowerCase() ] ||
-					( jQuery.expr.match.bool.test( name ) ? boolHook : undefined );
-			}
-
-			if ( value !== undefined ) {
-				if ( value === null ) {
-					jQuery.removeAttr( elem, name );
-					return;
-				}
-
-				if ( hooks && "set" in hooks &&
-					( ret = hooks.set( elem, value, name ) ) !== undefined ) {
-					return ret;
-				}
-
-				elem.setAttribute( name, value + "" );
-				return value;
-			}
-
-			if ( hooks && "get" in hooks && ( ret = hooks.get( elem, name ) ) !== null ) {
-				return ret;
-			}
-
-			ret = jQuery.find.attr( elem, name );
-
-			// Non-existent attributes return null, we normalize to undefined
-			return ret == null ? undefined : ret;
-		},
-
-		attrHooks: {
-			type: {
-				set: function( elem, value ) {
-					if ( !support.radioValue && value === "radio" &&
-						jQuery.nodeName( elem, "input" ) ) {
-						var val = elem.value;
-						elem.setAttribute( "type", value );
-						if ( val ) {
-							elem.value = val;
-						}
-						return value;
-					}
-				}
-			}
-		},
-
-		removeAttr: function( elem, value ) {
-			var name,
-				i = 0,
-
-				// Attribute names can contain non-HTML whitespace characters
-				// https://html.spec.whatwg.org/multipage/syntax.html#attributes-2
-				attrNames = value && value.match( rnothtmlwhite );
-
-			if ( attrNames && elem.nodeType === 1 ) {
-				while ( ( name = attrNames[ i++ ] ) ) {
-					elem.removeAttribute( name );
-				}
-			}
-		}
-	} );
-
-	// Hooks for boolean attributes
-	boolHook = {
-		set: function( elem, value, name ) {
-			if ( value === false ) {
-
-				// Remove boolean attributes when set to false
-				jQuery.removeAttr( elem, name );
-			} else {
-				elem.setAttribute( name, name );
-			}
-			return name;
-		}
-	};
-
-	jQuery.each( jQuery.expr.match.bool.source.match( /\w+/g ), function( i, name ) {
-		var getter = attrHandle[ name ] || jQuery.find.attr;
-
-		attrHandle[ name ] = function( elem, name, isXML ) {
-			var ret, handle,
-				lowercaseName = name.toLowerCase();
-
-			if ( !isXML ) {
-
-				// Avoid an infinite loop by temporarily removing this function from the getter
-				handle = attrHandle[ lowercaseName ];
-				attrHandle[ lowercaseName ] = ret;
-				ret = getter( elem, name, isXML ) != null ?
-					lowercaseName :
-					null;
-				attrHandle[ lowercaseName ] = handle;
-			}
-			return ret;
-		};
-	} );
-
-
-
-
-	var rfocusable = /^(?:input|select|textarea|button)$/i,
-		rclickable = /^(?:a|area)$/i;
-
-	jQuery.fn.extend( {
-		prop: function( name, value ) {
-			return access( this, jQuery.prop, name, value, arguments.length > 1 );
-		},
-
-		removeProp: function( name ) {
-			return this.each( function() {
-				delete this[ jQuery.propFix[ name ] || name ];
-			} );
-		}
-	} );
-
-	jQuery.extend( {
-		prop: function( elem, name, value ) {
-			var ret, hooks,
-				nType = elem.nodeType;
-
-			// Don't get/set properties on text, comment and attribute nodes
-			if ( nType === 3 || nType === 8 || nType === 2 ) {
-				return;
-			}
-
-			if ( nType !== 1 || !jQuery.isXMLDoc( elem ) ) {
-
-				// Fix name and attach hooks
-				name = jQuery.propFix[ name ] || name;
-				hooks = jQuery.propHooks[ name ];
-			}
-
-			if ( value !== undefined ) {
-				if ( hooks && "set" in hooks &&
-					( ret = hooks.set( elem, value, name ) ) !== undefined ) {
-					return ret;
-				}
-
-				return ( elem[ name ] = value );
-			}
-
-			if ( hooks && "get" in hooks && ( ret = hooks.get( elem, name ) ) !== null ) {
-				return ret;
-			}
-
-			return elem[ name ];
-		},
-
-		propHooks: {
-			tabIndex: {
-				get: function( elem ) {
-
-					// Support: IE <=9 - 11 only
-					// elem.tabIndex doesn't always return the
-					// correct value when it hasn't been explicitly set
-					// https://web.archive.org/web/20141116233347/http://fluidproject.org/blog/2008/01/09/getting-setting-and-removing-tabindex-values-with-javascript/
-					// Use proper attribute retrieval(#12072)
-					var tabindex = jQuery.find.attr( elem, "tabindex" );
-
-					if ( tabindex ) {
-						return parseInt( tabindex, 10 );
-					}
-
-					if (
-						rfocusable.test( elem.nodeName ) ||
-						rclickable.test( elem.nodeName ) &&
-						elem.href
-					) {
-						return 0;
-					}
-
-					return -1;
-				}
-			}
-		},
-
-		propFix: {
-			"for": "htmlFor",
-			"class": "className"
-		}
-	} );
-
-	// Support: IE <=11 only
-	// Accessing the selectedIndex property
-	// forces the browser to respect setting selected
-	// on the option
-	// The getter ensures a default option is selected
-	// when in an optgroup
-	// eslint rule "no-unused-expressions" is disabled for this code
-	// since it considers such accessions noop
-	if ( !support.optSelected ) {
-		jQuery.propHooks.selected = {
-			get: function( elem ) {
-
-				/* eslint no-unused-expressions: "off" */
-
-				var parent = elem.parentNode;
-				if ( parent && parent.parentNode ) {
-					parent.parentNode.selectedIndex;
-				}
-				return null;
-			},
-			set: function( elem ) {
-
-				/* eslint no-unused-expressions: "off" */
-
-				var parent = elem.parentNode;
-				if ( parent ) {
-					parent.selectedIndex;
-
-					if ( parent.parentNode ) {
-						parent.parentNode.selectedIndex;
-					}
-				}
-			}
-		};
-	}
-
-	jQuery.each( [
-		"tabIndex",
-		"readOnly",
-		"maxLength",
-		"cellSpacing",
-		"cellPadding",
-		"rowSpan",
-		"colSpan",
-		"useMap",
-		"frameBorder",
-		"contentEditable"
-	], function() {
-		jQuery.propFix[ this.toLowerCase() ] = this;
-	} );
-
-
-
-
-		// Strip and collapse whitespace according to HTML spec
-		// https://html.spec.whatwg.org/multipage/infrastructure.html#strip-and-collapse-whitespace
-		function stripAndCollapse( value ) {
-			var tokens = value.match( rnothtmlwhite ) || [];
-			return tokens.join( " " );
-		}
-
-
-	function getClass( elem ) {
-		return elem.getAttribute && elem.getAttribute( "class" ) || "";
-	}
-
-	jQuery.fn.extend( {
-		addClass: function( value ) {
-			var classes, elem, cur, curValue, clazz, j, finalValue,
-				i = 0;
-
-			if ( jQuery.isFunction( value ) ) {
-				return this.each( function( j ) {
-					jQuery( this ).addClass( value.call( this, j, getClass( this ) ) );
-				} );
-			}
-
-			if ( typeof value === "string" && value ) {
-				classes = value.match( rnothtmlwhite ) || [];
-
-				while ( ( elem = this[ i++ ] ) ) {
-					curValue = getClass( elem );
-					cur = elem.nodeType === 1 && ( " " + stripAndCollapse( curValue ) + " " );
-
-					if ( cur ) {
-						j = 0;
-						while ( ( clazz = classes[ j++ ] ) ) {
-							if ( cur.indexOf( " " + clazz + " " ) < 0 ) {
-								cur += clazz + " ";
-							}
-						}
-
-						// Only assign if different to avoid unneeded rendering.
-						finalValue = stripAndCollapse( cur );
-						if ( curValue !== finalValue ) {
-							elem.setAttribute( "class", finalValue );
-						}
-					}
-				}
-			}
-
-			return this;
-		},
-
-		removeClass: function( value ) {
-			var classes, elem, cur, curValue, clazz, j, finalValue,
-				i = 0;
-
-			if ( jQuery.isFunction( value ) ) {
-				return this.each( function( j ) {
-					jQuery( this ).removeClass( value.call( this, j, getClass( this ) ) );
-				} );
-			}
-
-			if ( !arguments.length ) {
-				return this.attr( "class", "" );
-			}
-
-			if ( typeof value === "string" && value ) {
-				classes = value.match( rnothtmlwhite ) || [];
-
-				while ( ( elem = this[ i++ ] ) ) {
-					curValue = getClass( elem );
-
-					// This expression is here for better compressibility (see addClass)
-					cur = elem.nodeType === 1 && ( " " + stripAndCollapse( curValue ) + " " );
-
-					if ( cur ) {
-						j = 0;
-						while ( ( clazz = classes[ j++ ] ) ) {
-
-							// Remove *all* instances
-							while ( cur.indexOf( " " + clazz + " " ) > -1 ) {
-								cur = cur.replace( " " + clazz + " ", " " );
-							}
-						}
-
-						// Only assign if different to avoid unneeded rendering.
-						finalValue = stripAndCollapse( cur );
-						if ( curValue !== finalValue ) {
-							elem.setAttribute( "class", finalValue );
-						}
-					}
-				}
-			}
-
-			return this;
-		},
-
-		toggleClass: function( value, stateVal ) {
-			var type = typeof value;
-
-			if ( typeof stateVal === "boolean" && type === "string" ) {
-				return stateVal ? this.addClass( value ) : this.removeClass( value );
-			}
-
-			if ( jQuery.isFunction( value ) ) {
-				return this.each( function( i ) {
-					jQuery( this ).toggleClass(
-						value.call( this, i, getClass( this ), stateVal ),
-						stateVal
-					);
-				} );
-			}
-
-			return this.each( function() {
-				var className, i, self, classNames;
-
-				if ( type === "string" ) {
-
-					// Toggle individual class names
-					i = 0;
-					self = jQuery( this );
-					classNames = value.match( rnothtmlwhite ) || [];
-
-					while ( ( className = classNames[ i++ ] ) ) {
-
-						// Check each className given, space separated list
-						if ( self.hasClass( className ) ) {
-							self.removeClass( className );
-						} else {
-							self.addClass( className );
-						}
-					}
-
-				// Toggle whole class name
-				} else if ( value === undefined || type === "boolean" ) {
-					className = getClass( this );
-					if ( className ) {
-
-						// Store className if set
-						dataPriv.set( this, "__className__", className );
-					}
-
-					// If the element has a class name or if we're passed `false`,
-					// then remove the whole classname (if there was one, the above saved it).
-					// Otherwise bring back whatever was previously saved (if anything),
-					// falling back to the empty string if nothing was stored.
-					if ( this.setAttribute ) {
-						this.setAttribute( "class",
-							className || value === false ?
-							"" :
-							dataPriv.get( this, "__className__" ) || ""
-						);
-					}
-				}
-			} );
-		},
-
-		hasClass: function( selector ) {
-			var className, elem,
-				i = 0;
-
-			className = " " + selector + " ";
-			while ( ( elem = this[ i++ ] ) ) {
-				if ( elem.nodeType === 1 &&
-					( " " + stripAndCollapse( getClass( elem ) ) + " " ).indexOf( className ) > -1 ) {
-						return true;
-				}
-			}
-
-			return false;
-		}
-	} );
-
-
-
-
-	var rreturn = /\r/g;
-
-	jQuery.fn.extend( {
-		val: function( value ) {
-			var hooks, ret, isFunction,
-				elem = this[ 0 ];
-
-			if ( !arguments.length ) {
-				if ( elem ) {
-					hooks = jQuery.valHooks[ elem.type ] ||
-						jQuery.valHooks[ elem.nodeName.toLowerCase() ];
-
-					if ( hooks &&
-						"get" in hooks &&
-						( ret = hooks.get( elem, "value" ) ) !== undefined
-					) {
-						return ret;
-					}
-
-					ret = elem.value;
-
-					// Handle most common string cases
-					if ( typeof ret === "string" ) {
-						return ret.replace( rreturn, "" );
-					}
-
-					// Handle cases where value is null/undef or number
-					return ret == null ? "" : ret;
-				}
-
-				return;
-			}
-
-			isFunction = jQuery.isFunction( value );
-
-			return this.each( function( i ) {
-				var val;
-
-				if ( this.nodeType !== 1 ) {
-					return;
-				}
-
-				if ( isFunction ) {
-					val = value.call( this, i, jQuery( this ).val() );
-				} else {
-					val = value;
-				}
-
-				// Treat null/undefined as ""; convert numbers to string
-				if ( val == null ) {
-					val = "";
-
-				} else if ( typeof val === "number" ) {
-					val += "";
-
-				} else if ( jQuery.isArray( val ) ) {
-					val = jQuery.map( val, function( value ) {
-						return value == null ? "" : value + "";
-					} );
-				}
-
-				hooks = jQuery.valHooks[ this.type ] || jQuery.valHooks[ this.nodeName.toLowerCase() ];
-
-				// If set returns undefined, fall back to normal setting
-				if ( !hooks || !( "set" in hooks ) || hooks.set( this, val, "value" ) === undefined ) {
-					this.value = val;
-				}
-			} );
-		}
-	} );
-
-	jQuery.extend( {
-		valHooks: {
-			option: {
-				get: function( elem ) {
-
-					var val = jQuery.find.attr( elem, "value" );
-					return val != null ?
-						val :
-
-						// Support: IE <=10 - 11 only
-						// option.text throws exceptions (#14686, #14858)
-						// Strip and collapse whitespace
-						// https://html.spec.whatwg.org/#strip-and-collapse-whitespace
-						stripAndCollapse( jQuery.text( elem ) );
-				}
-			},
-			select: {
-				get: function( elem ) {
-					var value, option, i,
-						options = elem.options,
-						index = elem.selectedIndex,
-						one = elem.type === "select-one",
-						values = one ? null : [],
-						max = one ? index + 1 : options.length;
-
-					if ( index < 0 ) {
-						i = max;
-
-					} else {
-						i = one ? index : 0;
-					}
-
-					// Loop through all the selected options
-					for ( ; i < max; i++ ) {
-						option = options[ i ];
-
-						// Support: IE <=9 only
-						// IE8-9 doesn't update selected after form reset (#2551)
-						if ( ( option.selected || i === index ) &&
-
-								// Don't return options that are disabled or in a disabled optgroup
-								!option.disabled &&
-								( !option.parentNode.disabled ||
-									!jQuery.nodeName( option.parentNode, "optgroup" ) ) ) {
-
-							// Get the specific value for the option
-							value = jQuery( option ).val();
-
-							// We don't need an array for one selects
-							if ( one ) {
-								return value;
-							}
-
-							// Multi-Selects return an array
-							values.push( value );
-						}
-					}
-
-					return values;
-				},
-
-				set: function( elem, value ) {
-					var optionSet, option,
-						options = elem.options,
-						values = jQuery.makeArray( value ),
-						i = options.length;
-
-					while ( i-- ) {
-						option = options[ i ];
-
-						/* eslint-disable no-cond-assign */
-
-						if ( option.selected =
-							jQuery.inArray( jQuery.valHooks.option.get( option ), values ) > -1
-						) {
-							optionSet = true;
-						}
-
-						/* eslint-enable no-cond-assign */
-					}
-
-					// Force browsers to behave consistently when non-matching value is set
-					if ( !optionSet ) {
-						elem.selectedIndex = -1;
-					}
-					return values;
-				}
-			}
-		}
-	} );
-
-	// Radios and checkboxes getter/setter
-	jQuery.each( [ "radio", "checkbox" ], function() {
-		jQuery.valHooks[ this ] = {
-			set: function( elem, value ) {
-				if ( jQuery.isArray( value ) ) {
-					return ( elem.checked = jQuery.inArray( jQuery( elem ).val(), value ) > -1 );
-				}
-			}
-		};
-		if ( !support.checkOn ) {
-			jQuery.valHooks[ this ].get = function( elem ) {
-				return elem.getAttribute( "value" ) === null ? "on" : elem.value;
-			};
-		}
-	} );
-
-
-
-
-	// Return jQuery for attributes-only inclusion
-
-
-	var rfocusMorph = /^(?:focusinfocus|focusoutblur)$/;
-
-	jQuery.extend( jQuery.event, {
-
-		trigger: function( event, data, elem, onlyHandlers ) {
-
-			var i, cur, tmp, bubbleType, ontype, handle, special,
-				eventPath = [ elem || document ],
-				type = hasOwn.call( event, "type" ) ? event.type : event,
-				namespaces = hasOwn.call( event, "namespace" ) ? event.namespace.split( "." ) : [];
-
-			cur = tmp = elem = elem || document;
-
-			// Don't do events on text and comment nodes
-			if ( elem.nodeType === 3 || elem.nodeType === 8 ) {
-				return;
-			}
-
-			// focus/blur morphs to focusin/out; ensure we're not firing them right now
-			if ( rfocusMorph.test( type + jQuery.event.triggered ) ) {
-				return;
-			}
-
-			if ( type.indexOf( "." ) > -1 ) {
-
-				// Namespaced trigger; create a regexp to match event type in handle()
-				namespaces = type.split( "." );
-				type = namespaces.shift();
-				namespaces.sort();
-			}
-			ontype = type.indexOf( ":" ) < 0 && "on" + type;
-
-			// Caller can pass in a jQuery.Event object, Object, or just an event type string
-			event = event[ jQuery.expando ] ?
-				event :
-				new jQuery.Event( type, typeof event === "object" && event );
-
-			// Trigger bitmask: & 1 for native handlers; & 2 for jQuery (always true)
-			event.isTrigger = onlyHandlers ? 2 : 3;
-			event.namespace = namespaces.join( "." );
-			event.rnamespace = event.namespace ?
-				new RegExp( "(^|\\.)" + namespaces.join( "\\.(?:.*\\.|)" ) + "(\\.|$)" ) :
-				null;
-
-			// Clean up the event in case it is being reused
-			event.result = undefined;
-			if ( !event.target ) {
-				event.target = elem;
-			}
-
-			// Clone any incoming data and prepend the event, creating the handler arg list
-			data = data == null ?
-				[ event ] :
-				jQuery.makeArray( data, [ event ] );
-
-			// Allow special events to draw outside the lines
-			special = jQuery.event.special[ type ] || {};
-			if ( !onlyHandlers && special.trigger && special.trigger.apply( elem, data ) === false ) {
-				return;
-			}
-
-			// Determine event propagation path in advance, per W3C events spec (#9951)
-			// Bubble up to document, then to window; watch for a global ownerDocument var (#9724)
-			if ( !onlyHandlers && !special.noBubble && !jQuery.isWindow( elem ) ) {
-
-				bubbleType = special.delegateType || type;
-				if ( !rfocusMorph.test( bubbleType + type ) ) {
-					cur = cur.parentNode;
-				}
-				for ( ; cur; cur = cur.parentNode ) {
-					eventPath.push( cur );
-					tmp = cur;
-				}
-
-				// Only add window if we got to document (e.g., not plain obj or detached DOM)
-				if ( tmp === ( elem.ownerDocument || document ) ) {
-					eventPath.push( tmp.defaultView || tmp.parentWindow || window );
-				}
-			}
-
-			// Fire handlers on the event path
-			i = 0;
-			while ( ( cur = eventPath[ i++ ] ) && !event.isPropagationStopped() ) {
-
-				event.type = i > 1 ?
-					bubbleType :
-					special.bindType || type;
-
-				// jQuery handler
-				handle = ( dataPriv.get( cur, "events" ) || {} )[ event.type ] &&
-					dataPriv.get( cur, "handle" );
-				if ( handle ) {
-					handle.apply( cur, data );
-				}
-
-				// Native handler
-				handle = ontype && cur[ ontype ];
-				if ( handle && handle.apply && acceptData( cur ) ) {
-					event.result = handle.apply( cur, data );
-					if ( event.result === false ) {
-						event.preventDefault();
-					}
-				}
-			}
-			event.type = type;
-
-			// If nobody prevented the default action, do it now
-			if ( !onlyHandlers && !event.isDefaultPrevented() ) {
-
-				if ( ( !special._default ||
-					special._default.apply( eventPath.pop(), data ) === false ) &&
-					acceptData( elem ) ) {
-
-					// Call a native DOM method on the target with the same name as the event.
-					// Don't do default actions on window, that's where global variables be (#6170)
-					if ( ontype && jQuery.isFunction( elem[ type ] ) && !jQuery.isWindow( elem ) ) {
-
-						// Don't re-trigger an onFOO event when we call its FOO() method
-						tmp = elem[ ontype ];
-
-						if ( tmp ) {
-							elem[ ontype ] = null;
-						}
-
-						// Prevent re-triggering of the same event, since we already bubbled it above
-						jQuery.event.triggered = type;
-						elem[ type ]();
-						jQuery.event.triggered = undefined;
-
-						if ( tmp ) {
-							elem[ ontype ] = tmp;
-						}
-					}
-				}
-			}
-
-			return event.result;
-		},
-
-		// Piggyback on a donor event to simulate a different one
-		// Used only for `focus(in | out)` events
-		simulate: function( type, elem, event ) {
-			var e = jQuery.extend(
-				new jQuery.Event(),
-				event,
-				{
-					type: type,
-					isSimulated: true
-				}
-			);
-
-			jQuery.event.trigger( e, null, elem );
-		}
-
-	} );
-
-	jQuery.fn.extend( {
-
-		trigger: function( type, data ) {
-			return this.each( function() {
-				jQuery.event.trigger( type, data, this );
-			} );
-		},
-		triggerHandler: function( type, data ) {
-			var elem = this[ 0 ];
-			if ( elem ) {
-				return jQuery.event.trigger( type, data, elem, true );
-			}
-		}
-	} );
-
-
-	jQuery.each( ( "blur focus focusin focusout resize scroll click dblclick " +
-		"mousedown mouseup mousemove mouseover mouseout mouseenter mouseleave " +
-		"change select submit keydown keypress keyup contextmenu" ).split( " " ),
-		function( i, name ) {
-
-		// Handle event binding
-		jQuery.fn[ name ] = function( data, fn ) {
-			return arguments.length > 0 ?
-				this.on( name, null, data, fn ) :
-				this.trigger( name );
-		};
-	} );
-
-	jQuery.fn.extend( {
-		hover: function( fnOver, fnOut ) {
-			return this.mouseenter( fnOver ).mouseleave( fnOut || fnOver );
-		}
-	} );
-
-
-
-
-	support.focusin = "onfocusin" in window;
-
-
-	// Support: Firefox <=44
-	// Firefox doesn't have focus(in | out) events
-	// Related ticket - https://bugzilla.mozilla.org/show_bug.cgi?id=687787
-	//
-	// Support: Chrome <=48 - 49, Safari <=9.0 - 9.1
-	// focus(in | out) events fire after focus & blur events,
-	// which is spec violation - http://www.w3.org/TR/DOM-Level-3-Events/#events-focusevent-event-order
-	// Related ticket - https://bugs.chromium.org/p/chromium/issues/detail?id=449857
-	if ( !support.focusin ) {
-		jQuery.each( { focus: "focusin", blur: "focusout" }, function( orig, fix ) {
-
-			// Attach a single capturing handler on the document while someone wants focusin/focusout
-			var handler = function( event ) {
-				jQuery.event.simulate( fix, event.target, jQuery.event.fix( event ) );
-			};
-
-			jQuery.event.special[ fix ] = {
-				setup: function() {
-					var doc = this.ownerDocument || this,
-						attaches = dataPriv.access( doc, fix );
-
-					if ( !attaches ) {
-						doc.addEventListener( orig, handler, true );
-					}
-					dataPriv.access( doc, fix, ( attaches || 0 ) + 1 );
-				},
-				teardown: function() {
-					var doc = this.ownerDocument || this,
-						attaches = dataPriv.access( doc, fix ) - 1;
-
-					if ( !attaches ) {
-						doc.removeEventListener( orig, handler, true );
-						dataPriv.remove( doc, fix );
-
-					} else {
-						dataPriv.access( doc, fix, attaches );
-					}
-				}
-			};
-		} );
-	}
-	var location = window.location;
-
-	var nonce = jQuery.now();
-
-	var rquery = ( /\?/ );
-
-
-
-	// Cross-browser xml parsing
-	jQuery.parseXML = function( data ) {
-		var xml;
-		if ( !data || typeof data !== "string" ) {
-			return null;
-		}
-
-		// Support: IE 9 - 11 only
-		// IE throws on parseFromString with invalid input.
-		try {
-			xml = ( new window.DOMParser() ).parseFromString( data, "text/xml" );
-		} catch ( e ) {
-			xml = undefined;
-		}
-
-		if ( !xml || xml.getElementsByTagName( "parsererror" ).length ) {
-			jQuery.error( "Invalid XML: " + data );
-		}
-		return xml;
-	};
-
-
-	var
-		rbracket = /\[\]$/,
-		rCRLF = /\r?\n/g,
-		rsubmitterTypes = /^(?:submit|button|image|reset|file)$/i,
-		rsubmittable = /^(?:input|select|textarea|keygen)/i;
-
-	function buildParams( prefix, obj, traditional, add ) {
-		var name;
-
-		if ( jQuery.isArray( obj ) ) {
-
-			// Serialize array item.
-			jQuery.each( obj, function( i, v ) {
-				if ( traditional || rbracket.test( prefix ) ) {
-
-					// Treat each array item as a scalar.
-					add( prefix, v );
-
-				} else {
-
-					// Item is non-scalar (array or object), encode its numeric index.
-					buildParams(
-						prefix + "[" + ( typeof v === "object" && v != null ? i : "" ) + "]",
-						v,
-						traditional,
-						add
-					);
-				}
-			} );
-
-		} else if ( !traditional && jQuery.type( obj ) === "object" ) {
-
-			// Serialize object item.
-			for ( name in obj ) {
-				buildParams( prefix + "[" + name + "]", obj[ name ], traditional, add );
-			}
-
-		} else {
-
-			// Serialize scalar item.
-			add( prefix, obj );
-		}
-	}
-
-	// Serialize an array of form elements or a set of
-	// key/values into a query string
-	jQuery.param = function( a, traditional ) {
-		var prefix,
-			s = [],
-			add = function( key, valueOrFunction ) {
-
-				// If value is a function, invoke it and use its return value
-				var value = jQuery.isFunction( valueOrFunction ) ?
-					valueOrFunction() :
-					valueOrFunction;
-
-				s[ s.length ] = encodeURIComponent( key ) + "=" +
-					encodeURIComponent( value == null ? "" : value );
-			};
-
-		// If an array was passed in, assume that it is an array of form elements.
-		if ( jQuery.isArray( a ) || ( a.jquery && !jQuery.isPlainObject( a ) ) ) {
-
-			// Serialize the form elements
-			jQuery.each( a, function() {
-				add( this.name, this.value );
-			} );
-
-		} else {
-
-			// If traditional, encode the "old" way (the way 1.3.2 or older
-			// did it), otherwise encode params recursively.
-			for ( prefix in a ) {
-				buildParams( prefix, a[ prefix ], traditional, add );
-			}
-		}
-
-		// Return the resulting serialization
-		return s.join( "&" );
-	};
-
-	jQuery.fn.extend( {
-		serialize: function() {
-			return jQuery.param( this.serializeArray() );
-		},
-		serializeArray: function() {
-			return this.map( function() {
-
-				// Can add propHook for "elements" to filter or add form elements
-				var elements = jQuery.prop( this, "elements" );
-				return elements ? jQuery.makeArray( elements ) : this;
-			} )
-			.filter( function() {
-				var type = this.type;
-
-				// Use .is( ":disabled" ) so that fieldset[disabled] works
-				return this.name && !jQuery( this ).is( ":disabled" ) &&
-					rsubmittable.test( this.nodeName ) && !rsubmitterTypes.test( type ) &&
-					( this.checked || !rcheckableType.test( type ) );
-			} )
-			.map( function( i, elem ) {
-				var val = jQuery( this ).val();
-
-				if ( val == null ) {
-					return null;
-				}
-
-				if ( jQuery.isArray( val ) ) {
-					return jQuery.map( val, function( val ) {
-						return { name: elem.name, value: val.replace( rCRLF, "\r\n" ) };
-					} );
-				}
-
-				return { name: elem.name, value: val.replace( rCRLF, "\r\n" ) };
-			} ).get();
-		}
-	} );
-
-
-	var
-		r20 = /%20/g,
-		rhash = /#.*$/,
-		rantiCache = /([?&])_=[^&]*/,
-		rheaders = /^(.*?):[ \t]*([^\r\n]*)$/mg,
-
-		// #7653, #8125, #8152: local protocol detection
-		rlocalProtocol = /^(?:about|app|app-storage|.+-extension|file|res|widget):$/,
-		rnoContent = /^(?:GET|HEAD)$/,
-		rprotocol = /^\/\//,
-
-		/* Prefilters
-		 * 1) They are useful to introduce custom dataTypes (see ajax/jsonp.js for an example)
-		 * 2) These are called:
-		 *    - BEFORE asking for a transport
-		 *    - AFTER param serialization (s.data is a string if s.processData is true)
-		 * 3) key is the dataType
-		 * 4) the catchall symbol "*" can be used
-		 * 5) execution will start with transport dataType and THEN continue down to "*" if needed
-		 */
-		prefilters = {},
-
-		/* Transports bindings
-		 * 1) key is the dataType
-		 * 2) the catchall symbol "*" can be used
-		 * 3) selection will start with transport dataType and THEN go to "*" if needed
-		 */
-		transports = {},
-
-		// Avoid comment-prolog char sequence (#10098); must appease lint and evade compression
-		allTypes = "*/".concat( "*" ),
-
-		// Anchor tag for parsing the document origin
-		originAnchor = document.createElement( "a" );
-		originAnchor.href = location.href;
-
-	// Base "constructor" for jQuery.ajaxPrefilter and jQuery.ajaxTransport
-	function addToPrefiltersOrTransports( structure ) {
-
-		// dataTypeExpression is optional and defaults to "*"
-		return function( dataTypeExpression, func ) {
-
-			if ( typeof dataTypeExpression !== "string" ) {
-				func = dataTypeExpression;
-				dataTypeExpression = "*";
-			}
-
-			var dataType,
-				i = 0,
-				dataTypes = dataTypeExpression.toLowerCase().match( rnothtmlwhite ) || [];
-
-			if ( jQuery.isFunction( func ) ) {
-
-				// For each dataType in the dataTypeExpression
-				while ( ( dataType = dataTypes[ i++ ] ) ) {
-
-					// Prepend if requested
-					if ( dataType[ 0 ] === "+" ) {
-						dataType = dataType.slice( 1 ) || "*";
-						( structure[ dataType ] = structure[ dataType ] || [] ).unshift( func );
-
-					// Otherwise append
-					} else {
-						( structure[ dataType ] = structure[ dataType ] || [] ).push( func );
-					}
-				}
-			}
-		};
-	}
-
-	// Base inspection function for prefilters and transports
-	function inspectPrefiltersOrTransports( structure, options, originalOptions, jqXHR ) {
-
-		var inspected = {},
-			seekingTransport = ( structure === transports );
-
-		function inspect( dataType ) {
-			var selected;
-			inspected[ dataType ] = true;
-			jQuery.each( structure[ dataType ] || [], function( _, prefilterOrFactory ) {
-				var dataTypeOrTransport = prefilterOrFactory( options, originalOptions, jqXHR );
-				if ( typeof dataTypeOrTransport === "string" &&
-					!seekingTransport && !inspected[ dataTypeOrTransport ] ) {
-
-					options.dataTypes.unshift( dataTypeOrTransport );
-					inspect( dataTypeOrTransport );
-					return false;
-				} else if ( seekingTransport ) {
-					return !( selected = dataTypeOrTransport );
-				}
-			} );
-			return selected;
-		}
-
-		return inspect( options.dataTypes[ 0 ] ) || !inspected[ "*" ] && inspect( "*" );
-	}
-
-	// A special extend for ajax options
-	// that takes "flat" options (not to be deep extended)
-	// Fixes #9887
-	function ajaxExtend( target, src ) {
-		var key, deep,
-			flatOptions = jQuery.ajaxSettings.flatOptions || {};
-
-		for ( key in src ) {
-			if ( src[ key ] !== undefined ) {
-				( flatOptions[ key ] ? target : ( deep || ( deep = {} ) ) )[ key ] = src[ key ];
-			}
-		}
-		if ( deep ) {
-			jQuery.extend( true, target, deep );
-		}
-
-		return target;
-	}
-
-	/* Handles responses to an ajax request:
-	 * - finds the right dataType (mediates between content-type and expected dataType)
-	 * - returns the corresponding response
-	 */
-	function ajaxHandleResponses( s, jqXHR, responses ) {
-
-		var ct, type, finalDataType, firstDataType,
-			contents = s.contents,
-			dataTypes = s.dataTypes;
-
-		// Remove auto dataType and get content-type in the process
-		while ( dataTypes[ 0 ] === "*" ) {
-			dataTypes.shift();
-			if ( ct === undefined ) {
-				ct = s.mimeType || jqXHR.getResponseHeader( "Content-Type" );
-			}
-		}
-
-		// Check if we're dealing with a known content-type
-		if ( ct ) {
-			for ( type in contents ) {
-				if ( contents[ type ] && contents[ type ].test( ct ) ) {
-					dataTypes.unshift( type );
-					break;
-				}
-			}
-		}
-
-		// Check to see if we have a response for the expected dataType
-		if ( dataTypes[ 0 ] in responses ) {
-			finalDataType = dataTypes[ 0 ];
-		} else {
-
-			// Try convertible dataTypes
-			for ( type in responses ) {
-				if ( !dataTypes[ 0 ] || s.converters[ type + " " + dataTypes[ 0 ] ] ) {
-					finalDataType = type;
-					break;
-				}
-				if ( !firstDataType ) {
-					firstDataType = type;
-				}
-			}
-
-			// Or just use first one
-			finalDataType = finalDataType || firstDataType;
-		}
-
-		// If we found a dataType
-		// We add the dataType to the list if needed
-		// and return the corresponding response
-		if ( finalDataType ) {
-			if ( finalDataType !== dataTypes[ 0 ] ) {
-				dataTypes.unshift( finalDataType );
-			}
-			return responses[ finalDataType ];
-		}
-	}
-
-	/* Chain conversions given the request and the original response
-	 * Also sets the responseXXX fields on the jqXHR instance
-	 */
-	function ajaxConvert( s, response, jqXHR, isSuccess ) {
-		var conv2, current, conv, tmp, prev,
-			converters = {},
-
-			// Work with a copy of dataTypes in case we need to modify it for conversion
-			dataTypes = s.dataTypes.slice();
-
-		// Create converters map with lowercased keys
-		if ( dataTypes[ 1 ] ) {
-			for ( conv in s.converters ) {
-				converters[ conv.toLowerCase() ] = s.converters[ conv ];
-			}
-		}
-
-		current = dataTypes.shift();
-
-		// Convert to each sequential dataType
-		while ( current ) {
-
-			if ( s.responseFields[ current ] ) {
-				jqXHR[ s.responseFields[ current ] ] = response;
-			}
-
-			// Apply the dataFilter if provided
-			if ( !prev && isSuccess && s.dataFilter ) {
-				response = s.dataFilter( response, s.dataType );
-			}
-
-			prev = current;
-			current = dataTypes.shift();
-
-			if ( current ) {
-
-				// There's only work to do if current dataType is non-auto
-				if ( current === "*" ) {
-
-					current = prev;
-
-				// Convert response if prev dataType is non-auto and differs from current
-				} else if ( prev !== "*" && prev !== current ) {
-
-					// Seek a direct converter
-					conv = converters[ prev + " " + current ] || converters[ "* " + current ];
-
-					// If none found, seek a pair
-					if ( !conv ) {
-						for ( conv2 in converters ) {
-
-							// If conv2 outputs current
-							tmp = conv2.split( " " );
-							if ( tmp[ 1 ] === current ) {
-
-								// If prev can be converted to accepted input
-								conv = converters[ prev + " " + tmp[ 0 ] ] ||
-									converters[ "* " + tmp[ 0 ] ];
-								if ( conv ) {
-
-									// Condense equivalence converters
-									if ( conv === true ) {
-										conv = converters[ conv2 ];
-
-									// Otherwise, insert the intermediate dataType
-									} else if ( converters[ conv2 ] !== true ) {
-										current = tmp[ 0 ];
-										dataTypes.unshift( tmp[ 1 ] );
-									}
-									break;
-								}
-							}
-						}
-					}
-
-					// Apply converter (if not an equivalence)
-					if ( conv !== true ) {
-
-						// Unless errors are allowed to bubble, catch and return them
-						if ( conv && s.throws ) {
-							response = conv( response );
-						} else {
-							try {
-								response = conv( response );
-							} catch ( e ) {
-								return {
-									state: "parsererror",
-									error: conv ? e : "No conversion from " + prev + " to " + current
-								};
-							}
-						}
-					}
-				}
-			}
-		}
-
-		return { state: "success", data: response };
-	}
-
-	jQuery.extend( {
-
-		// Counter for holding the number of active queries
-		active: 0,
-
-		// Last-Modified header cache for next request
-		lastModified: {},
-		etag: {},
-
-		ajaxSettings: {
-			url: location.href,
-			type: "GET",
-			isLocal: rlocalProtocol.test( location.protocol ),
-			global: true,
-			processData: true,
-			async: true,
-			contentType: "application/x-www-form-urlencoded; charset=UTF-8",
-
-			/*
-			timeout: 0,
-			data: null,
-			dataType: null,
-			username: null,
-			password: null,
-			cache: null,
-			throws: false,
-			traditional: false,
-			headers: {},
-			*/
-
-			accepts: {
-				"*": allTypes,
-				text: "text/plain",
-				html: "text/html",
-				xml: "application/xml, text/xml",
-				json: "application/json, text/javascript"
-			},
-
-			contents: {
-				xml: /\bxml\b/,
-				html: /\bhtml/,
-				json: /\bjson\b/
-			},
-
-			responseFields: {
-				xml: "responseXML",
-				text: "responseText",
-				json: "responseJSON"
-			},
-
-			// Data converters
-			// Keys separate source (or catchall "*") and destination types with a single space
-			converters: {
-
-				// Convert anything to text
-				"* text": String,
-
-				// Text to html (true = no transformation)
-				"text html": true,
-
-				// Evaluate text as a json expression
-				"text json": JSON.parse,
-
-				// Parse text as xml
-				"text xml": jQuery.parseXML
-			},
-
-			// For options that shouldn't be deep extended:
-			// you can add your own custom options here if
-			// and when you create one that shouldn't be
-			// deep extended (see ajaxExtend)
-			flatOptions: {
-				url: true,
-				context: true
-			}
-		},
-
-		// Creates a full fledged settings object into target
-		// with both ajaxSettings and settings fields.
-		// If target is omitted, writes into ajaxSettings.
-		ajaxSetup: function( target, settings ) {
-			return settings ?
-
-				// Building a settings object
-				ajaxExtend( ajaxExtend( target, jQuery.ajaxSettings ), settings ) :
-
-				// Extending ajaxSettings
-				ajaxExtend( jQuery.ajaxSettings, target );
-		},
-
-		ajaxPrefilter: addToPrefiltersOrTransports( prefilters ),
-		ajaxTransport: addToPrefiltersOrTransports( transports ),
-
-		// Main method
-		ajax: function( url, options ) {
-
-			// If url is an object, simulate pre-1.5 signature
-			if ( typeof url === "object" ) {
-				options = url;
-				url = undefined;
-			}
-
-			// Force options to be an object
-			options = options || {};
-
-			var transport,
-
-				// URL without anti-cache param
-				cacheURL,
-
-				// Response headers
-				responseHeadersString,
-				responseHeaders,
-
-				// timeout handle
-				timeoutTimer,
-
-				// Url cleanup var
-				urlAnchor,
-
-				// Request state (becomes false upon send and true upon completion)
-				completed,
-
-				// To know if global events are to be dispatched
-				fireGlobals,
-
-				// Loop variable
-				i,
-
-				// uncached part of the url
-				uncached,
-
-				// Create the final options object
-				s = jQuery.ajaxSetup( {}, options ),
-
-				// Callbacks context
-				callbackContext = s.context || s,
-
-				// Context for global events is callbackContext if it is a DOM node or jQuery collection
-				globalEventContext = s.context &&
-					( callbackContext.nodeType || callbackContext.jquery ) ?
-						jQuery( callbackContext ) :
-						jQuery.event,
-
-				// Deferreds
-				deferred = jQuery.Deferred(),
-				completeDeferred = jQuery.Callbacks( "once memory" ),
-
-				// Status-dependent callbacks
-				statusCode = s.statusCode || {},
-
-				// Headers (they are sent all at once)
-				requestHeaders = {},
-				requestHeadersNames = {},
-
-				// Default abort message
-				strAbort = "canceled",
-
-				// Fake xhr
-				jqXHR = {
-					readyState: 0,
-
-					// Builds headers hashtable if needed
-					getResponseHeader: function( key ) {
-						var match;
-						if ( completed ) {
-							if ( !responseHeaders ) {
-								responseHeaders = {};
-								while ( ( match = rheaders.exec( responseHeadersString ) ) ) {
-									responseHeaders[ match[ 1 ].toLowerCase() ] = match[ 2 ];
-								}
-							}
-							match = responseHeaders[ key.toLowerCase() ];
-						}
-						return match == null ? null : match;
-					},
-
-					// Raw string
-					getAllResponseHeaders: function() {
-						return completed ? responseHeadersString : null;
-					},
-
-					// Caches the header
-					setRequestHeader: function( name, value ) {
-						if ( completed == null ) {
-							name = requestHeadersNames[ name.toLowerCase() ] =
-								requestHeadersNames[ name.toLowerCase() ] || name;
-							requestHeaders[ name ] = value;
-						}
-						return this;
-					},
-
-					// Overrides response content-type header
-					overrideMimeType: function( type ) {
-						if ( completed == null ) {
-							s.mimeType = type;
-						}
-						return this;
-					},
-
-					// Status-dependent callbacks
-					statusCode: function( map ) {
-						var code;
-						if ( map ) {
-							if ( completed ) {
-
-								// Execute the appropriate callbacks
-								jqXHR.always( map[ jqXHR.status ] );
-							} else {
-
-								// Lazy-add the new callbacks in a way that preserves old ones
-								for ( code in map ) {
-									statusCode[ code ] = [ statusCode[ code ], map[ code ] ];
-								}
-							}
-						}
-						return this;
-					},
-
-					// Cancel the request
-					abort: function( statusText ) {
-						var finalText = statusText || strAbort;
-						if ( transport ) {
-							transport.abort( finalText );
-						}
-						done( 0, finalText );
-						return this;
-					}
-				};
-
-			// Attach deferreds
-			deferred.promise( jqXHR );
-
-			// Add protocol if not provided (prefilters might expect it)
-			// Handle falsy url in the settings object (#10093: consistency with old signature)
-			// We also use the url parameter if available
-			s.url = ( ( url || s.url || location.href ) + "" )
-				.replace( rprotocol, location.protocol + "//" );
-
-			// Alias method option to type as per ticket #12004
-			s.type = options.method || options.type || s.method || s.type;
-
-			// Extract dataTypes list
-			s.dataTypes = ( s.dataType || "*" ).toLowerCase().match( rnothtmlwhite ) || [ "" ];
-
-			// A cross-domain request is in order when the origin doesn't match the current origin.
-			if ( s.crossDomain == null ) {
-				urlAnchor = document.createElement( "a" );
-
-				// Support: IE <=8 - 11, Edge 12 - 13
-				// IE throws exception on accessing the href property if url is malformed,
-				// e.g. http://example.com:80x/
-				try {
-					urlAnchor.href = s.url;
-
-					// Support: IE <=8 - 11 only
-					// Anchor's host property isn't correctly set when s.url is relative
-					urlAnchor.href = urlAnchor.href;
-					s.crossDomain = originAnchor.protocol + "//" + originAnchor.host !==
-						urlAnchor.protocol + "//" + urlAnchor.host;
-				} catch ( e ) {
-
-					// If there is an error parsing the URL, assume it is crossDomain,
-					// it can be rejected by the transport if it is invalid
-					s.crossDomain = true;
-				}
-			}
-
-			// Convert data if not already a string
-			if ( s.data && s.processData && typeof s.data !== "string" ) {
-				s.data = jQuery.param( s.data, s.traditional );
-			}
-
-			// Apply prefilters
-			inspectPrefiltersOrTransports( prefilters, s, options, jqXHR );
-
-			// If request was aborted inside a prefilter, stop there
-			if ( completed ) {
-				return jqXHR;
-			}
-
-			// We can fire global events as of now if asked to
-			// Don't fire events if jQuery.event is undefined in an AMD-usage scenario (#15118)
-			fireGlobals = jQuery.event && s.global;
-
-			// Watch for a new set of requests
-			if ( fireGlobals && jQuery.active++ === 0 ) {
-				jQuery.event.trigger( "ajaxStart" );
-			}
-
-			// Uppercase the type
-			s.type = s.type.toUpperCase();
-
-			// Determine if request has content
-			s.hasContent = !rnoContent.test( s.type );
-
-			// Save the URL in case we're toying with the If-Modified-Since
-			// and/or If-None-Match header later on
-			// Remove hash to simplify url manipulation
-			cacheURL = s.url.replace( rhash, "" );
-
-			// More options handling for requests with no content
-			if ( !s.hasContent ) {
-
-				// Remember the hash so we can put it back
-				uncached = s.url.slice( cacheURL.length );
-
-				// If data is available, append data to url
-				if ( s.data ) {
-					cacheURL += ( rquery.test( cacheURL ) ? "&" : "?" ) + s.data;
-
-					// #9682: remove data so that it's not used in an eventual retry
-					delete s.data;
-				}
-
-				// Add or update anti-cache param if needed
-				if ( s.cache === false ) {
-					cacheURL = cacheURL.replace( rantiCache, "$1" );
-					uncached = ( rquery.test( cacheURL ) ? "&" : "?" ) + "_=" + ( nonce++ ) + uncached;
-				}
-
-				// Put hash and anti-cache on the URL that will be requested (gh-1732)
-				s.url = cacheURL + uncached;
-
-			// Change '%20' to '+' if this is encoded form body content (gh-2658)
-			} else if ( s.data && s.processData &&
-				( s.contentType || "" ).indexOf( "application/x-www-form-urlencoded" ) === 0 ) {
-				s.data = s.data.replace( r20, "+" );
-			}
-
-			// Set the If-Modified-Since and/or If-None-Match header, if in ifModified mode.
-			if ( s.ifModified ) {
-				if ( jQuery.lastModified[ cacheURL ] ) {
-					jqXHR.setRequestHeader( "If-Modified-Since", jQuery.lastModified[ cacheURL ] );
-				}
-				if ( jQuery.etag[ cacheURL ] ) {
-					jqXHR.setRequestHeader( "If-None-Match", jQuery.etag[ cacheURL ] );
-				}
-			}
-
-			// Set the correct header, if data is being sent
-			if ( s.data && s.hasContent && s.contentType !== false || options.contentType ) {
-				jqXHR.setRequestHeader( "Content-Type", s.contentType );
-			}
-
-			// Set the Accepts header for the server, depending on the dataType
-			jqXHR.setRequestHeader(
-				"Accept",
-				s.dataTypes[ 0 ] && s.accepts[ s.dataTypes[ 0 ] ] ?
-					s.accepts[ s.dataTypes[ 0 ] ] +
-						( s.dataTypes[ 0 ] !== "*" ? ", " + allTypes + "; q=0.01" : "" ) :
-					s.accepts[ "*" ]
-			);
-
-			// Check for headers option
-			for ( i in s.headers ) {
-				jqXHR.setRequestHeader( i, s.headers[ i ] );
-			}
-
-			// Allow custom headers/mimetypes and early abort
-			if ( s.beforeSend &&
-				( s.beforeSend.call( callbackContext, jqXHR, s ) === false || completed ) ) {
-
-				// Abort if not done already and return
-				return jqXHR.abort();
-			}
-
-			// Aborting is no longer a cancellation
-			strAbort = "abort";
-
-			// Install callbacks on deferreds
-			completeDeferred.add( s.complete );
-			jqXHR.done( s.success );
-			jqXHR.fail( s.error );
-
-			// Get transport
-			transport = inspectPrefiltersOrTransports( transports, s, options, jqXHR );
-
-			// If no transport, we auto-abort
-			if ( !transport ) {
-				done( -1, "No Transport" );
-			} else {
-				jqXHR.readyState = 1;
-
-				// Send global event
-				if ( fireGlobals ) {
-					globalEventContext.trigger( "ajaxSend", [ jqXHR, s ] );
-				}
-
-				// If request was aborted inside ajaxSend, stop there
-				if ( completed ) {
-					return jqXHR;
-				}
-
-				// Timeout
-				if ( s.async && s.timeout > 0 ) {
-					timeoutTimer = window.setTimeout( function() {
-						jqXHR.abort( "timeout" );
-					}, s.timeout );
-				}
-
-				try {
-					completed = false;
-					transport.send( requestHeaders, done );
-				} catch ( e ) {
-
-					// Rethrow post-completion exceptions
-					if ( completed ) {
-						throw e;
-					}
-
-					// Propagate others as results
-					done( -1, e );
-				}
-			}
-
-			// Callback for when everything is done
-			function done( status, nativeStatusText, responses, headers ) {
-				var isSuccess, success, error, response, modified,
-					statusText = nativeStatusText;
-
-				// Ignore repeat invocations
-				if ( completed ) {
-					return;
-				}
-
-				completed = true;
-
-				// Clear timeout if it exists
-				if ( timeoutTimer ) {
-					window.clearTimeout( timeoutTimer );
-				}
-
-				// Dereference transport for early garbage collection
-				// (no matter how long the jqXHR object will be used)
-				transport = undefined;
-
-				// Cache response headers
-				responseHeadersString = headers || "";
-
-				// Set readyState
-				jqXHR.readyState = status > 0 ? 4 : 0;
-
-				// Determine if successful
-				isSuccess = status >= 200 && status < 300 || status === 304;
-
-				// Get response data
-				if ( responses ) {
-					response = ajaxHandleResponses( s, jqXHR, responses );
-				}
-
-				// Convert no matter what (that way responseXXX fields are always set)
-				response = ajaxConvert( s, response, jqXHR, isSuccess );
-
-				// If successful, handle type chaining
-				if ( isSuccess ) {
-
-					// Set the If-Modified-Since and/or If-None-Match header, if in ifModified mode.
-					if ( s.ifModified ) {
-						modified = jqXHR.getResponseHeader( "Last-Modified" );
-						if ( modified ) {
-							jQuery.lastModified[ cacheURL ] = modified;
-						}
-						modified = jqXHR.getResponseHeader( "etag" );
-						if ( modified ) {
-							jQuery.etag[ cacheURL ] = modified;
-						}
-					}
-
-					// if no content
-					if ( status === 204 || s.type === "HEAD" ) {
-						statusText = "nocontent";
-
-					// if not modified
-					} else if ( status === 304 ) {
-						statusText = "notmodified";
-
-					// If we have data, let's convert it
-					} else {
-						statusText = response.state;
-						success = response.data;
-						error = response.error;
-						isSuccess = !error;
-					}
-				} else {
-
-					// Extract error from statusText and normalize for non-aborts
-					error = statusText;
-					if ( status || !statusText ) {
-						statusText = "error";
-						if ( status < 0 ) {
-							status = 0;
-						}
-					}
-				}
-
-				// Set data for the fake xhr object
-				jqXHR.status = status;
-				jqXHR.statusText = ( nativeStatusText || statusText ) + "";
-
-				// Success/Error
-				if ( isSuccess ) {
-					deferred.resolveWith( callbackContext, [ success, statusText, jqXHR ] );
-				} else {
-					deferred.rejectWith( callbackContext, [ jqXHR, statusText, error ] );
-				}
-
-				// Status-dependent callbacks
-				jqXHR.statusCode( statusCode );
-				statusCode = undefined;
-
-				if ( fireGlobals ) {
-					globalEventContext.trigger( isSuccess ? "ajaxSuccess" : "ajaxError",
-						[ jqXHR, s, isSuccess ? success : error ] );
-				}
-
-				// Complete
-				completeDeferred.fireWith( callbackContext, [ jqXHR, statusText ] );
-
-				if ( fireGlobals ) {
-					globalEventContext.trigger( "ajaxComplete", [ jqXHR, s ] );
-
-					// Handle the global AJAX counter
-					if ( !( --jQuery.active ) ) {
-						jQuery.event.trigger( "ajaxStop" );
-					}
-				}
-			}
-
-			return jqXHR;
-		},
-
-		getJSON: function( url, data, callback ) {
-			return jQuery.get( url, data, callback, "json" );
-		},
-
-		getScript: function( url, callback ) {
-			return jQuery.get( url, undefined, callback, "script" );
-		}
-	} );
-
-	jQuery.each( [ "get", "post" ], function( i, method ) {
-		jQuery[ method ] = function( url, data, callback, type ) {
-
-			// Shift arguments if data argument was omitted
-			if ( jQuery.isFunction( data ) ) {
-				type = type || callback;
-				callback = data;
-				data = undefined;
-			}
-
-			// The url can be an options object (which then must have .url)
-			return jQuery.ajax( jQuery.extend( {
-				url: url,
-				type: method,
-				dataType: type,
-				data: data,
-				success: callback
-			}, jQuery.isPlainObject( url ) && url ) );
-		};
-	} );
-
-
-	jQuery._evalUrl = function( url ) {
-		return jQuery.ajax( {
-			url: url,
-
-			// Make this explicit, since user can override this through ajaxSetup (#11264)
-			type: "GET",
-			dataType: "script",
-			cache: true,
-			async: false,
-			global: false,
-			"throws": true
-		} );
-	};
-
-
-	jQuery.fn.extend( {
-		wrapAll: function( html ) {
-			var wrap;
-
-			if ( this[ 0 ] ) {
-				if ( jQuery.isFunction( html ) ) {
-					html = html.call( this[ 0 ] );
-				}
-
-				// The elements to wrap the target around
-				wrap = jQuery( html, this[ 0 ].ownerDocument ).eq( 0 ).clone( true );
-
-				if ( this[ 0 ].parentNode ) {
-					wrap.insertBefore( this[ 0 ] );
-				}
-
-				wrap.map( function() {
-					var elem = this;
-
-					while ( elem.firstElementChild ) {
-						elem = elem.firstElementChild;
-					}
-
-					return elem;
-				} ).append( this );
-			}
-
-			return this;
-		},
-
-		wrapInner: function( html ) {
-			if ( jQuery.isFunction( html ) ) {
-				return this.each( function( i ) {
-					jQuery( this ).wrapInner( html.call( this, i ) );
-				} );
-			}
-
-			return this.each( function() {
-				var self = jQuery( this ),
-					contents = self.contents();
-
-				if ( contents.length ) {
-					contents.wrapAll( html );
-
-				} else {
-					self.append( html );
-				}
-			} );
-		},
-
-		wrap: function( html ) {
-			var isFunction = jQuery.isFunction( html );
-
-			return this.each( function( i ) {
-				jQuery( this ).wrapAll( isFunction ? html.call( this, i ) : html );
-			} );
-		},
-
-		unwrap: function( selector ) {
-			this.parent( selector ).not( "body" ).each( function() {
-				jQuery( this ).replaceWith( this.childNodes );
-			} );
-			return this;
-		}
-	} );
-
-
-	jQuery.expr.pseudos.hidden = function( elem ) {
-		return !jQuery.expr.pseudos.visible( elem );
-	};
-	jQuery.expr.pseudos.visible = function( elem ) {
-		return !!( elem.offsetWidth || elem.offsetHeight || elem.getClientRects().length );
-	};
-
-
-
-
-	jQuery.ajaxSettings.xhr = function() {
-		try {
-			return new window.XMLHttpRequest();
-		} catch ( e ) {}
-	};
-
-	var xhrSuccessStatus = {
-
-			// File protocol always yields status code 0, assume 200
-			0: 200,
-
-			// Support: IE <=9 only
-			// #1450: sometimes IE returns 1223 when it should be 204
-			1223: 204
-		},
-		xhrSupported = jQuery.ajaxSettings.xhr();
-
-	support.cors = !!xhrSupported && ( "withCredentials" in xhrSupported );
-	support.ajax = xhrSupported = !!xhrSupported;
-
-	jQuery.ajaxTransport( function( options ) {
-		var callback, errorCallback;
-
-		// Cross domain only allowed if supported through XMLHttpRequest
-		if ( support.cors || xhrSupported && !options.crossDomain ) {
-			return {
-				send: function( headers, complete ) {
-					var i,
-						xhr = options.xhr();
-
-					xhr.open(
-						options.type,
-						options.url,
-						options.async,
-						options.username,
-						options.password
-					);
-
-					// Apply custom fields if provided
-					if ( options.xhrFields ) {
-						for ( i in options.xhrFields ) {
-							xhr[ i ] = options.xhrFields[ i ];
-						}
-					}
-
-					// Override mime type if needed
-					if ( options.mimeType && xhr.overrideMimeType ) {
-						xhr.overrideMimeType( options.mimeType );
-					}
-
-					// X-Requested-With header
-					// For cross-domain requests, seeing as conditions for a preflight are
-					// akin to a jigsaw puzzle, we simply never set it to be sure.
-					// (it can always be set on a per-request basis or even using ajaxSetup)
-					// For same-domain requests, won't change header if already provided.
-					if ( !options.crossDomain && !headers[ "X-Requested-With" ] ) {
-						headers[ "X-Requested-With" ] = "XMLHttpRequest";
-					}
-
-					// Set headers
-					for ( i in headers ) {
-						xhr.setRequestHeader( i, headers[ i ] );
-					}
-
-					// Callback
-					callback = function( type ) {
-						return function() {
-							if ( callback ) {
-								callback = errorCallback = xhr.onload =
-									xhr.onerror = xhr.onabort = xhr.onreadystatechange = null;
-
-								if ( type === "abort" ) {
-									xhr.abort();
-								} else if ( type === "error" ) {
-
-									// Support: IE <=9 only
-									// On a manual native abort, IE9 throws
-									// errors on any property access that is not readyState
-									if ( typeof xhr.status !== "number" ) {
-										complete( 0, "error" );
-									} else {
-										complete(
-
-											// File: protocol always yields status 0; see #8605, #14207
-											xhr.status,
-											xhr.statusText
-										);
-									}
-								} else {
-									complete(
-										xhrSuccessStatus[ xhr.status ] || xhr.status,
-										xhr.statusText,
-
-										// Support: IE <=9 only
-										// IE9 has no XHR2 but throws on binary (trac-11426)
-										// For XHR2 non-text, let the caller handle it (gh-2498)
-										( xhr.responseType || "text" ) !== "text"  ||
-										typeof xhr.responseText !== "string" ?
-											{ binary: xhr.response } :
-											{ text: xhr.responseText },
-										xhr.getAllResponseHeaders()
-									);
-								}
-							}
-						};
-					};
-
-					// Listen to events
-					xhr.onload = callback();
-					errorCallback = xhr.onerror = callback( "error" );
-
-					// Support: IE 9 only
-					// Use onreadystatechange to replace onabort
-					// to handle uncaught aborts
-					if ( xhr.onabort !== undefined ) {
-						xhr.onabort = errorCallback;
-					} else {
-						xhr.onreadystatechange = function() {
-
-							// Check readyState before timeout as it changes
-							if ( xhr.readyState === 4 ) {
-
-								// Allow onerror to be called first,
-								// but that will not handle a native abort
-								// Also, save errorCallback to a variable
-								// as xhr.onerror cannot be accessed
-								window.setTimeout( function() {
-									if ( callback ) {
-										errorCallback();
-									}
-								} );
-							}
-						};
-					}
-
-					// Create the abort callback
-					callback = callback( "abort" );
-
-					try {
-
-						// Do send the request (this may raise an exception)
-						xhr.send( options.hasContent && options.data || null );
-					} catch ( e ) {
-
-						// #14683: Only rethrow if this hasn't been notified as an error yet
-						if ( callback ) {
-							throw e;
-						}
-					}
-				},
-
-				abort: function() {
-					if ( callback ) {
-						callback();
-					}
-				}
-			};
-		}
-	} );
-
-
-
-
-	// Prevent auto-execution of scripts when no explicit dataType was provided (See gh-2432)
-	jQuery.ajaxPrefilter( function( s ) {
-		if ( s.crossDomain ) {
-			s.contents.script = false;
-		}
-	} );
-
-	// Install script dataType
-	jQuery.ajaxSetup( {
-		accepts: {
-			script: "text/javascript, application/javascript, " +
-				"application/ecmascript, application/x-ecmascript"
-		},
-		contents: {
-			script: /\b(?:java|ecma)script\b/
-		},
-		converters: {
-			"text script": function( text ) {
-				jQuery.globalEval( text );
-				return text;
-			}
-		}
-	} );
-
-	// Handle cache's special case and crossDomain
-	jQuery.ajaxPrefilter( "script", function( s ) {
-		if ( s.cache === undefined ) {
-			s.cache = false;
-		}
-		if ( s.crossDomain ) {
-			s.type = "GET";
-		}
-	} );
-
-	// Bind script tag hack transport
-	jQuery.ajaxTransport( "script", function( s ) {
-
-		// This transport only deals with cross domain requests
-		if ( s.crossDomain ) {
-			var script, callback;
-			return {
-				send: function( _, complete ) {
-					script = jQuery( "<script>" ).prop( {
-						charset: s.scriptCharset,
-						src: s.url
-					} ).on(
-						"load error",
-						callback = function( evt ) {
-							script.remove();
-							callback = null;
-							if ( evt ) {
-								complete( evt.type === "error" ? 404 : 200, evt.type );
-							}
-						}
-					);
-
-					// Use native DOM manipulation to avoid our domManip AJAX trickery
-					document.head.appendChild( script[ 0 ] );
-				},
-				abort: function() {
-					if ( callback ) {
-						callback();
-					}
-				}
-			};
-		}
-	} );
-
-
-
-
-	var oldCallbacks = [],
-		rjsonp = /(=)\?(?=&|$)|\?\?/;
-
-	// Default jsonp settings
-	jQuery.ajaxSetup( {
-		jsonp: "callback",
-		jsonpCallback: function() {
-			var callback = oldCallbacks.pop() || ( jQuery.expando + "_" + ( nonce++ ) );
-			this[ callback ] = true;
-			return callback;
-		}
-	} );
-
-	// Detect, normalize options and install callbacks for jsonp requests
-	jQuery.ajaxPrefilter( "json jsonp", function( s, originalSettings, jqXHR ) {
-
-		var callbackName, overwritten, responseContainer,
-			jsonProp = s.jsonp !== false && ( rjsonp.test( s.url ) ?
-				"url" :
-				typeof s.data === "string" &&
-					( s.contentType || "" )
-						.indexOf( "application/x-www-form-urlencoded" ) === 0 &&
-					rjsonp.test( s.data ) && "data"
-			);
-
-		// Handle iff the expected data type is "jsonp" or we have a parameter to set
-		if ( jsonProp || s.dataTypes[ 0 ] === "jsonp" ) {
-
-			// Get callback name, remembering preexisting value associated with it
-			callbackName = s.jsonpCallback = jQuery.isFunction( s.jsonpCallback ) ?
-				s.jsonpCallback() :
-				s.jsonpCallback;
-
-			// Insert callback into url or form data
-			if ( jsonProp ) {
-				s[ jsonProp ] = s[ jsonProp ].replace( rjsonp, "$1" + callbackName );
-			} else if ( s.jsonp !== false ) {
-				s.url += ( rquery.test( s.url ) ? "&" : "?" ) + s.jsonp + "=" + callbackName;
-			}
-
-			// Use data converter to retrieve json after script execution
-			s.converters[ "script json" ] = function() {
-				if ( !responseContainer ) {
-					jQuery.error( callbackName + " was not called" );
-				}
-				return responseContainer[ 0 ];
-			};
-
-			// Force json dataType
-			s.dataTypes[ 0 ] = "json";
-
-			// Install callback
-			overwritten = window[ callbackName ];
-			window[ callbackName ] = function() {
-				responseContainer = arguments;
-			};
-
-			// Clean-up function (fires after converters)
-			jqXHR.always( function() {
-
-				// If previous value didn't exist - remove it
-				if ( overwritten === undefined ) {
-					jQuery( window ).removeProp( callbackName );
-
-				// Otherwise restore preexisting value
-				} else {
-					window[ callbackName ] = overwritten;
-				}
-
-				// Save back as free
-				if ( s[ callbackName ] ) {
-
-					// Make sure that re-using the options doesn't screw things around
-					s.jsonpCallback = originalSettings.jsonpCallback;
-
-					// Save the callback name for future use
-					oldCallbacks.push( callbackName );
-				}
-
-				// Call if it was a function and we have a response
-				if ( responseContainer && jQuery.isFunction( overwritten ) ) {
-					overwritten( responseContainer[ 0 ] );
-				}
-
-				responseContainer = overwritten = undefined;
-			} );
-
-			// Delegate to script
-			return "script";
-		}
-	} );
-
-
-
-
-	// Support: Safari 8 only
-	// In Safari 8 documents created via document.implementation.createHTMLDocument
-	// collapse sibling forms: the second one becomes a child of the first one.
-	// Because of that, this security measure has to be disabled in Safari 8.
-	// https://bugs.webkit.org/show_bug.cgi?id=137337
-	support.createHTMLDocument = ( function() {
-		var body = document.implementation.createHTMLDocument( "" ).body;
-		body.innerHTML = "<form></form><form></form>";
-		return body.childNodes.length === 2;
-	} )();
-
-
-	// Argument "data" should be string of html
-	// context (optional): If specified, the fragment will be created in this context,
-	// defaults to document
-	// keepScripts (optional): If true, will include scripts passed in the html string
-	jQuery.parseHTML = function( data, context, keepScripts ) {
-		if ( typeof data !== "string" ) {
-			return [];
-		}
-		if ( typeof context === "boolean" ) {
-			keepScripts = context;
-			context = false;
-		}
-
-		var base, parsed, scripts;
-
-		if ( !context ) {
-
-			// Stop scripts or inline event handlers from being executed immediately
-			// by using document.implementation
-			if ( support.createHTMLDocument ) {
-				context = document.implementation.createHTMLDocument( "" );
-
-				// Set the base href for the created document
-				// so any parsed elements with URLs
-				// are based on the document's URL (gh-2965)
-				base = context.createElement( "base" );
-				base.href = document.location.href;
-				context.head.appendChild( base );
-			} else {
-				context = document;
-			}
-		}
-
-		parsed = rsingleTag.exec( data );
-		scripts = !keepScripts && [];
-
-		// Single tag
-		if ( parsed ) {
-			return [ context.createElement( parsed[ 1 ] ) ];
-		}
-
-		parsed = buildFragment( [ data ], context, scripts );
-
-		if ( scripts && scripts.length ) {
-			jQuery( scripts ).remove();
-		}
-
-		return jQuery.merge( [], parsed.childNodes );
-	};
-
-
-	/**
-	 * Load a url into a page
-	 */
-	jQuery.fn.load = function( url, params, callback ) {
-		var selector, type, response,
-			self = this,
-			off = url.indexOf( " " );
-
-		if ( off > -1 ) {
-			selector = stripAndCollapse( url.slice( off ) );
-			url = url.slice( 0, off );
-		}
-
-		// If it's a function
-		if ( jQuery.isFunction( params ) ) {
-
-			// We assume that it's the callback
-			callback = params;
-			params = undefined;
-
-		// Otherwise, build a param string
-		} else if ( params && typeof params === "object" ) {
-			type = "POST";
-		}
-
-		// If we have elements to modify, make the request
-		if ( self.length > 0 ) {
-			jQuery.ajax( {
-				url: url,
-
-				// If "type" variable is undefined, then "GET" method will be used.
-				// Make value of this field explicit since
-				// user can override it through ajaxSetup method
-				type: type || "GET",
-				dataType: "html",
-				data: params
-			} ).done( function( responseText ) {
-
-				// Save response for use in complete callback
-				response = arguments;
-
-				self.html( selector ?
-
-					// If a selector was specified, locate the right elements in a dummy div
-					// Exclude scripts to avoid IE 'Permission Denied' errors
-					jQuery( "<div>" ).append( jQuery.parseHTML( responseText ) ).find( selector ) :
-
-					// Otherwise use the full result
-					responseText );
-
-			// If the request succeeds, this function gets "data", "status", "jqXHR"
-			// but they are ignored because response was set above.
-			// If it fails, this function gets "jqXHR", "status", "error"
-			} ).always( callback && function( jqXHR, status ) {
-				self.each( function() {
-					callback.apply( this, response || [ jqXHR.responseText, status, jqXHR ] );
-				} );
-			} );
-		}
-
-		return this;
-	};
-
-
-
-
-	// Attach a bunch of functions for handling common AJAX events
-	jQuery.each( [
-		"ajaxStart",
-		"ajaxStop",
-		"ajaxComplete",
-		"ajaxError",
-		"ajaxSuccess",
-		"ajaxSend"
-	], function( i, type ) {
-		jQuery.fn[ type ] = function( fn ) {
-			return this.on( type, fn );
-		};
-	} );
-
-
-
-
-	jQuery.expr.pseudos.animated = function( elem ) {
-		return jQuery.grep( jQuery.timers, function( fn ) {
-			return elem === fn.elem;
-		} ).length;
-	};
-
-
-
-
-	/**
-	 * Gets a window from an element
-	 */
-	function getWindow( elem ) {
-		return jQuery.isWindow( elem ) ? elem : elem.nodeType === 9 && elem.defaultView;
-	}
-
-	jQuery.offset = {
-		setOffset: function( elem, options, i ) {
-			var curPosition, curLeft, curCSSTop, curTop, curOffset, curCSSLeft, calculatePosition,
-				position = jQuery.css( elem, "position" ),
-				curElem = jQuery( elem ),
-				props = {};
-
-			// Set position first, in-case top/left are set even on static elem
-			if ( position === "static" ) {
-				elem.style.position = "relative";
-			}
-
-			curOffset = curElem.offset();
-			curCSSTop = jQuery.css( elem, "top" );
-			curCSSLeft = jQuery.css( elem, "left" );
-			calculatePosition = ( position === "absolute" || position === "fixed" ) &&
-				( curCSSTop + curCSSLeft ).indexOf( "auto" ) > -1;
-
-			// Need to be able to calculate position if either
-			// top or left is auto and position is either absolute or fixed
-			if ( calculatePosition ) {
-				curPosition = curElem.position();
-				curTop = curPosition.top;
-				curLeft = curPosition.left;
-
-			} else {
-				curTop = parseFloat( curCSSTop ) || 0;
-				curLeft = parseFloat( curCSSLeft ) || 0;
-			}
-
-			if ( jQuery.isFunction( options ) ) {
-
-				// Use jQuery.extend here to allow modification of coordinates argument (gh-1848)
-				options = options.call( elem, i, jQuery.extend( {}, curOffset ) );
-			}
-
-			if ( options.top != null ) {
-				props.top = ( options.top - curOffset.top ) + curTop;
-			}
-			if ( options.left != null ) {
-				props.left = ( options.left - curOffset.left ) + curLeft;
-			}
-
-			if ( "using" in options ) {
-				options.using.call( elem, props );
-
-			} else {
-				curElem.css( props );
-			}
-		}
-	};
-
-	jQuery.fn.extend( {
-		offset: function( options ) {
-
-			// Preserve chaining for setter
-			if ( arguments.length ) {
-				return options === undefined ?
-					this :
-					this.each( function( i ) {
-						jQuery.offset.setOffset( this, options, i );
-					} );
-			}
-
-			var docElem, win, rect, doc,
-				elem = this[ 0 ];
-
-			if ( !elem ) {
-				return;
-			}
-
-			// Support: IE <=11 only
-			// Running getBoundingClientRect on a
-			// disconnected node in IE throws an error
-			if ( !elem.getClientRects().length ) {
-				return { top: 0, left: 0 };
-			}
-
-			rect = elem.getBoundingClientRect();
-
-			// Make sure element is not hidden (display: none)
-			if ( rect.width || rect.height ) {
-				doc = elem.ownerDocument;
-				win = getWindow( doc );
-				docElem = doc.documentElement;
-
-				return {
-					top: rect.top + win.pageYOffset - docElem.clientTop,
-					left: rect.left + win.pageXOffset - docElem.clientLeft
-				};
-			}
-
-			// Return zeros for disconnected and hidden elements (gh-2310)
-			return rect;
-		},
-
-		position: function() {
-			if ( !this[ 0 ] ) {
-				return;
-			}
-
-			var offsetParent, offset,
-				elem = this[ 0 ],
-				parentOffset = { top: 0, left: 0 };
-
-			// Fixed elements are offset from window (parentOffset = {top:0, left: 0},
-			// because it is its only offset parent
-			if ( jQuery.css( elem, "position" ) === "fixed" ) {
-
-				// Assume getBoundingClientRect is there when computed position is fixed
-				offset = elem.getBoundingClientRect();
-
-			} else {
-
-				// Get *real* offsetParent
-				offsetParent = this.offsetParent();
-
-				// Get correct offsets
-				offset = this.offset();
-				if ( !jQuery.nodeName( offsetParent[ 0 ], "html" ) ) {
-					parentOffset = offsetParent.offset();
-				}
-
-				// Add offsetParent borders
-				parentOffset = {
-					top: parentOffset.top + jQuery.css( offsetParent[ 0 ], "borderTopWidth", true ),
-					left: parentOffset.left + jQuery.css( offsetParent[ 0 ], "borderLeftWidth", true )
-				};
-			}
-
-			// Subtract parent offsets and element margins
-			return {
-				top: offset.top - parentOffset.top - jQuery.css( elem, "marginTop", true ),
-				left: offset.left - parentOffset.left - jQuery.css( elem, "marginLeft", true )
-			};
-		},
-
-		// This method will return documentElement in the following cases:
-		// 1) For the element inside the iframe without offsetParent, this method will return
-		//    documentElement of the parent window
-		// 2) For the hidden or detached element
-		// 3) For body or html element, i.e. in case of the html node - it will return itself
-		//
-		// but those exceptions were never presented as a real life use-cases
-		// and might be considered as more preferable results.
-		//
-		// This logic, however, is not guaranteed and can change at any point in the future
-		offsetParent: function() {
-			return this.map( function() {
-				var offsetParent = this.offsetParent;
-
-				while ( offsetParent && jQuery.css( offsetParent, "position" ) === "static" ) {
-					offsetParent = offsetParent.offsetParent;
-				}
-
-				return offsetParent || documentElement;
-			} );
-		}
-	} );
-
-	// Create scrollLeft and scrollTop methods
-	jQuery.each( { scrollLeft: "pageXOffset", scrollTop: "pageYOffset" }, function( method, prop ) {
-		var top = "pageYOffset" === prop;
-
-		jQuery.fn[ method ] = function( val ) {
-			return access( this, function( elem, method, val ) {
-				var win = getWindow( elem );
-
-				if ( val === undefined ) {
-					return win ? win[ prop ] : elem[ method ];
-				}
-
-				if ( win ) {
-					win.scrollTo(
-						!top ? val : win.pageXOffset,
-						top ? val : win.pageYOffset
-					);
-
-				} else {
-					elem[ method ] = val;
-				}
-			}, method, val, arguments.length );
-		};
-	} );
-
-	// Support: Safari <=7 - 9.1, Chrome <=37 - 49
-	// Add the top/left cssHooks using jQuery.fn.position
-	// Webkit bug: https://bugs.webkit.org/show_bug.cgi?id=29084
-	// Blink bug: https://bugs.chromium.org/p/chromium/issues/detail?id=589347
-	// getComputedStyle returns percent when specified for top/left/bottom/right;
-	// rather than make the css module depend on the offset module, just check for it here
-	jQuery.each( [ "top", "left" ], function( i, prop ) {
-		jQuery.cssHooks[ prop ] = addGetHookIf( support.pixelPosition,
-			function( elem, computed ) {
-				if ( computed ) {
-					computed = curCSS( elem, prop );
-
-					// If curCSS returns percentage, fallback to offset
-					return rnumnonpx.test( computed ) ?
-						jQuery( elem ).position()[ prop ] + "px" :
-						computed;
-				}
-			}
-		);
-	} );
-
-
-	// Create innerHeight, innerWidth, height, width, outerHeight and outerWidth methods
-	jQuery.each( { Height: "height", Width: "width" }, function( name, type ) {
-		jQuery.each( { padding: "inner" + name, content: type, "": "outer" + name },
-			function( defaultExtra, funcName ) {
-
-			// Margin is only for outerHeight, outerWidth
-			jQuery.fn[ funcName ] = function( margin, value ) {
-				var chainable = arguments.length && ( defaultExtra || typeof margin !== "boolean" ),
-					extra = defaultExtra || ( margin === true || value === true ? "margin" : "border" );
-
-				return access( this, function( elem, type, value ) {
-					var doc;
-
-					if ( jQuery.isWindow( elem ) ) {
-
-						// $( window ).outerWidth/Height return w/h including scrollbars (gh-1729)
-						return funcName.indexOf( "outer" ) === 0 ?
-							elem[ "inner" + name ] :
-							elem.document.documentElement[ "client" + name ];
-					}
-
-					// Get document width or height
-					if ( elem.nodeType === 9 ) {
-						doc = elem.documentElement;
-
-						// Either scroll[Width/Height] or offset[Width/Height] or client[Width/Height],
-						// whichever is greatest
-						return Math.max(
-							elem.body[ "scroll" + name ], doc[ "scroll" + name ],
-							elem.body[ "offset" + name ], doc[ "offset" + name ],
-							doc[ "client" + name ]
-						);
-					}
-
-					return value === undefined ?
-
-						// Get width or height on the element, requesting but not forcing parseFloat
-						jQuery.css( elem, type, extra ) :
-
-						// Set width or height on the element
-						jQuery.style( elem, type, value, extra );
-				}, type, chainable ? margin : undefined, chainable );
-			};
-		} );
-	} );
-
-
-	jQuery.fn.extend( {
-
-		bind: function( types, data, fn ) {
-			return this.on( types, null, data, fn );
-		},
-		unbind: function( types, fn ) {
-			return this.off( types, null, fn );
-		},
-
-		delegate: function( selector, types, data, fn ) {
-			return this.on( types, selector, data, fn );
-		},
-		undelegate: function( selector, types, fn ) {
-
-			// ( namespace ) or ( selector, types [, fn] )
-			return arguments.length === 1 ?
-				this.off( selector, "**" ) :
-				this.off( types, selector || "**", fn );
-		}
-	} );
-
-	jQuery.parseJSON = JSON.parse;
-
-
-
-
-	// Register as a named AMD module, since jQuery can be concatenated with other
-	// files that may use define, but not via a proper concatenation script that
-	// understands anonymous AMD modules. A named AMD is safest and most robust
-	// way to register. Lowercase jquery is used because AMD module names are
-	// derived from file names, and jQuery is normally delivered in a lowercase
-	// file name. Do this after creating the global so that if an AMD module wants
-	// to call noConflict to hide this version of jQuery, it will work.
-
-	// Note that for maximum portability, libraries that are not jQuery should
-	// declare themselves as anonymous modules, and avoid setting a global if an
-	// AMD loader is present. jQuery is a special case. For more information, see
-	// https://github.com/jrburke/requirejs/wiki/Updating-existing-libraries#wiki-anon
-
-	if ( true ) {
-		!(__WEBPACK_AMD_DEFINE_ARRAY__ = [], __WEBPACK_AMD_DEFINE_RESULT__ = function() {
-			return jQuery;
-		}.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
-	}
-
-
-
-
-	var
-
-		// Map over jQuery in case of overwrite
-		_jQuery = window.jQuery,
-
-		// Map over the $ in case of overwrite
-		_$ = window.$;
-
-	jQuery.noConflict = function( deep ) {
-		if ( window.$ === jQuery ) {
-			window.$ = _$;
-		}
-
-		if ( deep && window.jQuery === jQuery ) {
-			window.jQuery = _jQuery;
-		}
-
-		return jQuery;
-	};
-
-	// Expose jQuery and $ identifiers, even in AMD
-	// (#7102#comment:10, https://github.com/jquery/jquery/pull/557)
-	// and CommonJS for browser emulators (#13566)
-	if ( !noGlobal ) {
-		window.jQuery = window.$ = jQuery;
-	}
-
-
-
-
-
-	return jQuery;
-	} );
-
-
-/***/ },
-/* 187 */
-/***/ function(module, exports, __webpack_require__) {
-
-	// style-loader: Adds some css to the DOM by adding a <style> tag
-
-	// load the styles
-	var content = __webpack_require__(188);
-	if(typeof content === 'string') content = [[module.id, content, '']];
-	// add the styles to the DOM
-	var update = __webpack_require__(190)(content, {});
-	if(content.locals) module.exports = content.locals;
-	// Hot Module Replacement
-	if(true) {
-		// When the styles change, update the <style> tags
-		if(!content.locals) {
-			module.hot.accept(188, function() {
-				var newContent = __webpack_require__(188);
-				if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
-				update(newContent);
-			});
-		}
-		// When the module is disposed, remove the <style> tags
-		module.hot.dispose(function() { update(); });
-	}
-
-/***/ },
-/* 188 */
-/***/ function(module, exports, __webpack_require__) {
-
-	exports = module.exports = __webpack_require__(189)();
-	// imports
-
-
-	// module
-	exports.push([module.id, "body {\n  -webkit-overflow-scrolling: touch;\n}\nul,\nli {\n  list-style: none;\n}\n.rmc-indexed-list-quick-search-bar {\n  position: fixed;\n  top: 0;\n  right: 0;\n  z-index: 1999;\n  text-align: center;\n  font-size: 12px;\n}\n.rmc-indexed-list-quick-search-bar li {\n  padding: 5px 10px;\n}\n.rmc-indexed-list-quick-search-bar-over {\n  background-color: rgba(128, 128, 128, 0.2);\n}\n.rmc-indexed-list-qsb-moving {\n  overflow: hidden;\n}\n.zscroller-scrollbar-y {\n  position: absolute;\n  z-index: 9999;\n  width: 7px;\n  bottom: 2px;\n  top: 2px;\n  right: 1px;\n  overflow: hidden;\n  transform: translateZ(0px);\n  transition-property: opacity;\n  transition-duration: 250ms;\n  opacity: 0;\n}\n.zscroller-indicator-y {\n  box-sizing: border-box;\n  position: absolute;\n  border: 1px solid rgba(255, 255, 255, 0.901961);\n  border-radius: 3px;\n  width: 100%;\n  display: block;\n  background: rgba(0, 0, 0, 0.498039);\n}\n.zscroller-scrollbar-x {\n  position: absolute;\n  z-index: 9999;\n  height: 7px;\n  left: 2px;\n  right: 2px;\n  bottom: 1px;\n  overflow: hidden;\n  transform: translateZ(0px);\n  transition-property: opacity;\n  transition-duration: 250ms;\n  opacity: 0;\n}\n.zscroller-indicator-x {\n  box-sizing: border-box;\n  position: absolute;\n  border: 1px solid rgba(255, 255, 255, 0.901961);\n  border-radius: 3px;\n  height: 100%;\n  display: block;\n  background: rgba(0, 0, 0, 0.498039);\n}\n.list-view-refresh-control {\n  position: relative;\n  overflow: hidden;\n  user-select: none;\n}\n.list-view-refresh-control-content {\n  transform-origin: left top;\n  transform: translateZ(0);\n}\n.list-view-refresh-control-ptr {\n  color: grey;\n  text-align: center;\n  height: 50px;\n  margin-top: -50px;\n  overflow: hidden;\n}\n.list-view-refresh-control-ptr-icon {\n  display: block;\n}\n.list-view-refresh-control-ptr-loading {\n  display: none;\n}\n.list-view-refresh-control-loading .list-view-refresh-control-ptr-icon {\n  display: none;\n}\n.list-view-refresh-control-loading .list-view-refresh-control-ptr-loading {\n  display: block;\n}\n.list-view-refresh-control-pull {\n  display: block;\n}\n.list-view-refresh-control-release {\n  display: none;\n}\n.list-view-refresh-control-active .list-view-refresh-control-pull {\n  display: none;\n}\n.list-view-refresh-control-active .list-view-refresh-control-release {\n  display: block;\n}\n", ""]);
-
-	// exports
-
-
-/***/ },
-/* 189 */
-/***/ function(module, exports) {
-
-	/*
-		MIT License http://www.opensource.org/licenses/mit-license.php
-		Author Tobias Koppers @sokra
-	*/
-	// css base code, injected by the css-loader
-	module.exports = function() {
-		var list = [];
-
-		// return the list of modules as css string
-		list.toString = function toString() {
-			var result = [];
-			for(var i = 0; i < this.length; i++) {
-				var item = this[i];
-				if(item[2]) {
-					result.push("@media " + item[2] + "{" + item[1] + "}");
-				} else {
-					result.push(item[1]);
-				}
-			}
-			return result.join("");
-		};
-
-		// import a list of modules into the list
-		list.i = function(modules, mediaQuery) {
-			if(typeof modules === "string")
-				modules = [[null, modules, ""]];
-			var alreadyImportedModules = {};
-			for(var i = 0; i < this.length; i++) {
-				var id = this[i][0];
-				if(typeof id === "number")
-					alreadyImportedModules[id] = true;
-			}
-			for(i = 0; i < modules.length; i++) {
-				var item = modules[i];
-				// skip already imported module
-				// this implementation is not 100% perfect for weird media query combinations
-				//  when a module is imported multiple times with different media queries.
-				//  I hope this will never occur (Hey this way we have smaller bundles)
-				if(typeof item[0] !== "number" || !alreadyImportedModules[item[0]]) {
-					if(mediaQuery && !item[2]) {
-						item[2] = mediaQuery;
-					} else if(mediaQuery) {
-						item[2] = "(" + item[2] + ") and (" + mediaQuery + ")";
-					}
-					list.push(item);
-				}
-			}
-		};
-		return list;
-	};
-
-
-/***/ },
-/* 190 */
-/***/ function(module, exports, __webpack_require__) {
-
-	/*
-		MIT License http://www.opensource.org/licenses/mit-license.php
-		Author Tobias Koppers @sokra
-	*/
-	var stylesInDom = {},
-		memoize = function(fn) {
-			var memo;
-			return function () {
-				if (typeof memo === "undefined") memo = fn.apply(this, arguments);
-				return memo;
-			};
-		},
-		isOldIE = memoize(function() {
-			return /msie [6-9]\b/.test(window.navigator.userAgent.toLowerCase());
-		}),
-		getHeadElement = memoize(function () {
-			return document.head || document.getElementsByTagName("head")[0];
-		}),
-		singletonElement = null,
-		singletonCounter = 0,
-		styleElementsInsertedAtTop = [];
-
-	module.exports = function(list, options) {
-		if(false) {
-			if(typeof document !== "object") throw new Error("The style-loader cannot be used in a non-browser environment");
-		}
-
-		options = options || {};
-		// Force single-tag solution on IE6-9, which has a hard limit on the # of <style>
-		// tags it will allow on a page
-		if (typeof options.singleton === "undefined") options.singleton = isOldIE();
-
-		// By default, add <style> tags to the bottom of <head>.
-		if (typeof options.insertAt === "undefined") options.insertAt = "bottom";
-
-		var styles = listToStyles(list);
-		addStylesToDom(styles, options);
-
-		return function update(newList) {
-			var mayRemove = [];
-			for(var i = 0; i < styles.length; i++) {
-				var item = styles[i];
-				var domStyle = stylesInDom[item.id];
-				domStyle.refs--;
-				mayRemove.push(domStyle);
-			}
-			if(newList) {
-				var newStyles = listToStyles(newList);
-				addStylesToDom(newStyles, options);
-			}
-			for(var i = 0; i < mayRemove.length; i++) {
-				var domStyle = mayRemove[i];
-				if(domStyle.refs === 0) {
-					for(var j = 0; j < domStyle.parts.length; j++)
-						domStyle.parts[j]();
-					delete stylesInDom[domStyle.id];
-				}
-			}
-		};
-	}
-
-	function addStylesToDom(styles, options) {
-		for(var i = 0; i < styles.length; i++) {
-			var item = styles[i];
-			var domStyle = stylesInDom[item.id];
-			if(domStyle) {
-				domStyle.refs++;
-				for(var j = 0; j < domStyle.parts.length; j++) {
-					domStyle.parts[j](item.parts[j]);
-				}
-				for(; j < item.parts.length; j++) {
-					domStyle.parts.push(addStyle(item.parts[j], options));
-				}
-			} else {
-				var parts = [];
-				for(var j = 0; j < item.parts.length; j++) {
-					parts.push(addStyle(item.parts[j], options));
-				}
-				stylesInDom[item.id] = {id: item.id, refs: 1, parts: parts};
-			}
-		}
-	}
-
-	function listToStyles(list) {
-		var styles = [];
-		var newStyles = {};
-		for(var i = 0; i < list.length; i++) {
-			var item = list[i];
-			var id = item[0];
-			var css = item[1];
-			var media = item[2];
-			var sourceMap = item[3];
-			var part = {css: css, media: media, sourceMap: sourceMap};
-			if(!newStyles[id])
-				styles.push(newStyles[id] = {id: id, parts: [part]});
-			else
-				newStyles[id].parts.push(part);
-		}
-		return styles;
-	}
-
-	function insertStyleElement(options, styleElement) {
-		var head = getHeadElement();
-		var lastStyleElementInsertedAtTop = styleElementsInsertedAtTop[styleElementsInsertedAtTop.length - 1];
-		if (options.insertAt === "top") {
-			if(!lastStyleElementInsertedAtTop) {
-				head.insertBefore(styleElement, head.firstChild);
-			} else if(lastStyleElementInsertedAtTop.nextSibling) {
-				head.insertBefore(styleElement, lastStyleElementInsertedAtTop.nextSibling);
-			} else {
-				head.appendChild(styleElement);
-			}
-			styleElementsInsertedAtTop.push(styleElement);
-		} else if (options.insertAt === "bottom") {
-			head.appendChild(styleElement);
-		} else {
-			throw new Error("Invalid value for parameter 'insertAt'. Must be 'top' or 'bottom'.");
-		}
-	}
-
-	function removeStyleElement(styleElement) {
-		styleElement.parentNode.removeChild(styleElement);
-		var idx = styleElementsInsertedAtTop.indexOf(styleElement);
-		if(idx >= 0) {
-			styleElementsInsertedAtTop.splice(idx, 1);
-		}
-	}
-
-	function createStyleElement(options) {
-		var styleElement = document.createElement("style");
-		styleElement.type = "text/css";
-		insertStyleElement(options, styleElement);
-		return styleElement;
-	}
-
-	function createLinkElement(options) {
-		var linkElement = document.createElement("link");
-		linkElement.rel = "stylesheet";
-		insertStyleElement(options, linkElement);
-		return linkElement;
-	}
-
-	function addStyle(obj, options) {
-		var styleElement, update, remove;
-
-		if (options.singleton) {
-			var styleIndex = singletonCounter++;
-			styleElement = singletonElement || (singletonElement = createStyleElement(options));
-			update = applyToSingletonTag.bind(null, styleElement, styleIndex, false);
-			remove = applyToSingletonTag.bind(null, styleElement, styleIndex, true);
-		} else if(obj.sourceMap &&
-			typeof URL === "function" &&
-			typeof URL.createObjectURL === "function" &&
-			typeof URL.revokeObjectURL === "function" &&
-			typeof Blob === "function" &&
-			typeof btoa === "function") {
-			styleElement = createLinkElement(options);
-			update = updateLink.bind(null, styleElement);
-			remove = function() {
-				removeStyleElement(styleElement);
-				if(styleElement.href)
-					URL.revokeObjectURL(styleElement.href);
-			};
-		} else {
-			styleElement = createStyleElement(options);
-			update = applyToTag.bind(null, styleElement);
-			remove = function() {
-				removeStyleElement(styleElement);
-			};
-		}
-
-		update(obj);
-
-		return function updateStyle(newObj) {
-			if(newObj) {
-				if(newObj.css === obj.css && newObj.media === obj.media && newObj.sourceMap === obj.sourceMap)
-					return;
-				update(obj = newObj);
-			} else {
-				remove();
-			}
-		};
-	}
-
-	var replaceText = (function () {
-		var textStore = [];
-
-		return function (index, replacement) {
-			textStore[index] = replacement;
-			return textStore.filter(Boolean).join('\n');
-		};
-	})();
-
-	function applyToSingletonTag(styleElement, index, remove, obj) {
-		var css = remove ? "" : obj.css;
-
-		if (styleElement.styleSheet) {
-			styleElement.styleSheet.cssText = replaceText(index, css);
-		} else {
-			var cssNode = document.createTextNode(css);
-			var childNodes = styleElement.childNodes;
-			if (childNodes[index]) styleElement.removeChild(childNodes[index]);
-			if (childNodes.length) {
-				styleElement.insertBefore(cssNode, childNodes[index]);
-			} else {
-				styleElement.appendChild(cssNode);
-			}
-		}
-	}
-
-	function applyToTag(styleElement, obj) {
-		var css = obj.css;
-		var media = obj.media;
-
-		if(media) {
-			styleElement.setAttribute("media", media)
-		}
-
-		if(styleElement.styleSheet) {
-			styleElement.styleSheet.cssText = css;
-		} else {
-			while(styleElement.firstChild) {
-				styleElement.removeChild(styleElement.firstChild);
-			}
-			styleElement.appendChild(document.createTextNode(css));
-		}
-	}
-
-	function updateLink(linkElement, obj) {
-		var css = obj.css;
-		var sourceMap = obj.sourceMap;
-
-		if(sourceMap) {
-			// http://stackoverflow.com/a/26603875
-			css += "\n/*# sourceMappingURL=data:application/json;base64," + btoa(unescape(encodeURIComponent(JSON.stringify(sourceMap)))) + " */";
-		}
-
-		var blob = new Blob([css], { type: "text/css" });
-
-		var oldSrc = linkElement.href;
-
-		linkElement.href = URL.createObjectURL(blob);
-
-		if(oldSrc)
-			URL.revokeObjectURL(oldSrc);
-	}
-
 
 /***/ }
 /******/ ]);

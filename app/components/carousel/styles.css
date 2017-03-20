@@ -1,6 +1,3 @@
-html,body{
-  overflow-x:hidden;
-}
 .f-carousel {
   width: 100%;
   min-height: 100px;
@@ -175,19 +172,19 @@ html,body{
   content: "•";
   width: 20px;
   height: 20px;
-  font-size: 20px;
+  font-size: 18px;
   font-family: arial, sans-serif;
   line-height: 20px;
   text-align: center;
   color: gray;
   transition: all .3s;
-  opacity: 0.75;
+  opacity: 0.25;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 .f-carousel .slick-dots li.slick-active button:before {
-  color: white;
-  opacity: 1;
+  color: black;
+  opacity: 0.75;
 }
 .ant-carousel-vertical .slick-slider {
   padding-bottom: 0;
@@ -197,20 +194,4 @@ html,body{
   bottom: auto;
   right: -35px;
   top: 0;
-}
-.slider img {
-  width: 100%;
-}
-.loading-carousel {
-  text-decoration:none;
-  font-size:20px;
-  font-weight:bold;
-  width:100%;
-  height:100px;
-  display:block;
-  text-align:center;
-  margin-top: 50px;
-}
-.slick-dots {
-  margin-bottom: 30px;
 }

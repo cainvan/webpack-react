@@ -3,19 +3,11 @@ import ReactDOM from 'react-dom';
 import MyBt from './example/myBt';
 import Carousel from './example/myCarousel';
 import ActionSheet from './example/myActionSheet';
-import MyList from './example/list';
 import { Router, Route, IndexRoute, browserHistory, hashHistory, Redirect, IndexRedirect} from 'react-router';
 import RoutHome from './example/route';
 import BtDetail from './example/myBtDetail';
 
 class App extends React.Component {
-  componentWillMount() {
-        document.body.style.margin = "0px";
-        // 这是防止页面被拖拽
-        document.body.addEventListener('touchmove', (ev) => {
-            ev.preventDefault();
-        });
-    }
     render () {
       // 获取屏幕高度
       // console.log(window.screen.height);
@@ -50,10 +42,6 @@ ReactDOM.render((
       {/* <Redirect from="/actionSheet" to="/carousel"/> */}
       {/* 弹出菜单组件 */}
       <Route path="/actionSheet" component={ActionSheet}/>
-      {/* list组件 */}
-      <Route path="/myList" component={MyList}/>
-      {/* 其他重定向到 404 */}
-      <Redirect from='*' to='/404' />
     </Route>
   </Router>),
   document.getElementById('content')
