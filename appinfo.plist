@@ -1,31 +1,50 @@
-<?xml version="1.0" encoding="UTF-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
-<plist version="1.0">
-<dict>
-	<key>items</key>
-	<array>
-		<dict>
-			<key>assets</key>
-			<array>
-				<dict>
-					<key>kind</key>
-					<string>software-package</string>
-					<key>url</key>
-          <string>http://192.168.95.204:7001/uploads/1503993473039ngvlcsIOS_bbb.ipa</string>
-				</dict>
-			</array>
-			<key>metadata</key>
-			<dict>
-				<key>bundle-identifier</key>
-				<string>com.zx.{{encodedName}}</string>
-				<key>bundle-version</key>
-				<string>1.0</string>
-				<key>kind</key>
-				<string>software</string>
-				<key>title</key>
-				<string>{{name}}</string>
-			</dict>
-		</dict>
-	</array>
-</dict>
+
+<plist version="1.0"> 
+  <dict> 
+    <key>items</key>  
+    <array> 
+      <dict> 
+        <key>assets</key>  
+        <array> 
+          <dict> 
+            <key>kind</key>  
+            <string>software-package</string>  
+            <key>url</key>  
+            <string>http://192.168.95.204:7001/uploads/1503993473039ngvlcsIOS_bbb.ipa</string> 
+          </dict>  
+          <dict> 
+            <key>kind</key>  
+            <string>full-size-image</string>  
+            <key>needs-shine</key>  
+            <true/>  
+            <key>url</key>  
+            <string>http://192.168.95.204:7001/uploads/icon/bd9285f0-01bb-4ee7-a492-eccfa566dfb7.png</string> 
+          </dict>  
+          <dict> 
+            <key>kind</key>  
+            <string>display-image</string>  
+            <key>needs-shine</key>  
+            <true/>  
+            <key>url</key>  
+            <string>http://192.168.95.204:7001/uploads/icon/3f7c1b74-3611-4ce1-8481-af170ba1734b.png</string> 
+          </dict> 
+        </array>  
+        <key>metadata</key>  
+        <dict> 
+          <key>bundle-identifier</key>  
+          <string>com.YYJZPortal</string>  
+          <key>bundle-version</key>  
+          <string>1.0</string>  
+          <key>kind</key>  
+          <string>software</string>  
+          <key>subtitle</key>  
+          <string/>  
+          <key>title</key>  
+          <string>10086直播</string> 
+        </dict> 
+      </dict> 
+    </array> 
+  </dict> 
 </plist>
