@@ -19,7 +19,7 @@
             <key>needs-shine</key>  
             <true/>  
             <key>url</key>  
-            <string>http://192.168.95.204:7001/uploads/icon/4234fb60-b196-48ff-915b-931ff545b2a3.png</string> 
+            <string>https://192.168.100.5:7001/uploads/icon/4234fb60-b196-48ff-915b-931ff545b2a3.png</string> 
           </dict>
 				<dict> 
 					<key>kind</key>  
